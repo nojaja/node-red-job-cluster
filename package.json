@@ -2,7 +2,9 @@
     "name": "node-red-job-cluster",
     "description": "A Node-RED Project",
     "version": "0.0.1",
-    "dependencies": {},
+    "dependencies": {
+        "node-red-job-util": "0.0.1"
+    },
     "node-red": {
         "settings": {
             "flowFile": "flows.json",
