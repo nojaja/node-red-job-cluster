@@ -51,5 +51,23 @@
         "x": 340,
         "y": 80,
         "wires": []
+    },
+    {
+        "id": "bf376be3e9717f4c",
+        "type": "ping",
+        "z": "780c0c66082ebb3c",
+        "protocol": "IPv4",
+        "mode": "timed",
+        "name": "",
+        "host": "localhost",
+        "timer": "20",
+        "inputs": 0,
+        "x": 160,
+        "y": 160,
+        "wires": [
+            [
+                "597de89839212ca7"
+            ]
+        ]
     }
 ]
