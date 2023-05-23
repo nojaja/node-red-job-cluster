@@ -3,7 +3,7 @@
     "description": "A Node-RED Project",
     "version": "0.0.1",
     "dependencies": {
-        "node-red-job-util": "0.0.1"
+        "node-red-contrib-job-cluster-util": "0.0.1"
     },
     "node-red": {
         "settings": {

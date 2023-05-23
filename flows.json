@@ -2,7 +2,7 @@
     {
         "id": "f01882c08732b397",
         "type": "tab",
-        "label": "PROC管理",
+        "label": "WORKER_Control",
         "disabled": false,
         "info": "",
         "env": []
@@ -51,8 +51,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-job-logger",
-            "type": "logger",
+            "module": "node-red-contrib-job-cluster-logger",
+            "type": "job-cluster-logger",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -94,8 +94,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-job-endpoint",
-            "type": "endpoint",
+            "module": "node-red-contrib-job-cluster-endpoint",
+            "type": "job-cluster-endpoint",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -162,8 +162,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-job-rpc-async",
-            "type": "rpc-async",
+            "module": "node-red-contrib-job-cluster-rpc-async",
+            "type": "job-cluster-rpc-async",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -197,8 +197,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-job-cluster-endpoint",
-            "type": "cluster-endpoint",
+            "module": "node-red-contrib-job-cluster-cluster-endpoint",
+            "type": "job-cluster-cluster-endpoint",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -236,8 +236,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-job-cluster-ctl",
-            "type": "cluster-ctl",
+            "module": "node-red-contrib-job-cluster-cluster-ctl",
+            "type": "job-cluster-cluster-ctl",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -285,15 +285,15 @@
         ],
         "env": [],
         "meta": {
-            "module": "node-red-job-switch-role",
-            "type": "switch-role",
+            "module": "node-red-contrib-job-cluster-switch-role",
+            "type": "job-cluster-switch-role",
             "version": "0.0.1",
             "license": "MIT"
         },
         "color": "#E2D96E",
         "outputLabels": [
             "jobctl",
-            "processor"
+            "worker"
         ],
         "icon": "node-red/switch.svg"
     },
@@ -349,8 +349,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-job-rpc-sync",
-            "type": "rpc-sync",
+            "module": "node-red-contrib-job-cluster-rpc-sync",
+            "type": "job-cluster-rpc-sync",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -409,8 +409,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-job-topics-assign",
-            "type": "topics-assign",
+            "module": "node-red-contrib-job-cluster-topics-assign",
+            "type": "job-cluster-topics-assign",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -464,8 +464,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-job-fillter-topic",
-            "type": "fillter-topic",
+            "module": "node-red-contrib-job-cluster-fillter-topic",
+            "type": "job-cluster-fillter-topic",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -509,8 +509,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-job-topic-add",
-            "type": "topic-add",
+            "module": "node-red-contrib-job-cluster-topic-add",
+            "type": "job-cluster-topic-add",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -554,8 +554,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-job-topics-list",
-            "type": "topics-list",
+            "module": "node-red-contrib-job-cluster-topics-list",
+            "type": "job-cluster-topics-list",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -619,8 +619,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-job-topics-update",
-            "type": "topics-update",
+            "module": "node-red-contrib-job-cluster-topics-update",
+            "type": "job-cluster-topics-update",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -664,8 +664,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-job-waitlist-add",
-            "type": "waitlist-add",
+            "module": "node-red-contrib-job-cluster-waitlist-add",
+            "type": "job-cluster-waitlist-add",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -713,8 +713,8 @@
         ],
         "env": [],
         "meta": {
-            "module": "node-red-job-waitlist-assign",
-            "type": "waitlist-assign",
+            "module": "node-red-contrib-job-cluster-waitlist-assign",
+            "type": "job-cluster-waitlist-assign",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -763,8 +763,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-job-split-array",
-            "type": "split-array",
+            "module": "node-red-contrib-job-cluster-split-array",
+            "type": "job-cluster-split-array",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -812,8 +812,8 @@
         ],
         "env": [],
         "meta": {
-            "module": "node-red-job-flow-limit",
-            "type": "flow-limit",
+            "module": "node-red-contrib-job-cluster-flow-limit",
+            "type": "job-cluster-flow-limit",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -861,8 +861,8 @@
         ],
         "env": [],
         "meta": {
-            "module": "node-red-job-flow-start",
-            "type": "flow-start",
+            "module": "node-red-contrib-job-cluster-flow-start",
+            "type": "job-cluster-flow-start",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -910,8 +910,8 @@
         ],
         "env": [],
         "meta": {
-            "module": "node-red-job-flow-end",
-            "type": "flow-end",
+            "module": "node-red-contrib-job-cluster-flow-end",
+            "type": "job-cluster-flow-end",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -921,7 +921,7 @@
     {
         "id": "131075747e8871f8",
         "type": "subflow",
-        "name": "proc-start",
+        "name": "worker-start",
         "info": "",
         "category": "",
         "in": [
@@ -971,8 +971,8 @@
         ],
         "env": [],
         "meta": {
-            "module": "node-red-job-proc-start",
-            "type": "proc-start",
+            "module": "node-red-contrib-job-cluster-worker-start",
+            "type": "job-cluster-worker-start",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -982,7 +982,7 @@
     {
         "id": "1ec11fe81fee736c",
         "type": "subflow",
-        "name": "proc-end",
+        "name": "worker-end",
         "info": "",
         "category": "",
         "in": [
@@ -1024,8 +1024,8 @@
         ],
         "env": [],
         "meta": {
-            "module": "node-red-job-proc-end",
-            "type": "proc-end",
+            "module": "node-red-contrib-job-cluster-worker-end",
+            "type": "job-cluster-worker-end",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -1042,8 +1042,8 @@
         "out": [],
         "env": [],
         "meta": {
-            "module": "node-red-job-jobctl",
-            "type": "jobctl",
+            "module": "node-red-contrib-job-cluster-jobctl",
+            "type": "job-cluster-jobctl",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -1053,15 +1053,15 @@
     {
         "id": "4d4915ce082a1010",
         "type": "subflow",
-        "name": "procctl",
+        "name": "workerctl",
         "info": "",
         "category": "",
         "in": [],
         "out": [],
         "env": [],
         "meta": {
-            "module": "node-red-job-procctl",
-            "type": "procctl",
+            "module": "node-red-contrib-job-cluster-workerctl",
+            "type": "job-cluster-workerctl",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -1573,7 +1573,7 @@
         "type": "function",
         "z": "b3da594ab22fa515",
         "name": "switch role",
-        "func": "const CLUSTER_ROLE = env.get(\"CLUSTER_ROLE\")\n//jobctl\nif (CLUSTER_ROLE === \"jobctl\") {\n    return [msg, null]\n} else {\n//processor\n    return [null, msg]\n}\n",
+        "func": "const CLUSTER_ROLE = env.get(\"CLUSTER_ROLE\")\n//jobctl\nif (CLUSTER_ROLE === \"jobctl\") {\n    return [msg, null]\n} else {\n//worker\n    return [null, msg]\n}\n",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -2102,7 +2102,7 @@
         "id": "45a4ad7677cb1357",
         "type": "debug",
         "z": "6399b4d8775a079a",
-        "name": "PROC PINGRESP",
+        "name": "WORKER PINGRESP",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -2119,7 +2119,7 @@
         "id": "7cccfcec40ecbf10",
         "type": "function",
         "z": "6399b4d8775a079a",
-        "name": "PROC CONNACK",
+        "name": "WORKER CONNACK",
         "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nconst JOBCTL_HOST = {\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
@@ -2293,8 +2293,8 @@
         "id": "70fa88a3c6d0a19e",
         "type": "function",
         "z": "6399b4d8775a079a",
-        "name": "PROC CONNECT",
-        "func": "if (msg.payload.CLUSTER_ROLE !== \"processor\") return msg;\nconst PROCESSOR_HOSTS = global.get(\"PROCESSOR_HOSTS\") || new Map();\nconst fromip = `${msg.payload.CLUSTER_SERVICE_HOST}:${msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\"}`\nPROCESSOR_HOSTS.set(fromip, {\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE\n})\nglobal.set(\"PROCESSOR_HOSTS\", PROCESSOR_HOSTS)\nreturn msg;\n",
+        "name": "WORKER CONNECT",
+        "func": "if (msg.payload.CLUSTER_ROLE !== \"worker\") return msg;\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\nconst fromip = `${msg.payload.CLUSTER_SERVICE_HOST}:${msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\"}`\nWORKER_HOSTS.set(fromip, {\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE\n})\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2575,7 +2575,7 @@
         "id": "84186f06dd80bd09",
         "type": "comment",
         "z": "6399b4d8775a079a",
-        "name": "procから新規topicの受信",
+        "name": "workerから新規topicの受信",
         "info": "",
         "x": 230,
         "y": 640,
@@ -2585,7 +2585,7 @@
         "id": "0b9f36fafe8b569f",
         "type": "comment",
         "z": "6399b4d8775a079a",
-        "name": "procにtopicのassign",
+        "name": "workerにtopicのassign",
         "info": "",
         "x": 210,
         "y": 880,
@@ -2755,7 +2755,7 @@
         "id": "32f629c82e7afe15",
         "type": "comment",
         "z": "6399b4d8775a079a",
-        "name": "procからtopic完了受信",
+        "name": "workerからtopic完了受信",
         "info": "",
         "x": 220,
         "y": 1040,
@@ -2933,7 +2933,7 @@
         "id": "550f471e1dcb7a01",
         "type": "debug",
         "z": "4d4915ce082a1010",
-        "name": "PROC PINGRESP",
+        "name": "WORKER PINGRESP",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -2950,7 +2950,7 @@
         "id": "b7aa3510c8a309cc",
         "type": "function",
         "z": "4d4915ce082a1010",
-        "name": "PROC CONNACK",
+        "name": "WORKER CONNACK",
         "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nconst JOBCTL_HOST = {\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
