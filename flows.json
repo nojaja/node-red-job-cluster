@@ -2817,6 +2817,86 @@
         ]
     },
     {
+        "id": "e5354780b7eaedca",
+        "type": "function",
+        "z": "6399b4d8775a079a",
+        "name": "WORKER REVOKE",
+        "func": "\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\n\nfor (const workerName in WORKER_HOSTS) {\n    const worker = WORKER_HOSTS.get(workerName)\n    \n    const now = new Date()\n    const timeout = now.setMinutes(now.getMinutes() - 30)//30分前\n    if(worker.STATUS_DATE > timeout){\n        msg.worker = worker\n        node.warn(`timeout: ${workerName}`);\n        node.send(msg,null)\n        WORKER_HOSTS.delete(workerName)\n    }\n}\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nnode.send(null, msg);\n",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 520,
+        "wires": [
+            [
+                "46c6323508213665"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "dce18bd5e0479bef",
+        "type": "inject",
+        "z": "6399b4d8775a079a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "120",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "60",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 520,
+        "wires": [
+            [
+                "84175a1e2f8ce3b1"
+            ]
+        ]
+    },
+    {
+        "id": "84175a1e2f8ce3b1",
+        "type": "subflow:b3da594ab22fa515",
+        "z": "6399b4d8775a079a",
+        "name": "",
+        "x": 430,
+        "y": 520,
+        "wires": [
+            [
+                "e5354780b7eaedca"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "46c6323508213665",
+        "type": "debug",
+        "z": "6399b4d8775a079a",
+        "name": "debug 26",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 520,
+        "wires": []
+    },
+    {
         "id": "ba6177f394b19525",
         "type": "inject",
         "z": "4d4915ce082a1010",
