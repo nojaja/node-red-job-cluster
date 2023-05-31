@@ -1039,8 +1039,45 @@
         "info": "",
         "category": "",
         "in": [],
-        "out": [],
-        "env": [],
+        "out": [
+            {
+                "x": 980,
+                "y": 380,
+                "wires": [
+                    {
+                        "id": "7cccfcec40ecbf10",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 740,
+                "y": 460,
+                "wires": [
+                    {
+                        "id": "8436d950506a6455",
+                        "port": 3
+                    }
+                ]
+            },
+            {
+                "x": 920,
+                "y": 480,
+                "wires": [
+                    {
+                        "id": "e5354780b7eaedca",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [
+            {
+                "name": "WORKER_EXPIRY",
+                "type": "num",
+                "value": "5"
+            }
+        ],
         "meta": {
             "module": "node-red-contrib-job-cluster-jobctl",
             "type": "job-cluster-jobctl",
@@ -1057,7 +1094,38 @@
         "info": "",
         "category": "",
         "in": [],
-        "out": [],
+        "out": [
+            {
+                "x": 950,
+                "y": 320,
+                "wires": [
+                    {
+                        "id": "b7aa3510c8a309cc",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 720,
+                "y": 480,
+                "wires": [
+                    {
+                        "id": "c191993956b88fde",
+                        "port": 3
+                    }
+                ]
+            },
+            {
+                "x": 1100,
+                "y": 560,
+                "wires": [
+                    {
+                        "id": "9106239501d3d8b7",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
         "env": [],
         "meta": {
             "module": "node-red-contrib-job-cluster-workerctl",
@@ -2111,8 +2179,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 810,
-        "y": 460,
+        "x": 820,
+        "y": 420,
         "wires": []
     },
     {
@@ -2126,8 +2194,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 810,
-        "y": 380,
+        "x": 820,
+        "y": 340,
         "wires": [
             [
                 "b2f8be8bbe3568c3"
@@ -2147,8 +2215,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1000,
-        "y": 380,
+        "x": 1010,
+        "y": 340,
         "wires": []
     },
     {
@@ -2213,8 +2281,8 @@
                 "type": "bool"
             }
         ],
-        "x": 1030,
-        "y": 340,
+        "x": 1040,
+        "y": 300,
         "wires": []
     },
     {
@@ -2234,8 +2302,8 @@
                 "type": "bool"
             }
         ],
-        "x": 810,
-        "y": 420,
+        "x": 820,
+        "y": 380,
         "wires": []
     },
     {
@@ -2300,8 +2368,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 810,
-        "y": 340,
+        "x": 820,
+        "y": 300,
         "wires": [
             [
                 "f2e62be0eb17e40b"
@@ -2821,7 +2889,7 @@
         "type": "function",
         "z": "6399b4d8775a079a",
         "name": "WORKER REVOKE",
-        "func": "\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\n\nfor (const workerName in WORKER_HOSTS) {\n    const worker = WORKER_HOSTS.get(workerName)\n    \n    const now = new Date()\n    const timeout = now.setMinutes(now.getMinutes() - 30)//30分前\n    if(worker.STATUS_DATE > timeout){\n        msg.worker = worker\n        node.warn(`timeout: ${workerName}`);\n        node.send(msg,null)\n        WORKER_HOSTS.delete(workerName)\n    }\n}\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nnode.send(null, msg);\n",
+        "func": "\nconst WORKER_EXPIRY = global.get(\"WORKER_EXPIRY\") || 5;//5分前\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\n\nfor (const workerName in WORKER_HOSTS) {\n    const worker = WORKER_HOSTS.get(workerName)\n    \n    const now = new Date()\n    const timeout = now.setMinutes(now.getMinutes() - WORKER_EXPIRY)\n    if(worker.STATUS_DATE > timeout){\n        msg.worker = worker\n        node.warn(`timeout: ${workerName}`);\n        node.send(msg,null)\n        WORKER_HOSTS.delete(workerName)\n    }\n}\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nnode.send(null, msg);\n",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -2840,24 +2908,14 @@
         "id": "dce18bd5e0479bef",
         "type": "inject",
         "z": "6399b4d8775a079a",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
+        "name": "CHECK ALIVE",
+        "props": [],
         "repeat": "120",
         "crontab": "",
         "once": true,
         "onceDelay": "60",
         "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 210,
+        "x": 200,
         "y": 520,
         "wires": [
             [
@@ -3022,8 +3080,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 810,
-        "y": 460,
+        "x": 800,
+        "y": 440,
         "wires": []
     },
     {
@@ -3037,8 +3095,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 810,
-        "y": 380,
+        "x": 800,
+        "y": 360,
         "wires": [
             [
                 "a4cdb0d6384e6688"
@@ -3058,8 +3116,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1000,
-        "y": 380,
+        "x": 990,
+        "y": 360,
         "wires": []
     },
     {
@@ -3124,8 +3182,8 @@
                 "type": "bool"
             }
         ],
-        "x": 810,
-        "y": 420,
+        "x": 790,
+        "y": 400,
         "wires": []
     },
     {
@@ -3154,7 +3212,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1120,
+        "x": 1140,
         "y": 520,
         "wires": []
     },
@@ -3532,7 +3590,11 @@
         "name": "",
         "x": 90,
         "y": 40,
-        "wires": []
+        "wires": [
+            [],
+            [],
+            []
+        ]
     },
     {
         "id": "f95507e7d1cc63f1",
@@ -3740,6 +3802,10 @@
         "name": "",
         "x": 110,
         "y": 40,
-        "wires": []
+        "wires": [
+            [],
+            [],
+            []
+        ]
     }
 ]
