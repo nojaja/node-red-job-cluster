@@ -2083,7 +2083,7 @@
                 "vt": "str"
             }
         ],
-        "repeat": "3600",
+        "repeat": "60",
         "crontab": "",
         "once": true,
         "onceDelay": 0.1,
@@ -2120,7 +2120,7 @@
         "type": "function",
         "z": "6399b4d8775a079a",
         "name": "WORKER CONNACK",
-        "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nconst JOBCTL_HOST = {\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
+        "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nconst JOBCTL_HOST = {\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date()\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2294,7 +2294,7 @@
         "type": "function",
         "z": "6399b4d8775a079a",
         "name": "WORKER CONNECT",
-        "func": "if (msg.payload.CLUSTER_ROLE !== \"worker\") return msg;\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\nconst fromip = `${msg.payload.CLUSTER_SERVICE_HOST}:${msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\"}`\nWORKER_HOSTS.set(fromip, {\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE\n})\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nreturn msg;\n",
+        "func": "if (msg.payload.CLUSTER_ROLE !== \"worker\") return msg;\n\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\nconst fromip = `${msg.payload.CLUSTER_SERVICE_HOST}:${msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\"}`\nWORKER_HOSTS.set(fromip, {\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date()\n})\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2914,7 +2914,7 @@
                 "vt": "str"
             }
         ],
-        "repeat": "3600",
+        "repeat": "60",
         "crontab": "",
         "once": true,
         "onceDelay": 0.1,
@@ -2951,7 +2951,7 @@
         "type": "function",
         "z": "4d4915ce082a1010",
         "name": "WORKER CONNACK",
-        "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nconst JOBCTL_HOST = {\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
+        "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nconst JOBCTL_HOST = {\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date()\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2978,7 +2978,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 980,
+        "x": 1000,
         "y": 380,
         "wires": []
     },
