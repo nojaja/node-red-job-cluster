@@ -2889,7 +2889,7 @@
         "type": "function",
         "z": "6399b4d8775a079a",
         "name": "WORKER REVOKE",
-        "func": "\nconst WORKER_EXPIRY = global.get(\"WORKER_EXPIRY\") || 5;//5分前\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\n\nfor (const workerName in WORKER_HOSTS) {\n    const worker = WORKER_HOSTS.get(workerName)\n    \n    const now = new Date()\n    const timeout = now.setMinutes(now.getMinutes() - WORKER_EXPIRY)\n    if(worker.STATUS_DATE > timeout){\n        msg.worker = worker\n        node.warn(`timeout: ${workerName}`);\n        node.send(msg,null)\n        WORKER_HOSTS.delete(workerName)\n    }\n}\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nnode.send(null, msg);\n",
+        "func": "\nconst WORKER_EXPIRY = global.get(\"WORKER_EXPIRY\") || 5;//5分前\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\n\nconst now = new Date()\nconst timeout = now.setMinutes(now.getMinutes() - WORKER_EXPIRY)\nnode.warn(`REVOKE1: ${now}`);\nnode.warn(`REVOKE2: ${timeout}`);\nfor (const workerName in WORKER_HOSTS) {\n    const worker = WORKER_HOSTS.get(workerName)\n\n    node.warn(`REVOKE2: ${worker.STATUS_DATE}`);\n    if(worker.STATUS_DATE > timeout){\n        msg.worker = worker\n        node.warn(`timeout: ${workerName}`);\n        node.send(msg,null)\n        WORKER_HOSTS.delete(workerName)\n    }\n}\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nnode.send(null, msg);\n",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
