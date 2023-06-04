@@ -1069,6 +1069,32 @@
                         "port": 0
                     }
                 ]
+            },
+            {
+                "x": 1000,
+                "y": 860,
+                "wires": [
+                    {
+                        "id": "15b5ee12766608b5",
+                        "port": 0
+                    },
+                    {
+                        "id": "041f26bfc1e571d0",
+                        "port": 0
+                    },
+                    {
+                        "id": "3874f7a637f95d3c",
+                        "port": 0
+                    },
+                    {
+                        "id": "038dbdaf6002571c",
+                        "port": 0
+                    },
+                    {
+                        "id": "038dbdaf6002571c",
+                        "port": 1
+                    }
+                ]
             }
         ],
         "env": [
@@ -1405,7 +1431,7 @@
         "type": "function",
         "z": "45018afdb676ae24",
         "name": "generate_url",
-        "func": "\nconst port = env.get(\"PORT\")\nconst endpointport = env.get(\"endpointport\")\n\nconst service = env.get(\"service_name\")\nconst action = env.get(\"action_type\")\n\nconst jobsession_key = env.get(\"jobsession_key\")\nconst jobsession = msg[jobsession_key]\n\nconst target_key = env.get(\"target_key\")\nconst target = msg[target_key]\n\nmsg.host = env.get(\"SERVICENAME\")\nmsg.service = service\nmsg.joburl = `http://${service}/${action}/${jobsession}/${target}`\nreturn msg;",
+        "func": "\nconst port = env.get(\"PORT\")\nconst endpointport = env.get(\"endpointport\")\n\nconst service = env.get(\"service_name\")\nconst action = env.get(\"action_type\")\n\nconst jobsession_key = env.get(\"jobsession_key\")\nconst jobsession = msg[jobsession_key]\n\nconst target_key = env.get(\"target_key\")\nconst target = msg[target_key]\n\nmsg.host = env.get(\"SERVICENAME\")\nmsg.service = service\nmsg.joburl = `http://${service}/${action}/${jobsession}/${target}`\nmsg.cluster_service_uid = RED.util.procuuid\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1446,6 +1472,12 @@
                 "keyValue": "x-jobgroup",
                 "valueType": "msg",
                 "valueValue": "service"
+            },
+            {
+                "keyType": "other",
+                "keyValue": "x-cluster_service_uid",
+                "valueType": "msg",
+                "valueValue": "cluster_service_uid"
             }
         ],
         "x": 430,
@@ -1569,7 +1601,7 @@
         "type": "function",
         "z": "610d7761aec803a7",
         "name": "SEND COMMAND",
-        "func": "const CLUSTER_SERVICE_HTTP_PORT = env.get(\"PORT\") || \"1880\"\nconst CLUSTER_SERVICE_UDP_PORT = env.get(\"UDPPORT\") || \"2880\"\n\nconst CLUSTER_GROUP = env.get(\"CLUSTER_GROUP\")\nconst CLUSTER_ROLE = env.get(\"CLUSTER_ROLE\")\n//const CLUSTER_SERVICE_HOST = env.get(\"KUBERNETES_SERVICE_HOST\")\nconst CLUSTER_SERVICE_IP = msg.LocalAddress.address\nconst CLUSTER_SERVICE_HOST = env.get(\"HOSTNAME\") || CLUSTER_SERVICE_IP\nconst NODE_RED_VERSION = env.get(\"NODE_RED_VERSION\")\nconst COMMAND = env.get(\"COMMAND\")\n\nmsg.payload = JSON.stringify({\n    \"COMMAND\": COMMAND,\n    \"CLUSTER_GROUP\": CLUSTER_GROUP,\n    \"CLUSTER_ROLE\": CLUSTER_ROLE,\n    \"CLUSTER_SERVICE_HOST\": CLUSTER_SERVICE_HOST,\n    \"CLUSTER_SERVICE_IP\": CLUSTER_SERVICE_IP,\n    \"CLUSTER_SERVICE_HTTP_PORT\": CLUSTER_SERVICE_HTTP_PORT,\n    \"CLUSTER_SERVICE_UDP_PORT\": CLUSTER_SERVICE_UDP_PORT,\n    \"NODE_RED_VERSION\": NODE_RED_VERSION,\n    \"PAYLOAD\": msg.payload\n})\nreturn msg",
+        "func": "const CLUSTER_SERVICE_HTTP_PORT = env.get(\"PORT\") || \"1880\"\nconst CLUSTER_SERVICE_UDP_PORT = env.get(\"UDPPORT\") || \"2880\"\n\nconst CLUSTER_GROUP = env.get(\"CLUSTER_GROUP\")\nconst CLUSTER_ROLE = env.get(\"CLUSTER_ROLE\")\n//const CLUSTER_SERVICE_HOST = env.get(\"KUBERNETES_SERVICE_HOST\")\nconst CLUSTER_SERVICE_IP = msg.LocalAddress.address\nconst CLUSTER_SERVICE_HOST = env.get(\"HOSTNAME\") || CLUSTER_SERVICE_IP\nconst NODE_RED_VERSION = env.get(\"NODE_RED_VERSION\")\nconst COMMAND = env.get(\"COMMAND\")\n\nconst CLUSTER_SERVICE_UID = RED.util.procuuid\n\nmsg.payload = JSON.stringify({\n    \"COMMAND\": COMMAND,\n    \"CLUSTER_GROUP\": CLUSTER_GROUP,\n    \"CLUSTER_ROLE\": CLUSTER_ROLE,\n    \"CLUSTER_SERVICE_UID\": CLUSTER_SERVICE_UID,\n    \"CLUSTER_SERVICE_HOST\": CLUSTER_SERVICE_HOST,\n    \"CLUSTER_SERVICE_IP\": CLUSTER_SERVICE_IP,\n    \"CLUSTER_SERVICE_HTTP_PORT\": CLUSTER_SERVICE_HTTP_PORT,\n    \"CLUSTER_SERVICE_UDP_PORT\": CLUSTER_SERVICE_UDP_PORT,\n    \"NODE_RED_VERSION\": NODE_RED_VERSION,\n    \"PAYLOAD\": msg.payload\n})\nreturn msg",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1664,7 +1696,7 @@
         "type": "function",
         "z": "375ee1d6cf6e3891",
         "name": "generate_url",
-        "func": "\nconst JOBCTL_HOST = global.get(\"JOBCTL_HOST\")\nconst JOBCTL_SERVICE_IP = JOBCTL_HOST.IP\nconst JOBCTL_SERVICE_HOST_HTTP_PORT = JOBCTL_HOST.HTTP_PORT\nconst actionType = env.get(\"actionType\")\n\nconst topicPath = env.get(\"topicPath\")\nconst topic = encodeURIComponent(JSON.stringify(RED.util.getPropByPath(msg, topicPath)))\n\nmsg.joburl = `http://${JOBCTL_SERVICE_IP}:${JOBCTL_SERVICE_HOST_HTTP_PORT}/${actionType}/${topic}`\nmsg.topic = topic\nreturn msg",
+        "func": "\nconst JOBCTL_HOST = global.get(\"JOBCTL_HOST\")\nconst JOBCTL_SERVICE_IP = JOBCTL_HOST.IP\nconst JOBCTL_SERVICE_HOST_HTTP_PORT = JOBCTL_HOST.HTTP_PORT\nconst actionType = env.get(\"actionType\")\n\nconst topicPath = env.get(\"topicPath\")\nconst topic = encodeURIComponent(JSON.stringify(RED.util.getPropByPath(msg, topicPath)))\n\nmsg.joburl = `http://${JOBCTL_SERVICE_IP}:${JOBCTL_SERVICE_HOST_HTTP_PORT}/${actionType}/${topic}`\nmsg.topic = topic\nmsg.cluster_service_uid = RED.util.procuuid\nconsole.log(JSON.stringify(msg))\nreturn msg",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1699,6 +1731,12 @@
                 "keyValue": "x-topic",
                 "valueType": "msg",
                 "valueValue": "topic"
+            },
+            {
+                "keyType": "other",
+                "keyValue": "x-cluster_service_uid",
+                "valueType": "msg",
+                "valueValue": "cluster_service_uid"
             }
         ],
         "x": 370,
@@ -1732,7 +1770,7 @@
         "type": "function",
         "z": "c826488602403262",
         "name": "topics_assign",
-        "func": "\nconst topicPath = env.get(\"topicPath\") //ex.msg.status\nconst selectTopic = RED.util.getPropByPath(msg, topicPath)\n\nconst statusPath = env.get(\"statusPath\") //ex.msg.status\nconst selectStatus = RED.util.getPropByPath(msg, statusPath) || \"new\"\n\nconst statusFlow = {\n    \"new\": \"assigned\",\n    \"assigned\": \"in-progress\",\n    \"in-progress\": \"completed\"\n}\nconst nextStatus = statusFlow[selectStatus]\nconst topics = global.get(\"TOPICS\") || new Map()//{topicname:[{name:\"\",status: \"new\"}]}\nconst topicStatus = topics.get(selectTopic) || new Map()\nconst topic_new = topicStatus.get(selectStatus) || new Map()\nconst topic_proc = topicStatus.get(nextStatus) || new Map()\n\nconst topicTicket = RED.util.mappop(topic_new)\nif (!topicTicket) return [null, msg]\ntopicTicket.status = nextStatus\ntopic_proc.set(topicTicket.uuid, topicTicket)\n\ntopicStatus.set(selectStatus, topic_new)\ntopicStatus.set(nextStatus, topic_proc)\ntopics.set(selectTopic, topicStatus)\nglobal.set(\"TOPICS\", topics)\nmsg = Object.assign(msg, { payload: { topic: topicTicket.topic, topicTicket: topicTicket } });\n\nreturn [msg, null]",
+        "func": "const topicPath = env.get(\"topicPath\") //ex.msg.status\nconst selectTopic = RED.util.getPropByPath(msg, topicPath) // ex. topicPath: 'git'\n\nconst statusPath = env.get(\"statusPath\") //ex.msg.status\nconst selectStatus = RED.util.getPropByPath(msg, statusPath) || \"new\"\n\nconst statusFlow = {\n    \"new\": \"assigned\",\n    \"assigned\": \"in-progress\",\n    \"in-progress\": \"completed\"\n}\nconst nextStatus = statusFlow[selectStatus]\nconst topics = global.get(\"TOPICS\") || new Map()\n/*\n topics = {\n     ${selectTopic} :{ //selectTopic: 'git'\n        ${status}: {   //status: 'new'\n            ${uuid}: { //uuid: 'eac328ef-93f8-49d4-be5b-60b9e678e283'\n                param: {\n                    target: \"A0000_0000\",\n                    jobsession: \"20230604\"\n                },\n                topic: \"git\",\n                uuid: \"eac328ef-93f8-49d4-be5b-60b9e678e283\",\n                status: \"completed\" \n            }}}}\n*/\nconst topicStatus = topics.get(selectTopic) || new Map()     //topics.${selectTopic}\nconst topic_new = topicStatus.get(selectStatus) || new Map() //topics.${selectTopic}.${selectStatus}\nconst topic_proc = topicStatus.get(nextStatus) || new Map()  //topics.${selectTopic}.${nextStatus}\nconst topicTicket = RED.util.mappop(topic_new)               //pop(topics.${selectTopic}.${selectStatus})\n\nif (!topicTicket) return [null, msg]\ntopicTicket.status = nextStatus\ntopic_proc.set(topicTicket.uuid, topicTicket)\n\ntopicStatus.set(selectStatus, topic_new)\ntopicStatus.set(nextStatus, topic_proc)\ntopics.set(selectTopic, topicStatus)\nglobal.set(\"TOPICS\", topics)\n\nmsg = Object.assign(msg, { payload: { topic: topicTicket.topic, topicTicket: topicTicket } });\n\nreturn [msg, null]",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -1790,7 +1828,7 @@
         "type": "function",
         "z": "0eb6c089a1f171e9",
         "name": "topics_list",
-        "func": "//{topicname:[{name:\"\",status: \"new\"}]}\n\nconst statusPath = env.get(\"statusPath\") //ex.msg.status\nconst selectStatus = RED.util.getPropByPath(msg, statusPath) || \"new\"\n\nconst topics = global.get(\"TOPICS\") || new Map()\nconst topics_list = new Array()\n\nfor (const [topicName, topicStatus] of topics) {\n    const topic_new = topicStatus.get(selectStatus) || new Map()\n    if (topic_new.size > 0) topics_list.push(topicName)\n}\n\nmsg = Object.assign(msg, { payload: { list: topics_list } });\nreturn msg;",
+        "func": "//{topicname:[{name:\"\",status: \"new\"}]}\n\nconst statusPath = env.get(\"statusPath\") //ex.msg.status\nconst selectStatus = RED.util.getPropByPath(msg, statusPath) || \"new\"\n\nconst topics = global.get(\"TOPICS\") || new Map()\n/*\n topics = {\n     ${selectTopic} :{ //selectTopic: 'git'\n        ${status}: {   //status: 'new'\n            ${uuid}: { //uuid: 'eac328ef-93f8-49d4-be5b-60b9e678e283'\n                param: {\n                    target: \"A0000_0000\",\n                    jobsession: \"20230604\"\n                },\n                topic: \"git\",\n                uuid: \"eac328ef-93f8-49d4-be5b-60b9e678e283\",\n                status: \"completed\" \n            }}}}\n*/\nconst topics_list = new Array()\n\nfor (const [topicName, topicStatus] of topics) {                //topics.${selectTopic}\n    const topic_new = topicStatus.get(selectStatus) || new Map()//topics.${selectTopic}.${selectStatus}\n    if (topic_new.size > 0) topics_list.push(topicName)\n}\n\nmsg = Object.assign(msg, { payload: { list: topics_list } });\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1807,7 +1845,7 @@
         "type": "function",
         "z": "f5ba2b0f4e9255e0",
         "name": "topics_update",
-        "func": "const topicPath = env.get(\"topicPath\") //ex.msg.status\nconst selectTopic = RED.util.getPropByPath(msg, topicPath)\n\nconst statusPath = env.get(\"statusPath\") //ex.msg.status\nconst selectStatus = RED.util.getPropByPath(msg, statusPath) || \"new\"\n\nconst uuidPath = env.get(\"uuidPath\") //ex.msg.status\nconst uuid = RED.util.getPropByPath(msg, uuidPath) || \"uuid\"\n\nconst statusFlow = {\n    \"new\": \"assigned\",\n    \"assigned\": \"in-progress\",\n    \"in-progress\": \"completed\"\n}\nconst nextStatus = statusFlow[selectStatus]\nconst topics = global.get(\"TOPICS\") || new Map()//{topicname:[{name:\"\",status: \"new\"}]}\nconst topicStatus = topics.get(selectTopic) || new Map()\nconst topic_new = topicStatus.get(selectStatus) || new Map()\nconst topic_proc = topicStatus.get(nextStatus) || new Map()\n\nconst topicTicket = topic_new.get(uuid)\nif (!topicTicket) return [null, msg]\nif (!topic_new.delete(uuid)) return [null, msg]\ntopicTicket.status = nextStatus\ntopic_proc.set(topicTicket.uuid, topicTicket)\n\ntopicStatus.set(selectStatus, topic_new) || new Array()\ntopicStatus.set(nextStatus, topic_proc) || new Array()\ntopics.set(selectTopic, topicStatus) || new Map()\nglobal.set(\"TOPICS\", topics) || new Map()\n\nmsg = Object.assign(msg, { payload: { topic: topicTicket.topic, topicTicket: JSON.stringify(topicTicket) } });\n\nreturn [msg, null]",
+        "func": "const topicPath = env.get(\"topicPath\") //ex.msg.status\nconst selectTopic = RED.util.getPropByPath(msg, topicPath) // ex. topicPath: 'git'\n\nconst statusPath = env.get(\"statusPath\") //ex.msg.status\nconst selectStatus = RED.util.getPropByPath(msg, statusPath) || \"new\"\n\nconst uuidPath = env.get(\"uuidPath\") //ex.msg.status\nconst uuid = RED.util.getPropByPath(msg, uuidPath) || \"uuid\"\n\nconst statusFlow = {\n    \"new\": \"assigned\",\n    \"assigned\": \"in-progress\",\n    \"in-progress\": \"completed\"\n}\nconst nextStatus = statusFlow[selectStatus]\nconst topics = global.get(\"TOPICS\") || new Map()\n/*\n topics = {\n     ${selectTopic} :{ //selectTopic: 'git'\n        ${status}: {   //status: 'new'\n            ${uuid}: { //uuid: 'eac328ef-93f8-49d4-be5b-60b9e678e283'\n                param: {\n                    target: \"A0000_0000\",\n                    jobsession: \"20230604\"\n                },\n                topic: \"git\",\n                uuid: \"eac328ef-93f8-49d4-be5b-60b9e678e283\",\n                status: \"completed\" \n            }}}}\n*/\nconst topicStatus = topics.get(selectTopic) || new Map()    //topics.${selectTopic}\nconst topic_new = topicStatus.get(selectStatus) || new Map()//topics.${selectTopic}.${selectStatus}\nconst topic_proc = topicStatus.get(nextStatus) || new Map() //topics.${selectTopic}.${nextStatus}\nconst topicTicket = topic_new.get(uuid)                     //topics.${selectTopic}.${selectStatus}.${uuid}\n\nif (!topicTicket) return [null, msg]\nif (!topic_new.delete(uuid)) return [null, msg]\ntopicTicket.status = nextStatus\ntopic_proc.set(topicTicket.uuid, topicTicket)\n\ntopicStatus.set(selectStatus, topic_new)\ntopicStatus.set(nextStatus, topic_proc)\ntopics.set(selectTopic, topicStatus)\nglobal.set(\"TOPICS\", topics)\n\nmsg = Object.assign(msg, { payload: { topic: topicTicket.topic, topicTicket: JSON.stringify(topicTicket) } });\n\nreturn [msg, null]",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -2188,7 +2226,7 @@
         "type": "function",
         "z": "6399b4d8775a079a",
         "name": "WORKER CONNACK",
-        "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nconst JOBCTL_HOST = {\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date()\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
+        "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nconst JOBCTL_HOST = {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date()\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2362,7 +2400,7 @@
         "type": "function",
         "z": "6399b4d8775a079a",
         "name": "WORKER CONNECT",
-        "func": "if (msg.payload.CLUSTER_ROLE !== \"worker\") return msg;\n\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\nconst fromip = `${msg.payload.CLUSTER_SERVICE_HOST}:${msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\"}`\nWORKER_HOSTS.set(fromip, {\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date()\n})\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nreturn msg;\n",
+        "func": "if (msg.payload.CLUSTER_ROLE !== \"worker\") return msg;\n\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\nconst fromip = `${msg.payload.CLUSTER_SERVICE_HOST}:${msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\"}`\nWORKER_HOSTS.set(fromip, {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date()\n})\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2412,6 +2450,13 @@
                 "pt": "msg",
                 "to": "assigned",
                 "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "cluster_service_uid",
+                "pt": "msg",
+                "to": "req.params.x-cluster_service_uid",
+                "tot": "str"
             }
         ],
         "action": "",
@@ -2434,7 +2479,7 @@
         "name": "",
         "statusCode": "200",
         "headers": {},
-        "x": 1140,
+        "x": 1260,
         "y": 920,
         "wires": []
     },
@@ -2443,7 +2488,7 @@
         "type": "subflow:c826488602403262",
         "z": "6399b4d8775a079a",
         "name": "",
-        "x": 740,
+        "x": 860,
         "y": 920,
         "wires": [
             [
@@ -2461,7 +2506,7 @@
         "name": "",
         "statusCode": "400",
         "headers": {},
-        "x": 1140,
+        "x": 1260,
         "y": 960,
         "wires": []
     },
@@ -2509,7 +2554,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 930,
+        "x": 1050,
         "y": 920,
         "wires": [
             [
@@ -2528,7 +2573,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 930,
+        "x": 1050,
         "y": 960,
         "wires": [
             [
@@ -2625,7 +2670,7 @@
         "y": 920,
         "wires": [
             [
-                "879ef2c221179d06"
+                "15b5ee12766608b5"
             ]
         ]
     },
@@ -2747,7 +2792,7 @@
         "name": "",
         "statusCode": "200",
         "headers": {},
-        "x": 1140,
+        "x": 1260,
         "y": 1080,
         "wires": []
     },
@@ -2758,7 +2803,7 @@
         "name": "",
         "statusCode": "400",
         "headers": {},
-        "x": 1140,
+        "x": 1260,
         "y": 1120,
         "wires": []
     },
@@ -2773,7 +2818,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 930,
+        "x": 1050,
         "y": 1080,
         "wires": [
             [
@@ -2792,7 +2837,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 930,
+        "x": 1050,
         "y": 1120,
         "wires": [
             [
@@ -2846,7 +2891,7 @@
                 "type": "str"
             }
         ],
-        "x": 730,
+        "x": 850,
         "y": 1080,
         "wires": [
             [
@@ -2889,7 +2934,7 @@
         "type": "function",
         "z": "6399b4d8775a079a",
         "name": "WORKER REVOKE",
-        "func": "\nconst WORKER_EXPIRY = global.get(\"WORKER_EXPIRY\") || 5;//5分前\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\n\nconst now = new Date()\nconst timeout = now.setMinutes(now.getMinutes() - WORKER_EXPIRY)\nnode.warn(`REVOKE1: ${now}`);\nnode.warn(`REVOKE2: ${timeout}`);\nfor (const workerName in WORKER_HOSTS) {\n    const worker = WORKER_HOSTS.get(workerName)\n\n    node.warn(`REVOKE2: ${worker.STATUS_DATE}`);\n    if(worker.STATUS_DATE > timeout){\n        msg.worker = worker\n        node.warn(`timeout: ${workerName}`);\n        node.send(msg,null)\n        WORKER_HOSTS.delete(workerName)\n    }\n}\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nnode.send(null, msg);\n",
+        "func": "\nconst WORKER_EXPIRY = global.get(\"WORKER_EXPIRY\") || 5;//5分前\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\n\nconst now = new Date()\nconst timeout = now.setMinutes(now.getMinutes() - WORKER_EXPIRY)\n\nfor (const workerName of WORKER_HOSTS.keys()) {\n    const worker = WORKER_HOSTS.get(workerName)\n    if(worker.STATUS_DATE < timeout){\n        msg.worker = worker\n        node.warn(`timeout: ${workerName}`);\n        node.send(msg,null)\n        WORKER_HOSTS.delete(workerName)\n    }\n}\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nnode.send(null, msg);\n",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -2953,6 +2998,25 @@
         "x": 960,
         "y": 520,
         "wires": []
+    },
+    {
+        "id": "15b5ee12766608b5",
+        "type": "function",
+        "z": "6399b4d8775a079a",
+        "name": "get worker",
+        "func": "\nconsole.log(JSON.stringify(msg))\n\ntry {\n\n    const cluster_service_uid = msg.cluster_service_uid\n\n    function getWorkerInfo(id) {\n        const WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\n        for (const fromip in WORKER_HOSTS.keys) {\n            const worker = WORKER_HOSTS.get(fromip)\n            if (worker.ID == id) {\n                return worker\n            }\n        }\n        return null\n    }\n\n    console.log(cluster_service_uid)\n    msg.worker = getWorkerInfo(cluster_service_uid)\n\n} catch (error) {\n    node.error(\"get worker error message\", error);\n    console.log(JSON.stringify(msg))\n};\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 960,
+        "wires": [
+            [
+                "879ef2c221179d06"
+            ]
+        ]
     },
     {
         "id": "ba6177f394b19525",
@@ -3089,7 +3153,7 @@
         "type": "function",
         "z": "4d4915ce082a1010",
         "name": "WORKER CONNACK",
-        "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nconst JOBCTL_HOST = {\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date()\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
+        "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nconst JOBCTL_HOST = {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date()\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -3805,7 +3869,27 @@
         "wires": [
             [],
             [],
-            []
+            [],
+            [
+                "5d96429efc574658"
+            ]
         ]
+    },
+    {
+        "id": "5d96429efc574658",
+        "type": "debug",
+        "z": "dbd8abb392121dc1",
+        "name": "debug 27",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 340,
+        "y": 60,
+        "wires": []
     }
 ]
