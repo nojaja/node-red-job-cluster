@@ -360,7 +360,7 @@
     {
         "id": "c826488602403262",
         "type": "subflow",
-        "name": "topics-assign",
+        "name": "assign-topics",
         "info": "",
         "category": "Topic Control",
         "in": [
@@ -409,8 +409,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-contrib-job-cluster-topics-assign",
-            "type": "job-cluster-topics-assign",
+            "module": "node-red-contrib-job-cluster-assign-topics",
+            "type": "job-cluster-assign-topics",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -520,7 +520,7 @@
     {
         "id": "0eb6c089a1f171e9",
         "type": "subflow",
-        "name": "topics-list",
+        "name": "listup-topics",
         "info": "",
         "category": "Topic Control",
         "in": [
@@ -554,8 +554,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-contrib-job-cluster-topics-list",
-            "type": "job-cluster-topics-list",
+            "module": "node-red-contrib-job-cluster-listup-topics",
+            "type": "job-cluster-listup-topics",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -565,7 +565,7 @@
     {
         "id": "f5ba2b0f4e9255e0",
         "type": "subflow",
-        "name": "topics-update",
+        "name": "update-topics",
         "info": "",
         "category": "Topic Control",
         "in": [
@@ -619,8 +619,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-contrib-job-cluster-topics-update",
-            "type": "job-cluster-topics-update",
+            "module": "node-red-contrib-job-cluster-update-topics",
+            "type": "job-cluster-update-topics",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -630,7 +630,7 @@
     {
         "id": "1f63a3ba2a6337e6",
         "type": "subflow",
-        "name": "waitlist-add",
+        "name": "add-waitlist",
         "info": "",
         "category": "",
         "in": [
@@ -664,8 +664,8 @@
             }
         ],
         "meta": {
-            "module": "node-red-contrib-job-cluster-waitlist-add",
-            "type": "job-cluster-waitlist-add",
+            "module": "node-red-contrib-job-cluster-add-waitlist",
+            "type": "job-cluster-add-waitlist",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -675,7 +675,7 @@
     {
         "id": "f1b787faf67b8960",
         "type": "subflow",
-        "name": "waitlist-assign",
+        "name": "assign-waitlist",
         "info": "",
         "category": "",
         "in": [
@@ -713,8 +713,8 @@
         ],
         "env": [],
         "meta": {
-            "module": "node-red-contrib-job-cluster-waitlist-assign",
-            "type": "job-cluster-waitlist-assign",
+            "module": "node-red-contrib-job-cluster-assign-waitlist",
+            "type": "job-cluster-assign-waitlist",
             "version": "0.0.1",
             "license": "MIT"
         },
@@ -1061,38 +1061,22 @@
                 ]
             },
             {
-                "x": 920,
+                "x": 1060,
                 "y": 480,
                 "wires": [
                     {
-                        "id": "e5354780b7eaedca",
+                        "id": "18bb4c3128c497d0",
                         "port": 0
                     }
                 ]
             },
             {
-                "x": 1000,
-                "y": 860,
+                "x": 820,
+                "y": 980,
                 "wires": [
                     {
                         "id": "15b5ee12766608b5",
                         "port": 0
-                    },
-                    {
-                        "id": "041f26bfc1e571d0",
-                        "port": 0
-                    },
-                    {
-                        "id": "3874f7a637f95d3c",
-                        "port": 0
-                    },
-                    {
-                        "id": "038dbdaf6002571c",
-                        "port": 0
-                    },
-                    {
-                        "id": "038dbdaf6002571c",
-                        "port": 1
                     }
                 ]
             }
@@ -1769,14 +1753,14 @@
         "id": "18819cbac00ebaf8",
         "type": "function",
         "z": "c826488602403262",
-        "name": "topics_assign",
-        "func": "const topicPath = env.get(\"topicPath\") //ex.msg.status\nconst selectTopic = RED.util.getPropByPath(msg, topicPath) // ex. topicPath: 'git'\n\nconst statusPath = env.get(\"statusPath\") //ex.msg.status\nconst selectStatus = RED.util.getPropByPath(msg, statusPath) || \"new\"\n\nconst statusFlow = {\n    \"new\": \"assigned\",\n    \"assigned\": \"in-progress\",\n    \"in-progress\": \"completed\"\n}\nconst nextStatus = statusFlow[selectStatus]\nconst topics = global.get(\"TOPICS\") || new Map()\n/*\n topics = {\n     ${selectTopic} :{ //selectTopic: 'git'\n        ${status}: {   //status: 'new'\n            ${uuid}: { //uuid: 'eac328ef-93f8-49d4-be5b-60b9e678e283'\n                param: {\n                    target: \"A0000_0000\",\n                    jobsession: \"20230604\"\n                },\n                topic: \"git\",\n                uuid: \"eac328ef-93f8-49d4-be5b-60b9e678e283\",\n                status: \"completed\" \n            }}}}\n*/\nconst topicStatus = topics.get(selectTopic) || new Map()     //topics.${selectTopic}\nconst topic_new = topicStatus.get(selectStatus) || new Map() //topics.${selectTopic}.${selectStatus}\nconst topic_proc = topicStatus.get(nextStatus) || new Map()  //topics.${selectTopic}.${nextStatus}\nconst topicTicket = RED.util.mappop(topic_new)               //pop(topics.${selectTopic}.${selectStatus})\n\nif (!topicTicket) return [null, msg]\ntopicTicket.status = nextStatus\ntopic_proc.set(topicTicket.uuid, topicTicket)\n\ntopicStatus.set(selectStatus, topic_new)\ntopicStatus.set(nextStatus, topic_proc)\ntopics.set(selectTopic, topicStatus)\nglobal.set(\"TOPICS\", topics)\n\nmsg = Object.assign(msg, { payload: { topic: topicTicket.topic, topicTicket: topicTicket } });\n\nreturn [msg, null]",
+        "name": "assign-topics",
+        "func": "const topicPath = env.get(\"topicPath\") //ex.msg.status\nconst selectTopic = RED.util.getPropByPath(msg, topicPath) // ex. topicPath: 'git'\n\nconst statusPath = env.get(\"statusPath\") //ex.msg.status\nconst selectStatus = RED.util.getPropByPath(msg, statusPath) || \"new\"\n\nconst statusFlow = {\n    \"new\": \"assigned\",\n    \"assigned\": \"in-progress\",\n    \"in-progress\": \"completed\"\n}\nconst nextStatus = statusFlow[selectStatus]\nconst topics = global.get(\"TOPICS\") || new Map()\n/*\n topics = {\n     ${selectTopic} :{ //selectTopic: 'git'\n        ${status}: {   //status: 'new'\n            ${uuid}: { //uuid: 'eac328ef-93f8-49d4-be5b-60b9e678e283'\n                param: {\n                    target: \"A0000_0000\",\n                    jobsession: \"20230604\"\n                },\n                topic: \"git\",\n                uuid: \"eac328ef-93f8-49d4-be5b-60b9e678e283\",\n                status: \"completed\" \n            }}}}\n*/\nconst topicStatus = topics.get(selectTopic) || new Map()     //topics.${selectTopic}\nconst topic_new = topicStatus.get(selectStatus) || new Map() //topics.${selectTopic}.${selectStatus}\nconst topic_proc = topicStatus.get(nextStatus) || new Map()  //topics.${selectTopic}.${nextStatus}\nconst topicTicket = RED.util.mappop(topic_new)               //pop(topics.${selectTopic}.${selectStatus})\n\nif (!topicTicket) return [null, msg]\ntopicTicket.status = nextStatus\n\nif (msg.workerName) {\n    topicTicket.workerName = msg.workerName\n}\n\ntopic_proc.set(topicTicket.uuid, topicTicket)\n\ntopicStatus.set(selectStatus, topic_new)\ntopicStatus.set(nextStatus, topic_proc)\ntopics.set(selectTopic, topicStatus)\nglobal.set(\"TOPICS\", topics)\n\nmsg = Object.assign(msg, { payload: { topic: topicTicket.topic, topicTicket: topicTicket } });\n\nreturn [msg, null]",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 200,
+        "x": 190,
         "y": 80,
         "wires": [
             [],
@@ -1827,14 +1811,14 @@
         "id": "126cbf276ed23332",
         "type": "function",
         "z": "0eb6c089a1f171e9",
-        "name": "topics_list",
+        "name": "listup-topics",
         "func": "//{topicname:[{name:\"\",status: \"new\"}]}\n\nconst statusPath = env.get(\"statusPath\") //ex.msg.status\nconst selectStatus = RED.util.getPropByPath(msg, statusPath) || \"new\"\n\nconst topics = global.get(\"TOPICS\") || new Map()\n/*\n topics = {\n     ${selectTopic} :{ //selectTopic: 'git'\n        ${status}: {   //status: 'new'\n            ${uuid}: { //uuid: 'eac328ef-93f8-49d4-be5b-60b9e678e283'\n                param: {\n                    target: \"A0000_0000\",\n                    jobsession: \"20230604\"\n                },\n                topic: \"git\",\n                uuid: \"eac328ef-93f8-49d4-be5b-60b9e678e283\",\n                status: \"completed\" \n            }}}}\n*/\nconst topics_list = new Array()\n\nfor (const [topicName, topicStatus] of topics) {                //topics.${selectTopic}\n    const topic_new = topicStatus.get(selectStatus) || new Map()//topics.${selectTopic}.${selectStatus}\n    if (topic_new.size > 0) topics_list.push(topicName)\n}\n\nmsg = Object.assign(msg, { payload: { list: topics_list } });\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 200,
+        "x": 210,
         "y": 80,
         "wires": [
             []
@@ -1844,7 +1828,7 @@
         "id": "df88c0ce3abe7f11",
         "type": "function",
         "z": "f5ba2b0f4e9255e0",
-        "name": "topics_update",
+        "name": "update-topics",
         "func": "const topicPath = env.get(\"topicPath\") //ex.msg.status\nconst selectTopic = RED.util.getPropByPath(msg, topicPath) // ex. topicPath: 'git'\n\nconst statusPath = env.get(\"statusPath\") //ex.msg.status\nconst selectStatus = RED.util.getPropByPath(msg, statusPath) || \"new\"\n\nconst uuidPath = env.get(\"uuidPath\") //ex.msg.status\nconst uuid = RED.util.getPropByPath(msg, uuidPath) || \"uuid\"\n\nconst statusFlow = {\n    \"new\": \"assigned\",\n    \"assigned\": \"in-progress\",\n    \"in-progress\": \"completed\"\n}\nconst nextStatus = statusFlow[selectStatus]\nconst topics = global.get(\"TOPICS\") || new Map()\n/*\n topics = {\n     ${selectTopic} :{ //selectTopic: 'git'\n        ${status}: {   //status: 'new'\n            ${uuid}: { //uuid: 'eac328ef-93f8-49d4-be5b-60b9e678e283'\n                param: {\n                    target: \"A0000_0000\",\n                    jobsession: \"20230604\"\n                },\n                topic: \"git\",\n                uuid: \"eac328ef-93f8-49d4-be5b-60b9e678e283\",\n                status: \"completed\" \n            }}}}\n*/\nconst topicStatus = topics.get(selectTopic) || new Map()    //topics.${selectTopic}\nconst topic_new = topicStatus.get(selectStatus) || new Map()//topics.${selectTopic}.${selectStatus}\nconst topic_proc = topicStatus.get(nextStatus) || new Map() //topics.${selectTopic}.${nextStatus}\nconst topicTicket = topic_new.get(uuid)                     //topics.${selectTopic}.${selectStatus}.${uuid}\n\nif (!topicTicket) return [null, msg]\nif (!topic_new.delete(uuid)) return [null, msg]\ntopicTicket.status = nextStatus\ntopic_proc.set(topicTicket.uuid, topicTicket)\n\ntopicStatus.set(selectStatus, topic_new)\ntopicStatus.set(nextStatus, topic_proc)\ntopics.set(selectTopic, topicStatus)\nglobal.set(\"TOPICS\", topics)\n\nmsg = Object.assign(msg, { payload: { topic: topicTicket.topic, topicTicket: JSON.stringify(topicTicket) } });\n\nreturn [msg, null]",
         "outputs": 2,
         "noerr": 0,
@@ -1862,7 +1846,7 @@
         "id": "998fa97d665f6910",
         "type": "function",
         "z": "1f63a3ba2a6337e6",
-        "name": "waitlist-add",
+        "name": "add-waitlist",
         "func": "const topicPath = env.get(\"topicNamePath\") //ex.msg.payload.topic \nconst topicName = RED.util.getPropByPath(msg, topicPath)//{topic: \"\",param: { }}\n\n//{topicname:[{topic:\"\",param: {}}}]}\nconst waitlist = global.get(\"WAITLIST_TOPICS\") || new Array()\nwaitlist.push(topicName)\nglobal.set(\"WAITLIST_TOPICS\", waitlist)\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
@@ -1879,7 +1863,7 @@
         "id": "2e548032e1145bc9",
         "type": "function",
         "z": "f1b787faf67b8960",
-        "name": "waitlist-assign",
+        "name": "assign-waitlist",
         "func": "const waitlist = global.get(\"WAITLIST_TOPICS\") || new Array()//{topicname:[{name:\"\",status: \"new\"}]}\nconst topicName = waitlist.pop()\nif (!topicName) return [null, msg]\nglobal.set(\"WAITLIST_TOPICS\", waitlist)\nmsg = Object.assign(msg, { topic: topicName });\nreturn [msg, null]",
         "outputs": 2,
         "noerr": 0,
@@ -2208,7 +2192,7 @@
         "id": "45a4ad7677cb1357",
         "type": "debug",
         "z": "6399b4d8775a079a",
-        "name": "WORKER PINGRESP",
+        "name": "PINGRESP WORKER",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -2225,8 +2209,8 @@
         "id": "7cccfcec40ecbf10",
         "type": "function",
         "z": "6399b4d8775a079a",
-        "name": "WORKER CONNACK",
-        "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nconst JOBCTL_HOST = {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date()\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
+        "name": "CONNACK WORKER",
+        "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nconst JOBCTL_HOST = {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date(),\n    STATUS: 'live'\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2399,8 +2383,8 @@
         "id": "70fa88a3c6d0a19e",
         "type": "function",
         "z": "6399b4d8775a079a",
-        "name": "WORKER CONNECT",
-        "func": "if (msg.payload.CLUSTER_ROLE !== \"worker\") return msg;\n\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\nconst fromip = `${msg.payload.CLUSTER_SERVICE_HOST}:${msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\"}`\nWORKER_HOSTS.set(fromip, {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date()\n})\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nreturn msg;\n",
+        "name": "CONNECT WORKER ",
+        "func": "if (msg.payload.CLUSTER_ROLE !== \"worker\") return msg;\n\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\nconst fromip = `${msg.payload.CLUSTER_SERVICE_HOST}:${msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\"}`\nWORKER_HOSTS.set(fromip, {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date(),\n    STATUS: 'live'\n})\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2455,8 +2439,8 @@
                 "t": "set",
                 "p": "cluster_service_uid",
                 "pt": "msg",
-                "to": "req.params.x-cluster_service_uid",
-                "tot": "str"
+                "to": "req.headers.x-cluster_service_uid",
+                "tot": "msg"
             }
         ],
         "action": "",
@@ -2933,8 +2917,8 @@
         "id": "e5354780b7eaedca",
         "type": "function",
         "z": "6399b4d8775a079a",
-        "name": "WORKER REVOKE",
-        "func": "\nconst WORKER_EXPIRY = global.get(\"WORKER_EXPIRY\") || 5;//5分前\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\n\nconst now = new Date()\nconst timeout = now.setMinutes(now.getMinutes() - WORKER_EXPIRY)\n\nfor (const workerName of WORKER_HOSTS.keys()) {\n    const worker = WORKER_HOSTS.get(workerName)\n    if(worker.STATUS_DATE < timeout){\n        msg.worker = worker\n        node.warn(`timeout: ${workerName}`);\n        node.send(msg,null)\n        WORKER_HOSTS.delete(workerName)\n    }\n}\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nnode.send(null, msg);\n",
+        "name": "REVOKE WORKER",
+        "func": "\nconst WORKER_EXPIRY = global.get(\"WORKER_EXPIRY\") || 5;//5分前\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\n\nconst now = new Date()\nconst timeout = now.setMinutes(now.getMinutes() - WORKER_EXPIRY)\n\nfor (const [workerName, worker] of WORKER_HOSTS) {\n    if (worker.STATUS_DATE < timeout) {\n        worker.STATUS = 'dead'\n        msg.worker = worker\n        msg.workerName = workerName\n        node.warn(`timeout: ${workerName}`);\n        node.send(msg, null)\n        WORKER_HOSTS.delete(workerName)\n    }\n}\n\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nnode.send(null, msg);\n",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -2944,7 +2928,7 @@
         "y": 520,
         "wires": [
             [
-                "46c6323508213665"
+                "18bb4c3128c497d0"
             ],
             []
         ]
@@ -2983,28 +2967,11 @@
         ]
     },
     {
-        "id": "46c6323508213665",
-        "type": "debug",
-        "z": "6399b4d8775a079a",
-        "name": "debug 26",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 960,
-        "y": 520,
-        "wires": []
-    },
-    {
         "id": "15b5ee12766608b5",
         "type": "function",
         "z": "6399b4d8775a079a",
         "name": "get worker",
-        "func": "\nconsole.log(JSON.stringify(msg))\n\ntry {\n\n    const cluster_service_uid = msg.cluster_service_uid\n\n    function getWorkerInfo(id) {\n        const WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\n        for (const fromip in WORKER_HOSTS.keys) {\n            const worker = WORKER_HOSTS.get(fromip)\n            if (worker.ID == id) {\n                return worker\n            }\n        }\n        return null\n    }\n\n    console.log(cluster_service_uid)\n    msg.worker = getWorkerInfo(cluster_service_uid)\n\n} catch (error) {\n    node.error(\"get worker error message\", error);\n    console.log(JSON.stringify(msg))\n};\nreturn msg;\n",
+        "func": "try {\n    [msg.workerName, msg.worker] = RED.util.getWorkerInfo(msg.cluster_service_uid)\n\n} catch (error) {\n    node.error(\"get worker error message\", error);\n};\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -3016,6 +2983,23 @@
             [
                 "879ef2c221179d06"
             ]
+        ]
+    },
+    {
+        "id": "18bb4c3128c497d0",
+        "type": "function",
+        "z": "6399b4d8775a079a",
+        "name": "RevertTopicStatus",
+        "func": "//const statusPath = env.get(\"statusPath\") //ex.msg.status\n//const selectStatus = RED.util.getPropByPath(msg, statusPath) || \"in-progress\"\nconst selectStatus = \"in-progress\"\n\nconst topics = global.get(\"TOPICS\") || new Map()\n/*\n topics = {\n     ${selectTopic} :{ //selectTopic: 'git'\n        ${status}: {   //status: 'new'\n            ${uuid}: { //uuid: 'eac328ef-93f8-49d4-be5b-60b9e678e283'\n                param: {\n                    target: \"A0000_0000\",\n                    jobsession: \"20230604\"\n                },\n                topic: \"git\",\n                uuid: \"eac328ef-93f8-49d4-be5b-60b9e678e283\",\n                status: \"completed\",\n                workerName: \"nodered-worker-deployment-86b6fd6496-wrn6b:1880\"\n                worker: obj \n            }}}}\n*/\n// selectStatus を newに戻す\nfor (const [topicName, topicStatus] of topics) {                   //topics.${selectTopic}\n    const topic_new = topicStatus.get(\"new\") || new Map()          //topics.${selectTopic}.${selectStatus}\n    const target_topic = topicStatus.get(selectStatus) || new Map()//topics.${selectTopic}.${selectStatus}\n    for (const [uuid, data] of target_topic) {\n        if (data.workerName == msg.workerName) {\n            data.workerName = null\n            topic_new.set(uuid, data)\n            target_topic.delete(uuid)\n        }\n    }\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 930,
+        "y": 520,
+        "wires": [
+            []
         ]
     },
     {
@@ -3135,7 +3119,7 @@
         "id": "550f471e1dcb7a01",
         "type": "debug",
         "z": "4d4915ce082a1010",
-        "name": "WORKER PINGRESP",
+        "name": "PINGRESP WORKER",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -3152,8 +3136,8 @@
         "id": "b7aa3510c8a309cc",
         "type": "function",
         "z": "4d4915ce082a1010",
-        "name": "WORKER CONNACK",
-        "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nconst JOBCTL_HOST = {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date()\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
+        "name": "CONNACK WORKER",
+        "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nconst JOBCTL_HOST = {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date(),\n    STATUS: 'live'\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
