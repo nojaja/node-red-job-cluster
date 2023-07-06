@@ -62,7 +62,7 @@
     {
         "id": "27227cef106a74f0",
         "type": "subflow",
-        "name": "endpoint",
+        "name": "topic add endpoint",
         "info": "",
         "category": "",
         "in": [],
@@ -192,8 +192,8 @@
         "env": [
             {
                 "name": "endpoint_port",
-                "type": "str",
-                "value": "2880"
+                "type": "env",
+                "value": "UDPPORT"
             }
         ],
         "meta": {
@@ -2210,7 +2210,7 @@
         "type": "function",
         "z": "6399b4d8775a079a",
         "name": "CONNACK WORKER",
-        "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nconst JOBCTL_HOST = {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date(),\n    STATUS: 'live'\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
+        "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nif (msg.payload.CLUSTER_GROUP !== env.get('CLUSTER_GROUP')) return msg;\nconst JOBCTL_HOST = {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    CLUSTER_GROUP: msg.payload.CLUSTER_GROUP,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date(),\n    STATUS: 'live'\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2246,7 +2246,7 @@
         "type": "subflow:0cd70b49340abfe2",
         "z": "6399b4d8775a079a",
         "name": "",
-        "x": 220,
+        "x": 200,
         "y": 440,
         "wires": [
             [
@@ -2384,7 +2384,7 @@
         "type": "function",
         "z": "6399b4d8775a079a",
         "name": "CONNECT WORKER ",
-        "func": "if (msg.payload.CLUSTER_ROLE !== \"worker\") return msg;\n\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\nconst fromip = `${msg.payload.CLUSTER_SERVICE_HOST}:${msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\"}`\nWORKER_HOSTS.set(fromip, {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date(),\n    STATUS: 'live'\n})\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nreturn msg;\n",
+        "func": "if (msg.payload.CLUSTER_ROLE !== \"worker\") return msg;\nif (msg.payload.CLUSTER_GROUP !== env.get('CLUSTER_GROUP')) return msg;\n\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\nconst fromip = `${msg.payload.CLUSTER_SERVICE_HOST}:${msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\"}`\nWORKER_HOSTS.set(fromip, {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    CLUSTER_GROUP: msg.payload.CLUSTER_GROUP,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date(),\n    STATUS: 'live'\n})\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -3137,7 +3137,7 @@
         "type": "function",
         "z": "4d4915ce082a1010",
         "name": "CONNACK WORKER",
-        "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nconst JOBCTL_HOST = {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date(),\n    STATUS: 'live'\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
+        "func": "\n\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nif (msg.payload.CLUSTER_GROUP !== env.get('CLUSTER_GROUP')) return msg;\nconst JOBCTL_HOST = {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    CLUSTER_GROUP: msg.payload.CLUSTER_GROUP,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date(),\n    STATUS: 'live'\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -3173,11 +3173,12 @@
         "type": "subflow:0cd70b49340abfe2",
         "z": "4d4915ce082a1010",
         "name": "",
-        "x": 220,
+        "x": 200,
         "y": 440,
         "wires": [
             [
-                "ba2e5456cc40d96a"
+                "ba2e5456cc40d96a",
+                "23419940c8be23ec"
             ]
         ]
     },
@@ -3320,6 +3321,23 @@
                 "c191993956b88fde"
             ]
         ]
+    },
+    {
+        "id": "23419940c8be23ec",
+        "type": "debug",
+        "z": "4d4915ce082a1010",
+        "name": "debug 28",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 520,
+        "wires": []
     },
     {
         "id": "e4e20228d978a35d",
