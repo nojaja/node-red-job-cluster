@@ -27,5 +27,14 @@ https://github.com/nojaja/kubernetes-nodered.git
           - name: CLUSTER_ROLE
             value: "jobctl"
 ```
+### endpoint
+```
+http://${JOBCTL_SERVICE_IP}:${JOBCTL_SERVICE_HOST_HTTP_PORT}/${actionType}/${jobsession}/${topic}
 
+```
+
+```
+exec
+/${actionType}/:jobsession/:topic
+```
             

@@ -1564,16 +1564,7 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "libs": [
-            {
-                "var": "os",
-                "module": "os"
-            },
-            {
-                "var": "ip",
-                "module": "ip"
-            }
-        ],
+        "libs": [],
         "x": 690,
         "y": 120,
         "wires": [
