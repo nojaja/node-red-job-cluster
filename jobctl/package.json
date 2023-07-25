@@ -1,13 +1,13 @@
 {
     "name": "node-red-job-cluster",
     "description": "A Node-RED Project",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "dependencies": {
         "node-red-contrib-job-cluster-util": "0.0.1"
     },
     "node-red": {
         "settings": {
-            "flowFile": "jobflows.json",
+            "flowFile": "flows.json",
             "credentialsFile": "flows_cred.json"
         }
     }

@@ -1,0 +1,15 @@
+{
+    "name": "node-red-job-task",
+    "description": "A Node-RED Project",
+    "version": "0.0.1",
+    "dependencies": {
+        "node-red-contrib-job-cluster-util": "0.0.1"
+    },
+    "node-red": {
+        "settings": {
+            "flowFile": "flows.json",
+            "credentialsFile": "flows_cred.json"
+        }
+    },
+    "private": true
+}

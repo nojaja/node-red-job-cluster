@@ -46,8 +46,8 @@
             },
             {
                 "name": "logPath",
-                "type": "str",
-                "value": "/workspace/logs/"
+                "type": "env",
+                "value": "LOGPATH"
             }
         ],
         "meta": {
@@ -340,6 +340,10 @@
                 "wires": [
                     {
                         "id": "ab5c9b3893934684",
+                        "port": 1
+                    },
+                    {
+                        "id": "a72d2803344a446d",
                         "port": 1
                     }
                 ]
@@ -945,7 +949,7 @@
                 "y": 160,
                 "wires": [
                     {
-                        "id": "006e9d528f47ee98"
+                        "id": "60ccecf9024cc129"
                     }
                 ]
             }
@@ -967,10 +971,6 @@
                 "wires": [
                     {
                         "id": "006e9d528f47ee98",
-                        "port": 1
-                    },
-                    {
-                        "id": "f98af433e5369734",
                         "port": 1
                     },
                     {
@@ -1067,28 +1067,8 @@
         "in": [],
         "out": [
             {
-                "x": 980,
-                "y": 380,
-                "wires": [
-                    {
-                        "id": "7cccfcec40ecbf10",
-                        "port": 0
-                    }
-                ]
-            },
-            {
-                "x": 740,
-                "y": 460,
-                "wires": [
-                    {
-                        "id": "8436d950506a6455",
-                        "port": 3
-                    }
-                ]
-            },
-            {
-                "x": 1060,
-                "y": 480,
+                "x": 1020,
+                "y": 360,
                 "wires": [
                     {
                         "id": "18bb4c3128c497d0",
@@ -1097,11 +1077,11 @@
                 ]
             },
             {
-                "x": 880,
-                "y": 980,
+                "x": 1260,
+                "y": 860,
                 "wires": [
                     {
-                        "id": "15b5ee12766608b5",
+                        "id": "fa378d358dbc8c4f",
                         "port": 0
                     }
                 ]
@@ -1129,35 +1109,35 @@
         "name": "workerctl",
         "info": "",
         "category": "",
-        "in": [],
+        "in": [
+            {
+                "x": 60,
+                "y": 260,
+                "wires": [
+                    {
+                        "id": "f51a42a80aaef931"
+                    }
+                ]
+            }
+        ],
         "out": [
             {
-                "x": 950,
+                "x": 1400,
+                "y": 260,
+                "wires": [
+                    {
+                        "id": "735c659f87d1681c",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 1400,
                 "y": 320,
                 "wires": [
                     {
-                        "id": "b7aa3510c8a309cc",
-                        "port": 0
-                    }
-                ]
-            },
-            {
-                "x": 720,
-                "y": 480,
-                "wires": [
-                    {
-                        "id": "c191993956b88fde",
-                        "port": 3
-                    }
-                ]
-            },
-            {
-                "x": 1100,
-                "y": 560,
-                "wires": [
-                    {
-                        "id": "9106239501d3d8b7",
-                        "port": 0
+                        "id": "735c659f87d1681c",
+                        "port": 1
                     }
                 ]
             }
@@ -1673,8 +1653,8 @@
         "type": "function",
         "z": "375ee1d6cf6e3891",
         "name": "generate_url",
-        "func": "\nconst JOBCTL_HOST = global.get(\"JOBCTL_HOST\")\nconst JOBCTL_SERVICE_IP = JOBCTL_HOST.IP\nconst JOBCTL_SERVICE_HOST_HTTP_PORT = JOBCTL_HOST.HTTP_PORT\nconst actionType = env.get(\"actionType\")\n\nconst topicTicketPath = env.get(\"topicTicketPath\")\nconst topicTicket = encodeURIComponent(JSON.stringify(RED.util.getPropByPath(msg, topicTicketPath)))\n\nmsg.joburl = `http://${JOBCTL_SERVICE_IP}:${JOBCTL_SERVICE_HOST_HTTP_PORT}/${actionType}/${topicTicket}`\nmsg.topic = topicTicket\nmsg.cluster_service_uid = RED.util.procuuid\nreturn msg",
-        "outputs": 1,
+        "func": "\nconst JOBCTL_HOST = global.get(\"JOBCTL_HOST\")\nif (!JOBCTL_HOST) return [null,msg] \nconst JOBCTL_SERVICE_IP = JOBCTL_HOST.IP\nconst JOBCTL_SERVICE_HOST_HTTP_PORT = JOBCTL_HOST.HTTP_PORT\nconst actionType = env.get(\"actionType\")\n\nconst topicTicketPath = env.get(\"topicTicketPath\")\nconst topicTicket = encodeURIComponent(JSON.stringify(RED.util.getPropByPath(msg, topicTicketPath)))\n\nmsg.joburl = `http://${JOBCTL_SERVICE_IP}:${JOBCTL_SERVICE_HOST_HTTP_PORT}/${actionType}/${topicTicket}`\nmsg.topic = topicTicket\nmsg.cluster_service_uid = RED.util.procuuid\nreturn [msg,null]",
+        "outputs": 2,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
@@ -1684,7 +1664,8 @@
         "wires": [
             [
                 "fc01a190e21bcf85"
-            ]
+            ],
+            []
         ]
     },
     {
@@ -1717,7 +1698,7 @@
             }
         ],
         "x": 370,
-        "y": 80,
+        "y": 60,
         "wires": [
             [
                 "ab5c9b3893934684"
@@ -1736,7 +1717,7 @@
         "finalize": "",
         "libs": [],
         "x": 570,
-        "y": 80,
+        "y": 60,
         "wires": [
             [],
             []
@@ -1972,27 +1953,13 @@
         "type": "subflow:b3da594ab22fa515",
         "z": "131075747e8871f8",
         "name": "",
-        "x": 370,
-        "y": 80,
+        "x": 190,
+        "y": 160,
         "wires": [
             [],
             [
-                "f98af433e5369734"
+                "006e9d528f47ee98"
             ]
-        ]
-    },
-    {
-        "id": "f98af433e5369734",
-        "type": "subflow:f1b787faf67b8960",
-        "z": "131075747e8871f8",
-        "name": "",
-        "x": 560,
-        "y": 80,
-        "wires": [
-            [
-                "ca70b65374e24ae8"
-            ],
-            []
         ]
     },
     {
@@ -2000,11 +1967,11 @@
         "type": "subflow:7157de4597b60201",
         "z": "131075747e8871f8",
         "name": "",
-        "x": 200,
+        "x": 380,
         "y": 160,
         "wires": [
             [
-                "60ccecf9024cc129"
+                "8ce4bd9a62587338"
             ],
             []
         ]
@@ -2015,10 +1982,29 @@
         "z": "131075747e8871f8",
         "name": "",
         "x": 900,
-        "y": 80,
+        "y": 60,
         "wires": [
             [],
             []
+        ]
+    },
+    {
+        "id": "8ce4bd9a62587338",
+        "type": "function",
+        "z": "131075747e8871f8",
+        "name": "fillter topic",
+        "func": "const TARGET_TOPICS = (env.get(\"TOPICS\") || \"topic0,topic1,topic2\").split(',')\nconst TARGET_TOPICS_NO = global.get(\"TARGET_TOPICS_NO\") || 0\nconst topicName = TARGET_TOPICS[TARGET_TOPICS_NO]\nglobal.set(\"TARGET_TOPICS_NO\", (TARGET_TOPICS.length - 1 > TARGET_TOPICS_NO) ? TARGET_TOPICS_NO + 1 : 0)\n//const topic = { name: topicName, status: \"new\" }\nmsg = Object.assign(msg, { topic: topicName });\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 80,
+        "wires": [
+            [
+                "ca70b65374e24ae8"
+            ]
         ]
     },
     {
@@ -2100,263 +2086,10 @@
         ]
     },
     {
-        "id": "e4f436cc7dbe9cfd",
-        "type": "inject",
-        "z": "6399b4d8775a079a",
-        "name": "PINGREQ",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "test",
-        "payloadType": "str",
-        "x": 180,
-        "y": 240,
-        "wires": [
-            [
-                "86db81d4646a1b23"
-            ]
-        ]
-    },
-    {
-        "id": "8436d950506a6455",
-        "type": "switch",
-        "z": "6399b4d8775a079a",
-        "name": "",
-        "property": "payload.COMMAND",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "CONNECT",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "CONNACK",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "PINGREQ",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "PINGRESP",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "TOPIC",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 5,
-        "x": 550,
-        "y": 440,
-        "wires": [
-            [
-                "70fa88a3c6d0a19e"
-            ],
-            [
-                "7cccfcec40ecbf10"
-            ],
-            [
-                "ed74f720bc1d1a06"
-            ],
-            [
-                "45a4ad7677cb1357"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "2bbd39fa02b50886",
-        "type": "inject",
-        "z": "6399b4d8775a079a",
-        "name": "CONNECT",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "60",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "test",
-        "payloadType": "str",
-        "x": 190,
-        "y": 120,
-        "wires": [
-            [
-                "fda60e2d1718673e"
-            ]
-        ]
-    },
-    {
-        "id": "45a4ad7677cb1357",
-        "type": "debug",
-        "z": "6399b4d8775a079a",
-        "name": "PINGRESP WORKER",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 820,
-        "y": 420,
-        "wires": []
-    },
-    {
-        "id": "7cccfcec40ecbf10",
-        "type": "function",
-        "z": "6399b4d8775a079a",
-        "name": "CONNACK WORKER",
-        "func": "\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nif (msg.payload.CLUSTER_GROUP !== env.get('CLUSTER_GROUP')) return msg;\nconst JOBCTL_HOST = {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    CLUSTER_GROUP: msg.payload.CLUSTER_GROUP,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date(),\n    STATUS: 'live'\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 820,
-        "y": 340,
-        "wires": [
-            [
-                "b2f8be8bbe3568c3"
-            ]
-        ]
-    },
-    {
-        "id": "b2f8be8bbe3568c3",
-        "type": "debug",
-        "z": "6399b4d8775a079a",
-        "name": "debug 3",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1010,
-        "y": 340,
-        "wires": []
-    },
-    {
-        "id": "5ba8ddc5b2654cdb",
-        "type": "subflow:0cd70b49340abfe2",
-        "z": "6399b4d8775a079a",
-        "name": "",
-        "x": 200,
-        "y": 440,
-        "wires": [
-            [
-                "3e849b3e4757f5c7"
-            ]
-        ]
-    },
-    {
-        "id": "fda60e2d1718673e",
-        "type": "subflow:610d7761aec803a7",
-        "z": "6399b4d8775a079a",
-        "name": "SEND CONNECT",
-        "env": [
-            {
-                "name": "COMMAND",
-                "value": "CONNECT",
-                "type": "str"
-            }
-        ],
-        "x": 410,
-        "y": 120,
-        "wires": []
-    },
-    {
-        "id": "86db81d4646a1b23",
-        "type": "subflow:610d7761aec803a7",
-        "z": "6399b4d8775a079a",
-        "name": "SEND PINGREQ",
-        "env": [
-            {
-                "name": "COMMAND",
-                "value": "PINGREQ",
-                "type": "str"
-            }
-        ],
-        "x": 410,
-        "y": 240,
-        "wires": []
-    },
-    {
-        "id": "f2e62be0eb17e40b",
-        "type": "subflow:610d7761aec803a7",
-        "z": "6399b4d8775a079a",
-        "name": "SEND CONNACK",
-        "env": [
-            {
-                "name": "COMMAND",
-                "value": "CONNACK",
-                "type": "str"
-            },
-            {
-                "name": "BROADCAST",
-                "value": "false",
-                "type": "bool"
-            }
-        ],
-        "x": 1040,
-        "y": 300,
-        "wires": []
-    },
-    {
-        "id": "ed74f720bc1d1a06",
-        "type": "subflow:610d7761aec803a7",
-        "z": "6399b4d8775a079a",
-        "name": "SEND PINGRESP",
-        "env": [
-            {
-                "name": "COMMAND",
-                "value": "PINGRESP",
-                "type": "str"
-            },
-            {
-                "name": "BROADCAST",
-                "value": "false",
-                "type": "bool"
-            }
-        ],
-        "x": 820,
-        "y": 380,
-        "wires": []
-    },
-    {
         "id": "33bb87efab5d968d",
         "type": "debug",
         "z": "6399b4d8775a079a",
-        "name": "debug 4",
+        "name": "Success Add topic",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -2365,8 +2098,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 700,
-        "y": 680,
+        "x": 730,
+        "y": 640,
         "wires": []
     },
     {
@@ -2385,41 +2118,6 @@
         "wires": [
             [
                 "33ff37445fd71e22"
-            ]
-        ]
-    },
-    {
-        "id": "7b3627b6af144639",
-        "type": "subflow:610d7761aec803a7",
-        "z": "6399b4d8775a079a",
-        "name": "SEND TOPIC",
-        "env": [
-            {
-                "name": "COMMAND",
-                "value": "TOPIC",
-                "type": "str"
-            }
-        ],
-        "x": 1180,
-        "y": 800,
-        "wires": []
-    },
-    {
-        "id": "70fa88a3c6d0a19e",
-        "type": "function",
-        "z": "6399b4d8775a079a",
-        "name": "CONNECT WORKER ",
-        "func": "if (msg.payload.CLUSTER_ROLE !== \"worker\") return msg;\nif (msg.payload.CLUSTER_GROUP !== env.get('CLUSTER_GROUP')) return msg;\n\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\nconst fromip = `${msg.payload.CLUSTER_SERVICE_HOST}:${msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\"}`\nWORKER_HOSTS.set(fromip, {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    CLUSTER_GROUP: msg.payload.CLUSTER_GROUP,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date(),\n    STATUS: 'live'\n})\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 820,
-        "y": 300,
-        "wires": [
-            [
-                "f2e62be0eb17e40b"
             ]
         ]
     },
@@ -2489,7 +2187,7 @@
         "statusCode": "200",
         "headers": {},
         "x": 1280,
-        "y": 920,
+        "y": 900,
         "wires": []
     },
     {
@@ -2497,8 +2195,8 @@
         "type": "subflow:c826488602403262",
         "z": "6399b4d8775a079a",
         "name": "",
-        "x": 920,
-        "y": 920,
+        "x": 910,
+        "y": 900,
         "wires": [
             [
                 "fa378d358dbc8c4f"
@@ -2532,7 +2230,7 @@
             }
         ],
         "x": 560,
-        "y": 680,
+        "y": 640,
         "wires": [
             [
                 "33bb87efab5d968d"
@@ -2564,7 +2262,7 @@
         "finalize": "",
         "libs": [],
         "x": 1110,
-        "y": 920,
+        "y": 900,
         "wires": [
             [
                 "b781c8a3c7f1c961"
@@ -2659,9 +2357,7 @@
         "x": 1010,
         "y": 800,
         "wires": [
-            [
-                "7b3627b6af144639"
-            ]
+            []
         ]
     },
     {
@@ -2714,33 +2410,13 @@
         "wires": []
     },
     {
-        "id": "fe059a4a317c72a1",
-        "type": "comment",
-        "z": "6399b4d8775a079a",
-        "name": "clusterへの参加通知",
-        "info": "",
-        "x": 210,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "e9bd7603374eed88",
-        "type": "comment",
-        "z": "6399b4d8775a079a",
-        "name": "clusterへのPing",
-        "info": "",
-        "x": 200,
-        "y": 200,
-        "wires": []
-    },
-    {
         "id": "899f97df45f4539f",
         "type": "comment",
         "z": "6399b4d8775a079a",
-        "name": "cluster制御処理",
+        "name": "cluster参加処理",
         "info": "",
         "x": 200,
-        "y": 360,
+        "y": 180,
         "wires": []
     },
     {
@@ -2925,20 +2601,6 @@
         ]
     },
     {
-        "id": "3e849b3e4757f5c7",
-        "type": "subflow:b3da594ab22fa515",
-        "z": "6399b4d8775a079a",
-        "name": "",
-        "x": 390,
-        "y": 440,
-        "wires": [
-            [
-                "8436d950506a6455"
-            ],
-            []
-        ]
-    },
-    {
         "id": "e5354780b7eaedca",
         "type": "function",
         "z": "6399b4d8775a079a",
@@ -2949,8 +2611,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 680,
-        "y": 520,
+        "x": 640,
+        "y": 360,
         "wires": [
             [
                 "18bb4c3128c497d0"
@@ -2970,7 +2632,7 @@
         "onceDelay": "60",
         "topic": "",
         "x": 200,
-        "y": 520,
+        "y": 360,
         "wires": [
             [
                 "84175a1e2f8ce3b1"
@@ -2983,7 +2645,7 @@
         "z": "6399b4d8775a079a",
         "name": "",
         "x": 430,
-        "y": 520,
+        "y": 360,
         "wires": [
             [
                 "e5354780b7eaedca"
@@ -2996,8 +2658,8 @@
         "type": "function",
         "z": "6399b4d8775a079a",
         "name": "get worker",
-        "func": "try {\n    [msg.workerName, msg.worker] = RED.util.getWorkerInfo(msg.cluster_service_uid)\n\n} catch (error) {\n    node.error(\"get worker error message\", error);\n};\nreturn msg;\n",
-        "outputs": 1,
+        "func": "try {\n    [msg.workerName, msg.worker] = RED.util.getWorkerInfo(this,msg.cluster_service_uid)\n\n} catch (error) {\n    node.error(`get worker error ${error}`, error);\n};\nif (msg.workerName) return [msg,null];\nreturn [null, msg];\n",
+        "outputs": 2,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
@@ -3007,6 +2669,9 @@
         "wires": [
             [
                 "879ef2c221179d06"
+            ],
+            [
+                "b3b1347496e2aea7"
             ]
         ]
     },
@@ -3021,8 +2686,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 930,
-        "y": 520,
+        "x": 870,
+        "y": 360,
         "wires": [
             []
         ]
@@ -3068,86 +2733,210 @@
         ]
     },
     {
-        "id": "ba6177f394b19525",
-        "type": "inject",
-        "z": "4d4915ce082a1010",
-        "name": "PINGREQ",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "test",
-        "payloadType": "str",
-        "x": 200,
+        "id": "fb4ec2935b69f4cb",
+        "type": "http in",
+        "z": "6399b4d8775a079a",
+        "name": "CONNECT",
+        "url": "/CONNECT",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 180,
         "y": 240,
         "wires": [
             [
-                "09a5e77eb6a303a6"
+                "2c227746c1738f2a"
             ]
         ]
     },
     {
-        "id": "c191993956b88fde",
-        "type": "switch",
-        "z": "4d4915ce082a1010",
+        "id": "2c227746c1738f2a",
+        "type": "subflow:b3da594ab22fa515",
+        "z": "6399b4d8775a079a",
         "name": "",
-        "property": "payload.COMMAND",
-        "propertyType": "msg",
-        "rules": [
+        "x": 350,
+        "y": 240,
+        "wires": [
+            [
+                "8844d2d35f8f969c"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "8844d2d35f8f969c",
+        "type": "function",
+        "z": "6399b4d8775a079a",
+        "name": "CONNECT WORKER ",
+        "func": "msg.payload = JSON.parse(msg.payload);\n\nif (msg.payload.CLUSTER_ROLE !== \"worker\") return msg;\nif (msg.payload.CLUSTER_GROUP !== env.get('CLUSTER_GROUP')) return msg;\n\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map();\nconst fromip = `${msg.payload.CLUSTER_SERVICE_HOST}:${msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\"}`\nWORKER_HOSTS.set(fromip, {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    CLUSTER_GROUP: msg.payload.CLUSTER_GROUP,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date(),\n    STATUS: 'live'\n})\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 240,
+        "wires": [
+            [
+                "5c21c8789fee6991"
+            ]
+        ]
+    },
+    {
+        "id": "1e096f054982ddf5",
+        "type": "http response",
+        "z": "6399b4d8775a079a",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 960,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "5c21c8789fee6991",
+        "type": "function",
+        "z": "6399b4d8775a079a",
+        "name": "SEND COMMAND",
+        "func": "\nconst CLUSTER_SERVICE_HTTP_PORT = env.get(\"PORT\") || \"1880\"\nconst CLUSTER_SERVICE_UDP_PORT = env.get(\"UDPPORT\") || \"2880\"\n\nconst CLUSTER_GROUP = env.get(\"CLUSTER_GROUP\")\nconst CLUSTER_ROLE = env.get(\"CLUSTER_ROLE\")\n//const CLUSTER_SERVICE_HOST = env.get(\"KUBERNETES_SERVICE_HOST\")\nmsg.LocalAddress = RED.util.getLocalAddress().ipv4[0]\nconst CLUSTER_SERVICE_IP = msg.LocalAddress.address\nconst CLUSTER_SERVICE_HOST = env.get(\"HOSTNAME\") || CLUSTER_SERVICE_IP\nconst NODE_RED_VERSION = env.get(\"NODE_RED_VERSION\")\nconst COMMAND = env.get(\"COMMAND\")\n\nconst CLUSTER_SERVICE_UID = RED.util.procuuid\n\nmsg.payload = JSON.stringify({\n    \"COMMAND\": COMMAND,\n    \"CLUSTER_GROUP\": CLUSTER_GROUP,\n    \"CLUSTER_ROLE\": CLUSTER_ROLE,\n    \"CLUSTER_SERVICE_UID\": CLUSTER_SERVICE_UID,\n    \"CLUSTER_SERVICE_HOST\": CLUSTER_SERVICE_HOST,\n    \"CLUSTER_SERVICE_IP\": CLUSTER_SERVICE_IP,\n    \"CLUSTER_SERVICE_HTTP_PORT\": CLUSTER_SERVICE_HTTP_PORT,\n    \"CLUSTER_SERVICE_UDP_PORT\": CLUSTER_SERVICE_UDP_PORT,\n    \"NODE_RED_VERSION\": NODE_RED_VERSION,\n    \"PAYLOAD\": msg.payload\n})\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
             {
-                "t": "eq",
-                "v": "CONNECT",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "CONNACK",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "PINGREQ",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "PINGRESP",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "TOPIC",
-                "vt": "str"
+                "var": "os",
+                "module": "os"
             }
         ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 5,
-        "x": 550,
-        "y": 440,
+        "x": 790,
+        "y": 240,
         "wires": [
-            [],
             [
-                "b7aa3510c8a309cc"
+                "1e096f054982ddf5"
+            ]
+        ]
+    },
+    {
+        "id": "98aa1ba2f15cf6c3",
+        "type": "comment",
+        "z": "6399b4d8775a079a",
+        "name": "taskから新規topicを転送",
+        "info": "",
+        "x": 610,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "6cba37377e6ca17d",
+        "type": "http in",
+        "z": "6399b4d8775a079a",
+        "name": "HEARTBEAT",
+        "url": "/HEARTBEAT",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 300,
+        "wires": [
+            [
+                "fdb24df384a35a01"
+            ]
+        ]
+    },
+    {
+        "id": "fdb24df384a35a01",
+        "type": "subflow:b3da594ab22fa515",
+        "z": "6399b4d8775a079a",
+        "name": "",
+        "x": 350,
+        "y": 300,
+        "wires": [
+            [
+                "0de5c6eb7cc8aa43"
             ],
+            []
+        ]
+    },
+    {
+        "id": "b4efa3a843464b7a",
+        "type": "function",
+        "z": "6399b4d8775a079a",
+        "name": "PROC HEARTBEAT",
+        "func": "try {\n    [msg.workerName, msg.worker] = RED.util.getWorkerInfo(this, msg.cluster_service_uid)\n} catch (error) {\n    node.error(`get worker error ${error}`, error)\n};\n\nif (msg.workerName == null) return [null, msg]\nconst WORKER_HOSTS = global.get(\"WORKER_HOSTS\") || new Map()\nmsg.worker.STATUS_DATE = new Date()\nmsg.worker.STATUS = 'live'\nWORKER_HOSTS.set(msg.workerName, msg.worker)\nglobal.set(\"WORKER_HOSTS\", WORKER_HOSTS)\nreturn [msg, null]\n",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 300,
+        "wires": [
             [
-                "63e6f51c4506f688"
+                "c06eb6316c216ba4"
             ],
+            []
+        ]
+    },
+    {
+        "id": "291448c7e843c241",
+        "type": "http response",
+        "z": "6399b4d8775a079a",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 1160,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "c06eb6316c216ba4",
+        "type": "function",
+        "z": "6399b4d8775a079a",
+        "name": "PROC Response",
+        "func": "msg.payload = JSON.stringify({})\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "os",
+                "module": "os"
+            }
+        ],
+        "x": 990,
+        "y": 300,
+        "wires": [
             [
-                "550f471e1dcb7a01"
-            ],
+                "291448c7e843c241"
+            ]
+        ]
+    },
+    {
+        "id": "0de5c6eb7cc8aa43",
+        "type": "change",
+        "z": "6399b4d8775a079a",
+        "name": "set parameter",
+        "rules": [
+            {
+                "t": "set",
+                "p": "cluster_service_uid",
+                "pt": "msg",
+                "to": "req.headers.x-cluster_service_uid",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 540,
+        "y": 300,
+        "wires": [
             [
-                "c049efd53e4194c2"
+                "b4efa3a843464b7a"
             ]
         ]
     },
@@ -3168,221 +2957,252 @@
         "repeat": "60",
         "crontab": "",
         "once": true,
-        "onceDelay": 0.1,
+        "onceDelay": "1",
         "topic": "",
         "payload": "test",
         "payloadType": "str",
-        "x": 210,
-        "y": 120,
+        "x": 110,
+        "y": 80,
         "wires": [
             [
-                "3d78f19f4836cb18"
+                "7dce50426a1c2ecb"
             ]
         ]
-    },
-    {
-        "id": "550f471e1dcb7a01",
-        "type": "debug",
-        "z": "4d4915ce082a1010",
-        "name": "PINGRESP WORKER",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 800,
-        "y": 440,
-        "wires": []
-    },
-    {
-        "id": "b7aa3510c8a309cc",
-        "type": "function",
-        "z": "4d4915ce082a1010",
-        "name": "CONNACK WORKER",
-        "func": "\n\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nif (msg.payload.CLUSTER_GROUP !== env.get('CLUSTER_GROUP')) return msg;\nconst JOBCTL_HOST = {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    CLUSTER_GROUP: msg.payload.CLUSTER_GROUP,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date(),\n    STATUS: 'live'\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 800,
-        "y": 360,
-        "wires": [
-            [
-                "a4cdb0d6384e6688"
-            ]
-        ]
-    },
-    {
-        "id": "a4cdb0d6384e6688",
-        "type": "debug",
-        "z": "4d4915ce082a1010",
-        "name": "debug 24",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 990,
-        "y": 360,
-        "wires": []
-    },
-    {
-        "id": "322cdb3a3c6d4aaf",
-        "type": "subflow:0cd70b49340abfe2",
-        "z": "4d4915ce082a1010",
-        "name": "",
-        "x": 200,
-        "y": 440,
-        "wires": [
-            [
-                "ba2e5456cc40d96a"
-            ]
-        ]
-    },
-    {
-        "id": "3d78f19f4836cb18",
-        "type": "subflow:610d7761aec803a7",
-        "z": "4d4915ce082a1010",
-        "name": "SEND CONNECT",
-        "env": [
-            {
-                "name": "COMMAND",
-                "value": "CONNECT",
-                "type": "str"
-            }
-        ],
-        "x": 410,
-        "y": 120,
-        "wires": []
-    },
-    {
-        "id": "09a5e77eb6a303a6",
-        "type": "subflow:610d7761aec803a7",
-        "z": "4d4915ce082a1010",
-        "name": "SEND PINGREQ",
-        "env": [
-            {
-                "name": "COMMAND",
-                "value": "PINGREQ",
-                "type": "str"
-            }
-        ],
-        "x": 410,
-        "y": 240,
-        "wires": []
-    },
-    {
-        "id": "63e6f51c4506f688",
-        "type": "subflow:610d7761aec803a7",
-        "z": "4d4915ce082a1010",
-        "name": "SEND PINGRESP",
-        "env": [
-            {
-                "name": "COMMAND",
-                "value": "PINGRESP",
-                "type": "str"
-            },
-            {
-                "name": "BROADCAST",
-                "value": "false",
-                "type": "bool"
-            }
-        ],
-        "x": 790,
-        "y": 400,
-        "wires": []
-    },
-    {
-        "id": "c049efd53e4194c2",
-        "type": "subflow:b8cfb4b94405d94d",
-        "z": "4d4915ce082a1010",
-        "name": "",
-        "x": 790,
-        "y": 520,
-        "wires": [
-            [
-                "9106239501d3d8b7"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "a9cd9463431e06fe",
-        "type": "debug",
-        "z": "4d4915ce082a1010",
-        "name": "debug 25",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1140,
-        "y": 520,
-        "wires": []
     },
     {
         "id": "832ca1338123e685",
         "type": "comment",
         "z": "4d4915ce082a1010",
-        "name": "clusterへの参加通知",
+        "name": "clusterへの参加",
         "info": "",
-        "x": 210,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "3cd2328fbed73e5f",
-        "type": "comment",
-        "z": "4d4915ce082a1010",
-        "name": "clusterへのPing",
-        "info": "",
-        "x": 200,
+        "x": 480,
         "y": 200,
         "wires": []
     },
     {
-        "id": "09d7c8541ed4506b",
-        "type": "comment",
+        "id": "d7502b44e66c5bbc",
+        "type": "function",
         "z": "4d4915ce082a1010",
-        "name": "cluster制御処理",
-        "info": "",
-        "x": 200,
-        "y": 360,
-        "wires": []
-    },
-    {
-        "id": "9106239501d3d8b7",
-        "type": "subflow:1f63a3ba2a6337e6",
-        "z": "4d4915ce082a1010",
-        "name": "",
-        "x": 970,
-        "y": 520,
+        "name": "SEND COMMAND",
+        "func": "\nconst CLUSTER_SERVICE_HTTP_PORT = env.get(\"PORT\") || \"1880\"\n\nconst CLUSTER_GROUP = env.get(\"CLUSTER_GROUP\")\nconst CLUSTER_ROLE = env.get(\"CLUSTER_ROLE\")\n//const CLUSTER_SERVICE_HOST = env.get(\"KUBERNETES_SERVICE_HOST\")\nmsg.LocalAddress = RED.util.getLocalAddress().ipv4[0]\nconst CLUSTER_SERVICE_IP = msg.LocalAddress.address\nconst CLUSTER_SERVICE_HOST = env.get(\"HOSTNAME\") || CLUSTER_SERVICE_IP\nconst NODE_RED_VERSION = env.get(\"NODE_RED_VERSION\")\nconst COMMAND = env.get(\"COMMAND\")\n\nconst CLUSTER_SERVICE_UID = RED.util.procuuid\n\nmsg.payload = JSON.stringify({\n    \"COMMAND\": COMMAND,\n    \"CLUSTER_GROUP\": CLUSTER_GROUP,\n    \"CLUSTER_ROLE\": CLUSTER_ROLE,\n    \"CLUSTER_SERVICE_UID\": CLUSTER_SERVICE_UID,\n    \"CLUSTER_SERVICE_HOST\": CLUSTER_SERVICE_HOST,\n    \"CLUSTER_SERVICE_IP\": CLUSTER_SERVICE_IP,\n    \"CLUSTER_SERVICE_HTTP_PORT\": CLUSTER_SERVICE_HTTP_PORT,\n    \"NODE_RED_VERSION\": NODE_RED_VERSION,\n    \"PAYLOAD\": msg.payload\n})\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "os",
+                "module": "os"
+            }
+        ],
+        "x": 650,
+        "y": 260,
         "wires": [
             [
-                "a9cd9463431e06fe"
+                "037bbac4f152dc89"
             ]
         ]
     },
     {
-        "id": "ba2e5456cc40d96a",
-        "type": "subflow:b3da594ab22fa515",
+        "id": "037bbac4f152dc89",
+        "type": "http request",
         "z": "4d4915ce082a1010",
-        "name": "",
-        "x": 390,
-        "y": 440,
+        "name": "CONNECT",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "body",
+        "url": "{{{joburl}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "x-cluster_service_uid",
+                "valueType": "msg",
+                "valueValue": "cluster_service_uid"
+            }
+        ],
+        "x": 830,
+        "y": 260,
+        "wires": [
+            [
+                "735c659f87d1681c"
+            ]
+        ]
+    },
+    {
+        "id": "735c659f87d1681c",
+        "type": "function",
+        "z": "4d4915ce082a1010",
+        "name": "ADD JOBCTL_HOST",
+        "func": "if (!msg.payload) return [null, msg];\ntry {\n    msg.payload = JSON.parse(msg.payload);\n} catch (error) {\n    return [null, msg]\n}\n\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nif (msg.payload.CLUSTER_GROUP !== env.get('CLUSTER_GROUP')) return msg;\nconst JOBCTL_HOST = {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    CLUSTER_GROUP: msg.payload.CLUSTER_GROUP,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date(),\n    STATUS: 'live'\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn [msg, null]\n",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 260,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "d0e75f004f3cf6c3",
+        "type": "function",
+        "z": "4d4915ce082a1010",
+        "name": "has JOBCTL_HOST",
+        "func": "const JOBCTL_HOST = global.get(\"JOBCTL_HOST\")\nif (!JOBCTL_HOST) return [null, msg] \nreturn [msg,null]",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 140,
+        "wires": [
+            [
+                "076e59c3bd53281b"
+            ],
+            [
+                "f51a42a80aaef931"
+            ]
+        ]
+    },
+    {
+        "id": "c013b8682cbbd9ca",
+        "type": "comment",
+        "z": "4d4915ce082a1010",
+        "name": "生存確認",
+        "info": "",
+        "x": 680,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "88c4142b09dff4e5",
+        "type": "http request",
+        "z": "4d4915ce082a1010",
+        "name": "HEARTBEAT",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "{{{joburl}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "x-cluster_service_uid",
+                "valueType": "msg",
+                "valueValue": "cluster_service_uid"
+            }
+        ],
+        "x": 850,
+        "y": 80,
+        "wires": [
+            [
+                "aca4ee8b221fdf66"
+            ]
+        ]
+    },
+    {
+        "id": "f51a42a80aaef931",
+        "type": "function",
+        "z": "4d4915ce082a1010",
+        "name": "generate_url",
+        "func": "\nconst JOBCTL_SERVICE_NAME = env.get(\"JOBCTL_SERVICE_NAME\")\nconst JOBCTL_SERVICE_PORT = env.get(\"JOBCTL_SERVICE_PORT\")\n\nmsg.joburl = `http://${JOBCTL_SERVICE_NAME}:${JOBCTL_SERVICE_PORT}/CONNECT`\nmsg.cluster_service_uid = RED.util.procuuid\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 260,
+        "wires": [
+            [
+                "d7502b44e66c5bbc"
+            ]
+        ]
+    },
+    {
+        "id": "076e59c3bd53281b",
+        "type": "function",
+        "z": "4d4915ce082a1010",
+        "name": "generate_url",
+        "func": "const JOBCTL_HOST = global.get(\"JOBCTL_HOST\")\nif (!JOBCTL_HOST) return [null,msg] \nconst JOBCTL_SERVICE_IP = JOBCTL_HOST.IP\nconst JOBCTL_SERVICE_HOST_HTTP_PORT = JOBCTL_HOST.HTTP_PORT\n\nmsg.joburl = `http://${JOBCTL_SERVICE_IP}:${JOBCTL_SERVICE_HOST_HTTP_PORT}/HEARTBEAT`\n\nmsg.cluster_service_uid = RED.util.procuuid\nreturn [msg,null]",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 690,
+        "y": 80,
+        "wires": [
+            [
+                "88c4142b09dff4e5"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "aca4ee8b221fdf66",
+        "type": "function",
+        "z": "4d4915ce082a1010",
+        "name": "UPDATE",
+        "func": "if (msg.statusCode == \"200\") {\n    if (msg.payload) {\n        try {\n            msg.payload = JSON.parse(msg.payload)\n        } catch (error) {\n            return [null, msg]\n        }\n    }\n    return [msg, null]\n} else {\n    return [null, msg];\n}",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1000,
+        "y": 80,
         "wires": [
             [],
             [
-                "c191993956b88fde"
+                "d1f7a9a5ebc50bc4"
+            ]
+        ]
+    },
+    {
+        "id": "d1f7a9a5ebc50bc4",
+        "type": "function",
+        "z": "4d4915ce082a1010",
+        "name": "DELETE JOBCTL_HOST",
+        "func": "global.set(\"JOBCTL_HOST\", null)\nreturn [msg, null]\n",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1210,
+        "y": 120,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "7dce50426a1c2ecb",
+        "type": "subflow:b3da594ab22fa515",
+        "z": "4d4915ce082a1010",
+        "name": "",
+        "x": 270,
+        "y": 80,
+        "wires": [
+            [],
+            [
+                "d0e75f004f3cf6c3"
             ]
         ]
     },
@@ -3392,10 +3212,10 @@
         "z": "f01882c08732b397",
         "name": "get topic",
         "props": [],
-        "repeat": "30",
+        "repeat": "5",
         "crontab": "",
         "once": true,
-        "onceDelay": "30",
+        "onceDelay": "5",
         "topic": "",
         "x": 120,
         "y": 380,
@@ -3440,7 +3260,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "x": 140,
-        "y": 160,
+        "y": 200,
         "wires": [
             [
                 "e61870e6384df480"
@@ -3470,7 +3290,7 @@
             }
         ],
         "x": 760,
-        "y": 160,
+        "y": 200,
         "wires": [
             [
                 "938bc7c1342ffed9"
@@ -3482,16 +3302,17 @@
         "id": "938bc7c1342ffed9",
         "type": "debug",
         "z": "f01882c08732b397",
-        "name": "debug 14",
+        "name": "Success Add topic",
         "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "true",
+        "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 940,
-        "y": 160,
+        "x": 970,
+        "y": 200,
         "wires": []
     },
     {
@@ -3501,7 +3322,7 @@
         "name": "新規topicの登録",
         "info": "",
         "x": 120,
-        "y": 100,
+        "y": 160,
         "wires": []
     },
     {
@@ -3561,7 +3382,7 @@
         "finalize": "",
         "libs": [],
         "x": 440,
-        "y": 200,
+        "y": 240,
         "wires": [
             [
                 "980fc44b5f89e93e"
@@ -3591,7 +3412,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "x": 120,
-        "y": 200,
+        "y": 240,
         "wires": [
             [
                 "094e0dc9b2a447d1"
@@ -3611,7 +3432,7 @@
             }
         ],
         "x": 280,
-        "y": 200,
+        "y": 240,
         "wires": [
             [
                 "771e91fbd62fd669"
@@ -3630,7 +3451,7 @@
         "finalize": "",
         "libs": [],
         "x": 600,
-        "y": 200,
+        "y": 240,
         "wires": [
             [
                 "e61870e6384df480"
@@ -3672,11 +3493,12 @@
         "type": "subflow:4d4915ce082a1010",
         "z": "f01882c08732b397",
         "name": "",
-        "x": 90,
-        "y": 40,
+        "x": 320,
+        "y": 80,
         "wires": [
-            [],
-            [],
+            [
+                "32a99b940d7ff5c9"
+            ],
             []
         ]
     },
@@ -3693,6 +3515,62 @@
             ],
             [
                 "878a855ba718978e"
+            ]
+        ]
+    },
+    {
+        "id": "32a99b940d7ff5c9",
+        "type": "debug",
+        "z": "f01882c08732b397",
+        "name": "Success join",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "160bd311df57a325",
+        "type": "comment",
+        "z": "f01882c08732b397",
+        "name": "clusterへの参加",
+        "info": "",
+        "x": 120,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "7acd49dfb101f914",
+        "type": "inject",
+        "z": "f01882c08732b397",
+        "name": "CONNECT",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "test",
+        "payloadType": "str",
+        "x": 120,
+        "y": 80,
+        "wires": [
+            [
+                "91e95533dea37675"
             ]
         ]
     },
@@ -3714,7 +3592,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "x": 160,
-        "y": 360,
+        "y": 380,
         "wires": [
             [
                 "ef4c138a0cd71fa3"
@@ -3734,7 +3612,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 540,
-        "y": 400,
+        "y": 420,
         "wires": []
     },
     {
@@ -3755,7 +3633,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "x": 160,
-        "y": 400,
+        "y": 420,
         "wires": [
             [
                 "ef4c138a0cd71fa3"
@@ -3768,7 +3646,7 @@
         "z": "dbd8abb392121dc1",
         "name": "",
         "x": 380,
-        "y": 400,
+        "y": 420,
         "wires": [
             [
                 "c803403e1bccf5d2"
@@ -3782,117 +3660,7 @@
         "name": "新規topicの登録",
         "info": "",
         "x": 140,
-        "y": 320,
-        "wires": []
-    },
-    {
-        "id": "9678cde7abaf3dd8",
-        "type": "inject",
-        "z": "dbd8abb392121dc1",
-        "name": "PINGREQ",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "test",
-        "payloadType": "str",
-        "x": 140,
-        "y": 240,
-        "wires": [
-            [
-                "d364cfac46dd5e4e"
-            ]
-        ]
-    },
-    {
-        "id": "9e7ff7747022d92a",
-        "type": "inject",
-        "z": "dbd8abb392121dc1",
-        "name": "CONNECT",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "3600",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "test",
-        "payloadType": "str",
-        "x": 150,
-        "y": 120,
-        "wires": [
-            [
-                "c3a00fa09ca986c5"
-            ]
-        ]
-    },
-    {
-        "id": "c3a00fa09ca986c5",
-        "type": "subflow:610d7761aec803a7",
-        "z": "dbd8abb392121dc1",
-        "name": "SEND CONNECT",
-        "env": [
-            {
-                "name": "COMMAND",
-                "value": "CONNECT",
-                "type": "str"
-            }
-        ],
-        "x": 350,
-        "y": 120,
-        "wires": []
-    },
-    {
-        "id": "d364cfac46dd5e4e",
-        "type": "subflow:610d7761aec803a7",
-        "z": "dbd8abb392121dc1",
-        "name": "SEND PINGREQ",
-        "env": [
-            {
-                "name": "COMMAND",
-                "value": "PINGREQ",
-                "type": "str"
-            }
-        ],
-        "x": 350,
-        "y": 240,
-        "wires": []
-    },
-    {
-        "id": "dcb1d2a41ad64807",
-        "type": "comment",
-        "z": "dbd8abb392121dc1",
-        "name": "clusterへの参加通知",
-        "info": "",
-        "x": 150,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "9e16b278e2140666",
-        "type": "comment",
-        "z": "dbd8abb392121dc1",
-        "name": "clusterへのPing",
-        "info": "",
-        "x": 140,
-        "y": 200,
+        "y": 340,
         "wires": []
     },
     {
@@ -3904,8 +3672,6 @@
         "y": 40,
         "wires": [
             [],
-            [],
-            [],
             [
                 "5d96429efc574658"
             ]
@@ -3915,7 +3681,7 @@
         "id": "5d96429efc574658",
         "type": "debug",
         "z": "dbd8abb392121dc1",
-        "name": "debug 27",
+        "name": "Success assigned",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -3924,7 +3690,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 340,
+        "x": 370,
         "y": 60,
         "wires": []
     }
