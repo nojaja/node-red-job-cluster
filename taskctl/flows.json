@@ -117,12 +117,48 @@
                 ]
             }
         ],
-        "out": [],
+        "out": [
+            {
+                "x": 760,
+                "y": 40,
+                "wires": [
+                    {
+                        "id": "8b05743651ac39ce",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
         "env": [
             {
                 "name": "logLevel",
                 "type": "str",
-                "value": "info"
+                "value": "info",
+                "ui": {
+                    "type": "select",
+                    "opts": {
+                        "opts": [
+                            {
+                                "l": {
+                                    "ja": "info"
+                                },
+                                "v": "info"
+                            },
+                            {
+                                "l": {
+                                    "ja": "warn"
+                                },
+                                "v": "warn"
+                            },
+                            {
+                                "l": {
+                                    "ja": "error"
+                                },
+                                "v": "error"
+                            }
+                        ]
+                    }
+                }
             },
             {
                 "name": "logName",
@@ -372,8 +408,8 @@
         "type": "function",
         "z": "cd185f8f533e0f2d",
         "name": "logger_proc",
-        "func": "//const uid_key = env.get(\"logUID_Key\")\n//const uid = msg[uid_key] || msg._msgid\nconst date = new Date()\nconst uid = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate() + 1)).slice(-2)\n\nconst logLevel = env.get(\"logLevel\")\nconst logName = env.get(\"logName\")\nconst logPath = env.get(\"logPath\")\nconst filename = `${logName}${logLevel}.log`\nmsg.logFilePath = path.join(logPath, uid, filename)\n\nconst outputMsgObject = env.get(\"outputMsgObject\")\nif (outputMsgObject) {\n    msg.payload = JSON.stringify(msg);\n    msg.consoleout = msg\n} else {\n    msg.consoleout = msg.payload\n}\n\nreturn msg;",
-        "outputs": 1,
+        "func": "//const uid_key = env.get(\"logUID_Key\")\n//const uid = msg[uid_key] || msg._msgid\nconst date = new Date()\nconst uid = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate() + 1)).slice(-2)\n\nconst logLevel = env.get(\"logLevel\")\nconst logName = env.get(\"logName\")\nconst logPath = env.get(\"logPath\")\nconst filename = `${logName}${logLevel}.log`\nmsg.logFilePath = path.join(logPath, uid, filename)\n\nconst outputMsgObject = env.get(\"outputMsgObject\")\nconst msg2 = RED.util.cloneMessage(msg)\nif (outputMsgObject) {\n    msg2.payload = JSON.stringify(msg);\n}\n//node.name = logName\n//if (logLevel == \"info\") node.warn(msg.consoleout)\n//if (logLevel == \"warn\") node.warn(msg.consoleout)\n//if (logLevel == \"error\") node.error(msg.consoleout)\nreturn [msg,msg2];",
+        "outputs": 2,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
@@ -386,6 +422,7 @@
         "x": 570,
         "y": 60,
         "wires": [
+            [],
             [
                 "5dfac259ecc0927f",
                 "7e0a41b86051ec87"
@@ -404,7 +441,7 @@
         "overwriteFile": "false",
         "encoding": "none",
         "x": 790,
-        "y": 40,
+        "y": 120,
         "wires": [
             []
         ]
@@ -418,12 +455,12 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "consoleout",
+        "complete": "payload",
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
         "x": 810,
-        "y": 100,
+        "y": 160,
         "wires": []
     },
     {
@@ -674,9 +711,13 @@
         "type": "subflow:cd185f8f533e0f2d",
         "z": "df2ab3479f1af30a",
         "name": "",
-        "x": 550,
-        "y": 80,
-        "wires": []
+        "x": 750,
+        "y": 100,
+        "wires": [
+            [
+                "3532a4502f4685c9"
+            ]
+        ]
     },
     {
         "id": "6776d12a2ebbf75c",
@@ -685,7 +726,11 @@
         "name": "",
         "x": 750,
         "y": 180,
-        "wires": []
+        "wires": [
+            [
+                "3532a4502f4685c9"
+            ]
+        ]
     },
     {
         "id": "746d5d124bfb973e",
@@ -699,8 +744,29 @@
                 "type": "bool"
             }
         ],
-        "x": 770,
+        "x": 750,
         "y": 280,
+        "wires": [
+            [
+                "3532a4502f4685c9"
+            ]
+        ]
+    },
+    {
+        "id": "3532a4502f4685c9",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 200,
         "wires": []
     }
 ]
