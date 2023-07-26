@@ -131,8 +131,8 @@
             },
             {
                 "name": "logPath",
-                "type": "str",
-                "value": "/workspace/logs/"
+                "type": "env",
+                "value": "LOGPATH"
             },
             {
                 "name": "removeColor",
