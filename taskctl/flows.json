@@ -263,6 +263,83 @@
         "icon": "node-red/arrow-in.svg"
     },
     {
+        "id": "45018afdb676ae24",
+        "type": "subflow",
+        "name": "job-execute",
+        "info": "",
+        "category": "job",
+        "in": [
+            {
+                "x": 60,
+                "y": 100,
+                "wires": [
+                    {
+                        "id": "a9fa9c32d27f7f10"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 700,
+                "y": 320,
+                "wires": [
+                    {
+                        "id": "194d7930b95721c2",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 820,
+                "y": 120,
+                "wires": [
+                    {
+                        "id": "b861d902d0337a8d",
+                        "port": 1
+                    }
+                ]
+            }
+        ],
+        "env": [
+            {
+                "name": "actionType",
+                "type": "str",
+                "value": "exec"
+            },
+            {
+                "name": "callback_endpoint",
+                "type": "str",
+                "value": "/callback/:topic/:uuid",
+                "ui": {
+                    "type": "hide"
+                }
+            },
+            {
+                "name": "endpointport",
+                "type": "str",
+                "value": "1880"
+            },
+            {
+                "name": "topicTicket_key",
+                "type": "str",
+                "value": "topicTicket"
+            }
+        ],
+        "meta": {
+            "module": "node-red-contrib-job-cluster-rpc-async",
+            "type": "job-cluster-rpc-async",
+            "version": "0.0.1",
+            "license": "MIT"
+        },
+        "color": "#A6BBCF",
+        "outputLabels": [
+            "OK",
+            "NG"
+        ],
+        "icon": "node-red/link-out.svg"
+    },
+    {
         "id": "1f64b61d5f2b2af5",
         "type": "http in",
         "z": "56d4506243eb3bc8",
@@ -580,6 +657,175 @@
         ]
     },
     {
+        "id": "fe5cdfa3977befd1",
+        "type": "http in",
+        "z": "45018afdb676ae24",
+        "name": "endpoint",
+        "url": "${callback_endpoint}",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 140,
+        "y": 220,
+        "wires": [
+            [
+                "194d7930b95721c2"
+            ]
+        ]
+    },
+    {
+        "id": "194d7930b95721c2",
+        "type": "change",
+        "z": "45018afdb676ae24",
+        "name": "set parameter",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "req.params.topic",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "uuid",
+                "pt": "msg",
+                "to": "req.params.uuid",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 360,
+        "y": 220,
+        "wires": [
+            [
+                "0b6095c8f7667216"
+            ]
+        ]
+    },
+    {
+        "id": "410889c1e32a785c",
+        "type": "http response",
+        "z": "45018afdb676ae24",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 820,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "a9fa9c32d27f7f10",
+        "type": "function",
+        "z": "45018afdb676ae24",
+        "name": "generate_url",
+        "func": "\nconst port = env.get(\"PORT\")\nconst endpointport = env.get(\"endpointport\")\n\nconst action = env.get(\"actionType\")\n\n//RED.util.getPropByPath(msg, topicPath)\nconst topicTicket_key = env.get(\"topicTicket_key\")\nconst topicTicket = msg[topicTicket_key]\n\nconst data = JSON.stringify(topicTicket)\nmsg.callbackurl = `http://localhost:${port}/callback/${topicTicket.topic}/${topicTicket.uuid}`\nmsg.joburl = `http://localhost:${endpointport}/${action}/${data}`\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 250,
+        "y": 100,
+        "wires": [
+            [
+                "7479f711071af9bc"
+            ]
+        ]
+    },
+    {
+        "id": "7479f711071af9bc",
+        "type": "http request",
+        "z": "45018afdb676ae24",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "{{{joburl}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "x-callback",
+                "valueType": "msg",
+                "valueValue": "callbackurl"
+            }
+        ],
+        "x": 430,
+        "y": 100,
+        "wires": [
+            [
+                "b861d902d0337a8d",
+                "cb4d21ee1baee701"
+            ]
+        ]
+    },
+    {
+        "id": "0b6095c8f7667216",
+        "type": "function",
+        "z": "45018afdb676ae24",
+        "name": "Response-Page",
+        "func": "msg.payload = {\n    \"HOSTNAME\": env.get(\"HOSTNAME\"),\n    \"NODE_RED_VERSION\": env.get(\"NODE_RED_VERSION\"),\n    \"topic\": msg.topic,\n    \"uuid\": msg.uuid\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 220,
+        "wires": [
+            [
+                "410889c1e32a785c"
+            ]
+        ]
+    },
+    {
+        "id": "b861d902d0337a8d",
+        "type": "function",
+        "z": "45018afdb676ae24",
+        "name": "function 1",
+        "func": "if (msg.statusCode == \"200\") {\n    if (msg.payload) {\n        try {\n            msg.payload = JSON.parse(msg.payload)\n        } catch (error) {\n        }\n    }\n    return [msg, null]\n} else {\n\n}\n\nreturn [null, msg];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 100,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "cb4d21ee1baee701",
+        "type": "job-cluster-logger",
+        "z": "45018afdb676ae24",
+        "name": "",
+        "logLevel": "info",
+        "logName": "system",
+        "logPath": {
+            "type": "env",
+            "value": "LOGPATH"
+        },
+        "removeColor": true,
+        "outputMsgObject": false,
+        "x": 650,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "0d530480be6a63b9",
         "type": "inject",
         "z": "df2ab3479f1af30a",
@@ -601,7 +847,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 140,
-        "y": 100,
+        "y": 180,
         "wires": [
             [
                 "d46c41bb4e879473"
@@ -621,7 +867,7 @@
         "oldrc": false,
         "name": "sample",
         "x": 360,
-        "y": 100,
+        "y": 180,
         "wires": [
             [
                 "b4b4337bfcc87233"
@@ -638,7 +884,7 @@
         "z": "df2ab3479f1af30a",
         "name": "",
         "x": 140,
-        "y": 180,
+        "y": 260,
         "wires": [
             [
                 "d46c41bb4e879473"
@@ -658,7 +904,7 @@
             }
         ],
         "x": 580,
-        "y": 180,
+        "y": 260,
         "wires": [
             [
                 "6776d12a2ebbf75c"
@@ -683,7 +929,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "x": 180,
-        "y": 280,
+        "y": 360,
         "wires": [
             [
                 "626247b18fb2289b"
@@ -696,7 +942,7 @@
         "z": "df2ab3479f1af30a",
         "name": "",
         "x": 520,
-        "y": 280,
+        "y": 360,
         "wires": [
             [
                 "746d5d124bfb973e"
@@ -712,7 +958,7 @@
         "z": "df2ab3479f1af30a",
         "name": "",
         "x": 750,
-        "y": 100,
+        "y": 180,
         "wires": [
             [
                 "3532a4502f4685c9"
@@ -725,7 +971,7 @@
         "z": "df2ab3479f1af30a",
         "name": "",
         "x": 750,
-        "y": 180,
+        "y": 260,
         "wires": [
             [
                 "3532a4502f4685c9"
@@ -745,7 +991,7 @@
             }
         ],
         "x": 750,
-        "y": 280,
+        "y": 360,
         "wires": [
             [
                 "3532a4502f4685c9"
@@ -766,7 +1012,67 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 980,
-        "y": 200,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "81fdb8dcd847065f",
+        "type": "subflow:45018afdb676ae24",
+        "z": "df2ab3479f1af30a",
+        "name": "",
+        "x": 350,
+        "y": 80,
+        "wires": [
+            [
+                "2fc79c975fef23fe"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "cc40cdb88793ad37",
+        "type": "inject",
+        "z": "df2ab3479f1af30a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topicTicket",
+                "v": "{     \"topic\": \"topic1\",     \"param\": {},     \"uuid\": \"1\",     \"status\": \"in-progress\",     \"workerName\": \"localhost\" }",
+                "vt": "json"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 80,
+        "wires": [
+            [
+                "81fdb8dcd847065f"
+            ]
+        ]
+    },
+    {
+        "id": "2fc79c975fef23fe",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 60,
         "wires": []
     }
 ]
