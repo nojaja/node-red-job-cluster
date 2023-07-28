@@ -299,6 +299,16 @@
                         "port": 1
                     }
                 ]
+            },
+            {
+                "x": 800,
+                "y": 60,
+                "wires": [
+                    {
+                        "id": "b861d902d0337a8d",
+                        "port": 0
+                    }
+                ]
             }
         ],
         "env": [
@@ -338,6 +348,101 @@
             "NG"
         ],
         "icon": "node-red/link-out.svg"
+    },
+    {
+        "id": "2af088b891412a7f",
+        "type": "subflow",
+        "name": "split-array",
+        "info": "",
+        "category": "sequence",
+        "in": [
+            {
+                "x": 60,
+                "y": 40,
+                "wires": [
+                    {
+                        "id": "65773947d3956d31"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 360,
+                "y": 40,
+                "wires": [
+                    {
+                        "id": "65773947d3956d31",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [
+            {
+                "name": "inputArrayPath",
+                "type": "str",
+                "value": "payload.list"
+            },
+            {
+                "name": "outputPath",
+                "type": "str",
+                "value": "topicTicket.param.target"
+            }
+        ],
+        "meta": {
+            "module": "node-red-contrib-job-cluster-split-array",
+            "type": "job-cluster-split-array",
+            "version": "0.0.1",
+            "license": "MIT"
+        },
+        "color": "#E2D96E",
+        "icon": "node-red/split.svg"
+    },
+    {
+        "id": "28b838dd0d60646d",
+        "type": "subflow",
+        "name": "set-jobsession",
+        "info": "",
+        "category": "job",
+        "in": [
+            {
+                "x": 60,
+                "y": 40,
+                "wires": [
+                    {
+                        "id": "7020fe11546b61c6"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 320,
+                "y": 40,
+                "wires": [
+                    {
+                        "id": "7020fe11546b61c6",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [
+            {
+                "name": "jobsessionPath",
+                "type": "str",
+                "value": "topicTicket.param.jobsession"
+            }
+        ],
+        "meta": {
+            "module": "node-red-contrib-job-cluster-set-jobsession",
+            "type": "job-cluster-set-jobsession",
+            "version": "0.0.1",
+            "license": "MIT"
+        },
+        "color": "#DDAA99",
+        "icon": "font-awesome/fa-bolt"
     },
     {
         "id": "1f64b61d5f2b2af5",
@@ -723,7 +828,7 @@
         "type": "function",
         "z": "45018afdb676ae24",
         "name": "generate_url",
-        "func": "\nconst port = env.get(\"PORT\")\nconst endpointport = env.get(\"endpointport\")\n\nconst action = env.get(\"actionType\")\n\n//RED.util.getPropByPath(msg, topicPath)\nconst topicTicket_key = env.get(\"topicTicket_key\")\nconst topicTicket = msg[topicTicket_key]\n\nconst data = JSON.stringify(topicTicket)\nmsg.callbackurl = `http://localhost:${port}/callback/${topicTicket.topic}/${topicTicket.uuid}`\nmsg.joburl = `http://localhost:${endpointport}/${action}/${data}`\nreturn msg;\n",
+        "func": "const port = env.get(\"PORT\")\nconst endpointport = env.get(\"endpointport\")\n\nconst action = env.get(\"actionType\")\n\n//RED.util.getPropByPath(msg, topicPath)\nconst topicTicket_key = env.get(\"topicTicket_key\")\nconst topicTicket = RED.util.getPropByPath(msg, topicTicket_key)//{topic: \"\",param: { }}\nconst data = encodeURIComponent(JSON.stringify(topicTicket))\nmsg.callbackurl = `http://localhost:${port}/callback/${topicTicket.topic}/${topicTicket.uuid}`\nmsg.joburl = `http://localhost:${endpointport}/${action}/${data}`\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -820,6 +925,40 @@
         "removeColor": true,
         "outputMsgObject": false,
         "x": 650,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "65773947d3956d31",
+        "type": "function",
+        "z": "2af088b891412a7f",
+        "name": "split-array",
+        "func": "const inputArrayPath = env.get(\"inputArrayPath\") //ex.msg.payload.topic \nconst list = RED.util.getPropByPath(msg, inputArrayPath)//{topic: \"\",param: { }}\nconst outputPath = env.get(\"outputPath\") //ex.msg.payload.topic \n\nfor (const key in list) {\n    const retmsg = RED.util.setPropByPath(msg, outputPath, list[key])\n    node.send(retmsg);\n}\n\n//node.done();\nreturn;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 200,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7020fe11546b61c6",
+        "type": "function",
+        "z": "28b838dd0d60646d",
+        "name": "set-jobsession",
+        "func": "const date = new Date()\nconst jobsession = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate() + 1)).slice(-2)\nconst jobsessionPath = env.get(\"jobsessionPath\") //ex.msg.payload.topic \nreturn RED.util.setPropByPath(msg, jobsessionPath, jobsession)\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 200,
         "y": 40,
         "wires": [
             []
@@ -1026,6 +1165,7 @@
             [
                 "2fc79c975fef23fe"
             ],
+            [],
             []
         ]
     },
