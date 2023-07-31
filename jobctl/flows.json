@@ -345,6 +345,10 @@
                     {
                         "id": "a72d2803344a446d",
                         "port": 1
+                    },
+                    {
+                        "id": "7ef01344844389b8",
+                        "port": 0
                     }
                 ]
             }
@@ -1091,7 +1095,12 @@
             {
                 "name": "WORKER_EXPIRY",
                 "type": "num",
-                "value": "5"
+                "value": "5",
+                "ui": {
+                    "label": {
+                        "ja": "有効期限(min)"
+                    }
+                }
             }
         ],
         "meta": {
@@ -1720,6 +1729,40 @@
         "y": 60,
         "wires": [
             [],
+            []
+        ]
+    },
+    {
+        "id": "dfe10eebe66029fe",
+        "type": "catch",
+        "z": "375ee1d6cf6e3891",
+        "name": "",
+        "scope": [
+            "fc01a190e21bcf85"
+        ],
+        "uncaught": false,
+        "x": 390,
+        "y": 160,
+        "wires": [
+            [
+                "7ef01344844389b8"
+            ]
+        ]
+    },
+    {
+        "id": "7ef01344844389b8",
+        "type": "function",
+        "z": "375ee1d6cf6e3891",
+        "name": "function 3",
+        "func": "global.set(\"JOBCTL_HOST\", null)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 160,
+        "wires": [
             []
         ]
     },
@@ -3249,7 +3292,7 @@
         "name": "Sample Topic1",
         "props": [
             {
-                "p": "payload.topic",
+                "p": "topicTicket",
                 "v": "{\t    \"topic\" : \"topic1\",\t    \"param\": {\t        \"hoge\": \"new\",\t        \"jobsession\": $millis()\t        }\t}\t",
                 "vt": "jsonata"
             }
@@ -3279,11 +3322,6 @@
                 "type": "str"
             },
             {
-                "name": "topicTicketPath",
-                "value": "payload.topic",
-                "type": "str"
-            },
-            {
                 "name": "topicPath",
                 "value": "payload.topic",
                 "type": "str"
@@ -3295,7 +3333,9 @@
             [
                 "938bc7c1342ffed9"
             ],
-            []
+            [
+                "ce7a61e15262697c"
+            ]
         ]
     },
     {
@@ -3375,7 +3415,7 @@
         "type": "function",
         "z": "f01882c08732b397",
         "name": "set-jobsession",
-        "func": "\nconst date = new Date()\nconst jobsession = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate() + 1)).slice(-2)\n\nmsg.payload.topic.param.jobsession = jobsession\n\nreturn msg",
+        "func": "\nconst date = new Date()\nconst jobsession = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate() + 1)).slice(-2)\n\nmsg.topicTicket.param.jobsession = jobsession\n\nreturn msg",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -3396,7 +3436,7 @@
         "name": "git Topic",
         "props": [
             {
-                "p": "payload.topicName",
+                "p": "topicName",
                 "v": "git",
                 "vt": "str"
             },
@@ -3427,7 +3467,7 @@
         "env": [
             {
                 "name": "outputPath",
-                "value": "payload.topic.param.target",
+                "value": "topicTicket.param.target",
                 "type": "str"
             }
         ],
@@ -3444,7 +3484,7 @@
         "type": "function",
         "z": "f01882c08732b397",
         "name": "set-topic",
-        "func": "const topic = msg.payload.topicName\nmsg.payload.topic.topic = topic\nreturn msg",
+        "func": "const topic = msg.topicName\nmsg.topicTicket.topic = topic\nreturn msg",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -3573,6 +3613,22 @@
                 "91e95533dea37675"
             ]
         ]
+    },
+    {
+        "id": "ce7a61e15262697c",
+        "type": "debug",
+        "z": "f01882c08732b397",
+        "name": "debug 23",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 240,
+        "wires": []
     },
     {
         "id": "f95507e7d1cc63f1",
