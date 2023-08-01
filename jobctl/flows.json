@@ -1162,6 +1162,40 @@
         "icon": "font-awesome/fa-bolt"
     },
     {
+        "id": "2d6a615a0f89e919",
+        "type": "subflow",
+        "name": "set-jobsession",
+        "info": "",
+        "category": "Topic Control",
+        "in": [
+            {
+                "x": 40,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "771e91fbd62fd669"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 360,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "771e91fbd62fd669",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#DEB887",
+        "icon": "font-awesome/fa-plus-circle"
+    },
+    {
         "id": "8b05743651ac39ce",
         "type": "function",
         "z": "cd185f8f533e0f2d",
@@ -3250,6 +3284,23 @@
         ]
     },
     {
+        "id": "771e91fbd62fd669",
+        "type": "function",
+        "z": "2d6a615a0f89e919",
+        "name": "set-jobsession",
+        "func": "\nconst date = new Date()\nconst jobsession = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate())).slice(-2)\n\nmsg.topicTicket.param.jobsession = jobsession\n\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 200,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "e4e20228d978a35d",
         "type": "inject",
         "z": "f01882c08732b397",
@@ -3261,7 +3312,7 @@
         "onceDelay": "5",
         "topic": "",
         "x": 120,
-        "y": 380,
+        "y": 460,
         "wires": [
             [
                 "30529b79c02a394f"
@@ -3282,7 +3333,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 900,
-        "y": 360,
+        "y": 440,
         "wires": []
     },
     {
@@ -3306,7 +3357,7 @@
         "y": 200,
         "wires": [
             [
-                "e61870e6384df480"
+                "0b735aab2b4ad0d9"
             ]
         ]
     },
@@ -3372,7 +3423,7 @@
         "name": "topicを取得して着手",
         "info": "",
         "x": 130,
-        "y": 320,
+        "y": 400,
         "wires": []
     },
     {
@@ -3382,7 +3433,7 @@
         "name": "topicを完了",
         "info": "",
         "x": 710,
-        "y": 300,
+        "y": 380,
         "wires": []
     },
     {
@@ -3403,29 +3454,10 @@
         "allowrate": false,
         "outputs": 1,
         "x": 500,
-        "y": 520,
+        "y": 600,
         "wires": [
             [
                 "af841315d383f29b"
-            ]
-        ]
-    },
-    {
-        "id": "771e91fbd62fd669",
-        "type": "function",
-        "z": "f01882c08732b397",
-        "name": "set-jobsession",
-        "func": "\nconst date = new Date()\nconst jobsession = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate() + 1)).slice(-2)\n\nmsg.topicTicket.param.jobsession = jobsession\n\nreturn msg",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 440,
-        "y": 240,
-        "wires": [
-            [
-                "980fc44b5f89e93e"
             ]
         ]
     },
@@ -3475,7 +3507,7 @@
         "y": 240,
         "wires": [
             [
-                "771e91fbd62fd669"
+                "d9ac84b3b8313504"
             ]
         ]
     },
@@ -3504,7 +3536,7 @@
         "z": "f01882c08732b397",
         "name": "",
         "x": 310,
-        "y": 380,
+        "y": 460,
         "wires": [
             [
                 "af841315d383f29b"
@@ -3518,7 +3550,7 @@
         "z": "f01882c08732b397",
         "name": "",
         "x": 710,
-        "y": 360,
+        "y": 440,
         "wires": [
             [
                 "88fda1c4f25cba11"
@@ -3548,7 +3580,7 @@
         "z": "f01882c08732b397",
         "name": "task exec",
         "x": 520,
-        "y": 380,
+        "y": 460,
         "wires": [
             [
                 "ebc7c08433e303bb"
@@ -3629,6 +3661,109 @@
         "x": 940,
         "y": 240,
         "wires": []
+    },
+    {
+        "id": "29b00c4fd66f0c87",
+        "type": "inject",
+        "z": "f01882c08732b397",
+        "name": "git Topic",
+        "props": [
+            {
+                "p": "topicName",
+                "v": "git",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 120,
+        "y": 280,
+        "wires": [
+            [
+                "81529646389f940b"
+            ]
+        ]
+    },
+    {
+        "id": "81529646389f940b",
+        "type": "file in",
+        "z": "f01882c08732b397",
+        "name": "read target",
+        "filename": "/workspace/target.txt",
+        "filenameType": "str",
+        "format": "lines",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 270,
+        "y": 280,
+        "wires": [
+            [
+                "eed827c2cffde494"
+            ]
+        ]
+    },
+    {
+        "id": "d9ac84b3b8313504",
+        "type": "subflow:2d6a615a0f89e919",
+        "z": "f01882c08732b397",
+        "name": "",
+        "x": 440,
+        "y": 240,
+        "wires": [
+            [
+                "980fc44b5f89e93e"
+            ]
+        ]
+    },
+    {
+        "id": "0b735aab2b4ad0d9",
+        "type": "subflow:2d6a615a0f89e919",
+        "z": "f01882c08732b397",
+        "name": "",
+        "x": 440,
+        "y": 200,
+        "wires": [
+            [
+                "e61870e6384df480"
+            ]
+        ]
+    },
+    {
+        "id": "eed827c2cffde494",
+        "type": "subflow:2d6a615a0f89e919",
+        "z": "f01882c08732b397",
+        "name": "",
+        "x": 440,
+        "y": 280,
+        "wires": [
+            [
+                "1dcaf26e648cddba"
+            ]
+        ]
+    },
+    {
+        "id": "1dcaf26e648cddba",
+        "type": "function",
+        "z": "f01882c08732b397",
+        "name": "set-topic",
+        "func": "const target = msg.target\nconst topic = msg.topicName\nmsg.topicTicket.topic = topic\nmsg.topicTicket.param.target = target\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 280,
+        "wires": [
+            [
+                "e61870e6384df480"
+            ]
+        ]
     },
     {
         "id": "f95507e7d1cc63f1",
