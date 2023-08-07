@@ -23,16 +23,27 @@
         "category": "",
         "in": [
             {
-                "x": 50,
-                "y": 30,
+                "x": 60,
+                "y": 40,
                 "wires": [
                     {
-                        "id": "8b05743651ac39ce"
+                        "id": "042f911e82caee52"
                     }
                 ]
             }
         ],
-        "out": [],
+        "out": [
+            {
+                "x": 720,
+                "y": 20,
+                "wires": [
+                    {
+                        "id": "8b05743651ac39ce",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
         "env": [
             {
                 "name": "logLevel",
@@ -48,6 +59,16 @@
                 "name": "logPath",
                 "type": "env",
                 "value": "LOGPATH"
+            },
+            {
+                "name": "removeColor",
+                "type": "bool",
+                "value": "true"
+            },
+            {
+                "name": "outputMsgObject",
+                "type": "bool",
+                "value": "false"
             }
         ],
         "meta": {
@@ -63,7 +84,7 @@
         "id": "27227cef106a74f0",
         "type": "subflow",
         "name": "topic add endpoint",
-        "info": "",
+        "info": "# topic add endpoint\r\ntask execなどローカル内での呼び出しに利用\r\n\r\n## env\r\nactionType:   \r\nendpoint: /${actionType}/:topic\r\n\r\n\r\n\r\n## Receive Request\r\nGET  \r\n`/${actionType}/:topic`  \r\n\r\n## Receive Request header\r\n\r\n\r\n## Receive Response\r\nJSON形式\r\nmsg.topic = JSON.parse(msg.topic)",
         "category": "",
         "in": [],
         "out": [
@@ -106,7 +127,7 @@
         "id": "45018afdb676ae24",
         "type": "subflow",
         "name": "rpc-async",
-        "info": "",
+        "info": "# rpc-async\r\ntask execなどローカル内での呼び出しに利用\r\n\r\n## env\r\nactionType:   \r\ncallback_endpoint: /callback/:topic/:uuid  \r\nendpointport: 呼び出し先のポートを定義  \r\ntopicTicket_key:   \r\nport: 自分のポートを定義 env.get(\"PORT\") にて取得  \r\n\r\n## Send Request\r\nGET  \r\n`http://localhost:${endpointport}/${action}/${data}`  \r\n\r\n## Send Request header\r\nx-callback:  \r\n```\r\nhttp://localhost:${port}/callback/${topicTicket.topic}/${topicTicket.uuid}\r\n```\r\n\r\n## Send Response\r\nJSON形式\r\n\r\n\r\n## Receive Request\r\nGET  \r\n`http://localhost:${port}/callback/${topic}/${uuid}`  \r\n\r\n## Receive Request header\r\n\r\n\r\n## Receive Response\r\nJSON形式\r\n{\r\n    \"HOSTNAME\": env.get(\"HOSTNAME\"),\r\n    \"NODE_RED_VERSION\": env.get(\"NODE_RED_VERSION\"),\r\n    \"topic\": msg.topic,\r\n    \"uuid\": msg.uuid\r\n}\r\n",
         "category": "",
         "in": [
             {
@@ -180,80 +201,6 @@
         "icon": "node-red/link-out.svg"
     },
     {
-        "id": "0cd70b49340abfe2",
-        "type": "subflow",
-        "name": "cluster-endpoint",
-        "info": "",
-        "category": "",
-        "in": [],
-        "out": [
-            {
-                "x": 540,
-                "y": 80,
-                "wires": [
-                    {
-                        "id": "20dcaeb9b3ab0ad1",
-                        "port": 0
-                    }
-                ]
-            }
-        ],
-        "env": [
-            {
-                "name": "endpoint_port",
-                "type": "env",
-                "value": "UDPPORT"
-            }
-        ],
-        "meta": {
-            "module": "node-red-contrib-job-cluster-cluster-endpoint",
-            "type": "job-cluster-cluster-endpoint",
-            "version": "0.0.1",
-            "license": "MIT"
-        },
-        "color": "#A6BBCF",
-        "icon": "node-red/bridge.svg"
-    },
-    {
-        "id": "610d7761aec803a7",
-        "type": "subflow",
-        "name": "cluster-ctl",
-        "info": "",
-        "category": "",
-        "in": [
-            {
-                "x": 50,
-                "y": 30,
-                "wires": [
-                    {
-                        "id": "055a6b1f611eebc9"
-                    }
-                ]
-            }
-        ],
-        "out": [],
-        "env": [
-            {
-                "name": "COMMAND",
-                "type": "str",
-                "value": ""
-            },
-            {
-                "name": "BROADCAST",
-                "type": "bool",
-                "value": "true"
-            }
-        ],
-        "meta": {
-            "module": "node-red-contrib-job-cluster-cluster-ctl",
-            "type": "job-cluster-cluster-ctl",
-            "version": "0.0.1",
-            "license": "MIT"
-        },
-        "color": "#A6BBCF",
-        "icon": "node-red/bridge-dash.svg"
-    },
-    {
         "id": "b3da594ab22fa515",
         "type": "subflow",
         "name": "switch-role",
@@ -310,7 +257,7 @@
         "id": "375ee1d6cf6e3891",
         "type": "subflow",
         "name": "rpc-sync",
-        "info": "",
+        "info": "\r\n## input\r\ntopicTicketPath: msg配下のtopicTicketの場所を指定します  \r\nactionType: 処理の種別を指定します \r\n\r\n## env\r\nJOBCTL_HOST: 検出されたジョブコントローラのホスト情報  \r\n\r\n## data\r\ntopicTicketはjson形式になっている必要があります。  \r\n\r\n## Request\r\nGET http://${JOBCTL_SERVICE_IP}:${JOBCTL_SERVICE_HOST_HTTP_PORT}/${actionType}/${topicTicket}  \r\ntopicTicketはencodeURIComponent(JSON.stringify())された文字列  \r\n\r\n## Request header\r\nx-topic: topicTicket\r\nx-cluster_service_uid: クライアントのUUID\r\n\r\n## Response\r\nJSON形式\r\n",
         "category": "",
         "in": [
             {
@@ -1147,6 +1094,10 @@
                     {
                         "id": "735c659f87d1681c",
                         "port": 1
+                    },
+                    {
+                        "id": "eab7eab5a63d561b",
+                        "port": 0
                     }
                 ]
             }
@@ -1200,8 +1151,8 @@
         "type": "function",
         "z": "cd185f8f533e0f2d",
         "name": "logger_proc",
-        "func": "//const uid_key = env.get(\"logUID_Key\")\n//const uid = msg[uid_key] || msg._msgid\nconst date = new Date()\nconst uid = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate() + 1)).slice(-2)\n\nconst logLevel = env.get(\"logLevel\")\nconst logName = env.get(\"logName\")\nconst logPath = env.get(\"logPath\")\nconst filename = `${logName}${logLevel}.log`\nmsg.logFilePath = path.join(logPath, uid, filename)\nreturn msg;",
-        "outputs": 1,
+        "func": "//const uid_key = env.get(\"logUID_Key\")\n//const uid = msg[uid_key] || msg._msgid\nconst date = new Date()\nconst uid = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate())).slice(-2)\n\nconst logLevel = env.get(\"logLevel\")\nconst logName = env.get(\"logName\")\nconst logPath = env.get(\"logPath\")\nconst filename = `${logName}${logLevel}.log`\nmsg.logFilePath = path.join(logPath, uid, filename)\n\nconst outputMsgObject = env.get(\"outputMsgObject\")\nconst msg2 = RED.util.cloneMessage(msg)\nif (outputMsgObject) {\n    msg2.payload = JSON.stringify(msg);\n}\n//node.name = logName\n//if (logLevel == \"info\") node.warn(msg.consoleout)\n//if (logLevel == \"warn\") node.warn(msg.consoleout)\n//if (logLevel == \"error\") node.error(msg.consoleout)\nreturn [msg, msg2];",
+        "outputs": 2,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
@@ -1211,9 +1162,10 @@
                 "module": "path"
             }
         ],
-        "x": 230,
+        "x": 530,
         "y": 40,
         "wires": [
+            [],
             [
                 "5dfac259ecc0927f",
                 "7e0a41b86051ec87"
@@ -1231,8 +1183,8 @@
         "createDir": true,
         "overwriteFile": "false",
         "encoding": "none",
-        "x": 410,
-        "y": 40,
+        "x": 750,
+        "y": 80,
         "wires": [
             []
         ]
@@ -1246,13 +1198,61 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 430,
-        "y": 100,
+        "x": 770,
+        "y": 140,
         "wires": []
+    },
+    {
+        "id": "042f911e82caee52",
+        "type": "switch",
+        "z": "cd185f8f533e0f2d",
+        "name": "",
+        "property": "removeColor",
+        "propertyType": "env",
+        "rules": [
+            {
+                "t": "true"
+            },
+            {
+                "t": "false"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 170,
+        "y": 40,
+        "wires": [
+            [
+                "75c9a4d2d9c4eb9f"
+            ],
+            [
+                "8b05743651ac39ce"
+            ]
+        ]
+    },
+    {
+        "id": "75c9a4d2d9c4eb9f",
+        "type": "function",
+        "z": "cd185f8f533e0f2d",
+        "name": "remove Color",
+        "func": "const regex = /\\x1b[[0-9;]*m/g\nconst buf = (typeof msg.payload === 'object') ? msg.payload.toString() : msg.payload\nmsg.payload = buf.replace(regex, '')\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 20,
+        "wires": [
+            [
+                "8b05743651ac39ce"
+            ]
+        ]
     },
     {
         "id": "ab279f5f2fd77d53",
@@ -1467,7 +1467,9 @@
         "name": "",
         "x": 650,
         "y": 40,
-        "wires": []
+        "wires": [
+            []
+        ]
     },
     {
         "id": "0b6095c8f7667216",
@@ -1492,180 +1494,18 @@
         "id": "b861d902d0337a8d",
         "type": "function",
         "z": "45018afdb676ae24",
-        "name": "function 1",
+        "name": "JSON.parse",
         "func": "if (msg.statusCode == \"200\") {\n    if (msg.payload) {\n        try {\n            msg.payload = JSON.parse(msg.payload)\n        } catch (error) {\n        }\n    }\n    return [msg, null]\n} else {\n\n}\n\nreturn [null, msg];",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 660,
+        "x": 670,
         "y": 100,
         "wires": [
             [],
             []
-        ]
-    },
-    {
-        "id": "870573ecbe68ee62",
-        "type": "udp in",
-        "z": "0cd70b49340abfe2",
-        "name": "",
-        "iface": "",
-        "port": "${endpoint_port}",
-        "ipv": "udp4",
-        "multicast": "false",
-        "group": "",
-        "datatype": "utf8",
-        "x": 130,
-        "y": 80,
-        "wires": [
-            [
-                "20dcaeb9b3ab0ad1"
-            ]
-        ]
-    },
-    {
-        "id": "20dcaeb9b3ab0ad1",
-        "type": "function",
-        "z": "0cd70b49340abfe2",
-        "name": "payload decode",
-        "func": "msg.payload = JSON.parse(msg.payload)\nif (!msg.payload.CLUSTER_SERVICE_IP) msg.payload.CLUSTER_SERVICE_IP = msg.ip\n\nconst CLUSTER_GROUP = env.get(\"CLUSTER_GROUP\")\n\n//同じグループじゃない場合は処理しない\nif (msg.payload.CLUSTER_GROUP != CLUSTER_GROUP) return null\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 380,
-        "y": 80,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "7d45f678d4340e2f",
-        "type": "udp out",
-        "z": "610d7761aec803a7",
-        "name": "send",
-        "addr": "",
-        "iface": "",
-        "port": "",
-        "ipv": "udp4",
-        "outport": "",
-        "base64": false,
-        "multicast": "broad",
-        "x": 970,
-        "y": 100,
-        "wires": []
-    },
-    {
-        "id": "22cfd8a746e0d355",
-        "type": "function",
-        "z": "610d7761aec803a7",
-        "name": "set broadcastAddress",
-        "func": "const CLUSTER_SERVICE_UDP_PORT = env.get(\"UDPPORT\") || \"2880\"\nmsg.ip = msg.LocalAddress.broadcastAddress\nmsg.port = CLUSTER_SERVICE_UDP_PORT\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 740,
-        "y": 80,
-        "wires": [
-            [
-                "7d45f678d4340e2f"
-            ]
-        ]
-    },
-    {
-        "id": "ce61c2fe2072c316",
-        "type": "function",
-        "z": "610d7761aec803a7",
-        "name": "set ip",
-        "func": "const CLUSTER_SERVICE_UDP_PORT = env.get(\"UDPPORT\") || \"2880\"\nmsg.port = CLUSTER_SERVICE_UDP_PORT\n//console.log(msg)\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 690,
-        "y": 120,
-        "wires": [
-            [
-                "7d45f678d4340e2f"
-            ]
-        ]
-    },
-    {
-        "id": "1c270b85f20694db",
-        "type": "function",
-        "z": "610d7761aec803a7",
-        "name": "SEND COMMAND",
-        "func": "const CLUSTER_SERVICE_HTTP_PORT = env.get(\"PORT\") || \"1880\"\nconst CLUSTER_SERVICE_UDP_PORT = env.get(\"UDPPORT\") || \"2880\"\n\nconst CLUSTER_GROUP = env.get(\"CLUSTER_GROUP\")\nconst CLUSTER_ROLE = env.get(\"CLUSTER_ROLE\")\n//const CLUSTER_SERVICE_HOST = env.get(\"KUBERNETES_SERVICE_HOST\")\nconst CLUSTER_SERVICE_IP = msg.LocalAddress.address\nconst CLUSTER_SERVICE_HOST = env.get(\"HOSTNAME\") || CLUSTER_SERVICE_IP\nconst NODE_RED_VERSION = env.get(\"NODE_RED_VERSION\")\nconst COMMAND = env.get(\"COMMAND\")\n\nconst CLUSTER_SERVICE_UID = RED.util.procuuid\n\nmsg.payload = JSON.stringify({\n    \"COMMAND\": COMMAND,\n    \"CLUSTER_GROUP\": CLUSTER_GROUP,\n    \"CLUSTER_ROLE\": CLUSTER_ROLE,\n    \"CLUSTER_SERVICE_UID\": CLUSTER_SERVICE_UID,\n    \"CLUSTER_SERVICE_HOST\": CLUSTER_SERVICE_HOST,\n    \"CLUSTER_SERVICE_IP\": CLUSTER_SERVICE_IP,\n    \"CLUSTER_SERVICE_HTTP_PORT\": CLUSTER_SERVICE_HTTP_PORT,\n    \"CLUSTER_SERVICE_UDP_PORT\": CLUSTER_SERVICE_UDP_PORT,\n    \"NODE_RED_VERSION\": NODE_RED_VERSION,\n    \"PAYLOAD\": msg.payload\n})\nreturn msg",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [
-            {
-                "var": "os",
-                "module": "os"
-            }
-        ],
-        "x": 310,
-        "y": 80,
-        "wires": [
-            [
-                "e304dc51216491e8"
-            ]
-        ]
-    },
-    {
-        "id": "e304dc51216491e8",
-        "type": "switch",
-        "z": "610d7761aec803a7",
-        "name": "isBROADCAST",
-        "property": "BROADCAST",
-        "propertyType": "env",
-        "rules": [
-            {
-                "t": "true"
-            },
-            {
-                "t": "false"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 520,
-        "y": 80,
-        "wires": [
-            [
-                "22cfd8a746e0d355"
-            ],
-            [
-                "ce61c2fe2072c316"
-            ]
-        ]
-    },
-    {
-        "id": "055a6b1f611eebc9",
-        "type": "function",
-        "z": "610d7761aec803a7",
-        "name": "getLocalAddress",
-        "func": "\n\n//ipv4: [ { name: 'eth0', address:\nmsg.LocalAddress = RED.util.getLocalAddress().ipv4[0]\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 190,
-        "y": 40,
-        "wires": [
-            [
-                "1c270b85f20694db"
-            ]
         ]
     },
     {
@@ -1787,14 +1627,14 @@
         "id": "7ef01344844389b8",
         "type": "function",
         "z": "375ee1d6cf6e3891",
-        "name": "function 3",
+        "name": "DELETE JOBCTL_HOST",
         "func": "global.set(\"JOBCTL_HOST\", null)\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 560,
+        "x": 610,
         "y": 160,
         "wires": [
             []
@@ -3281,6 +3121,21 @@
             [
                 "d0e75f004f3cf6c3"
             ]
+        ]
+    },
+    {
+        "id": "eab7eab5a63d561b",
+        "type": "catch",
+        "z": "4d4915ce082a1010",
+        "name": "CONNECT error",
+        "scope": [
+            "037bbac4f152dc89"
+        ],
+        "uncaught": false,
+        "x": 840,
+        "y": 320,
+        "wires": [
+            []
         ]
     },
     {
