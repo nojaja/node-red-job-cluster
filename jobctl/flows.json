@@ -84,7 +84,7 @@
         "id": "27227cef106a74f0",
         "type": "subflow",
         "name": "topic add endpoint",
-        "info": "# topic add endpoint\r\nworkerから新規topicの受信に利用\r\n\r\n## env\r\nactionType: \"addtopic\"  \r\nendpoint: /${actionType}/:topic\r\n\r\n## Receive Request\r\nGET  \r\n`/${actionType}/:topic`  \r\n\r\n## Receive Request header\r\nx-topic:   \r\nx-cluster_service_uid: 呼び出し元のUUID\r\n\r\n## data\r\ntopic: encodeURIComponent(JSON.stringify({\r\n    \"topic\" : \"topic1\",\r\n    \"param\": {\r\n        \"hoge\": \"new\",\r\n        \"jobsession\": $millis()\r\n        }\r\n}))\r\n\r\n\r\n## Receive Response\r\nJSON形式\r\n{\r\n    \"HOSTNAME\": env.get(\"HOSTNAME\"),\r\n    \"NODE_RED_VERSION\": env.get(\"NODE_RED_VERSION\"),\r\n    \"topic\": msg.topic\r\n}\r\n\r\n## output\r\n msg.topic = JSON.parse(msg.topic)\r\n ```\r\n {\r\n    \"topic\" : \"topic1\",\r\n    \"param\": {\r\n        \"hoge\": \"new\",\r\n        \"jobsession\": $millis()\r\n        }\r\n}\r\n ```",
+        "info": "workerから新規topicの受信に利用\r\n\r\n## **description**\r\ntopic情報を受取処理リストに追加します。  \r\n\r\n## **env**\r\n- **HOSTNAME**: 自分のホスト名を定義 \r\n- **NODE_RED_VERSION**:自分のNODE-REDのVERSIONを指定します   \r\n\r\n## **global**\r\nなし\r\n\r\n## **properties**\r\n- **actionType**: \"addtopic\"  \r\n\r\n## **data structure**\r\nなし\r\n\r\n## **input msg**\r\nなし\r\n\r\n## **output msg**\r\n- **msg.topic**: 受け取ったtopicをJSON.parseして返却します  \r\n例\r\n ```\r\n {\r\n    \"topic\" : \"topic1\",\r\n    \"param\": {\r\n        \"hoge\": \"new\",\r\n        \"jobsession\": $millis()\r\n        }\r\n}\r\n ```\r\n\r\n## Receive Request\r\nGET  \r\n`/${actionType}/:topic`  \r\n\r\n## Receive Request header\r\nx-topic:   \r\nx-cluster_service_uid: 呼び出し元のUUID\r\n\r\n## data\r\ntopic: encodeURIComponent(JSON.stringify({\r\n    \"topic\" : \"topic1\",\r\n    \"param\": {\r\n        \"hoge\": \"new\",\r\n        \"jobsession\": $millis()\r\n        }\r\n}))\r\n\r\n\r\n## Receive Response\r\nJSON形式\r\n{\r\n    \"HOSTNAME\": env.get(\"HOSTNAME\"),\r\n    \"NODE_RED_VERSION\": env.get(\"NODE_RED_VERSION\"),\r\n    \"topic\": msg.topic\r\n}\r\n\r\n## output\r\n msg.topic = JSON.parse(msg.topic)\r\n ```\r\n {\r\n    \"topic\" : \"topic1\",\r\n    \"param\": {\r\n        \"hoge\": \"new\",\r\n        \"jobsession\": $millis()\r\n        }\r\n}\r\n ```",
         "category": "",
         "in": [],
         "out": [
@@ -127,7 +127,7 @@
         "id": "45018afdb676ae24",
         "type": "subflow",
         "name": "rpc-async",
-        "info": "WebAPIをコールバック式の非同期でコールします\r\n\r\n## **description**\r\ntask execなどローカル内での呼び出しに利用  \r\n\r\nこのWebAPIでは双方向のWebAPIコールによって実現します  \r\nしたがって双方でendpointが公開可能な環境向けとしてlocalhost内でのみ動作します  \r\n\r\nこの処理によってWebAPIをコールすると相手には、コールバック用のURLが通知されます  \r\n相手は受け取ったコールバックURLにアクセスすることによって処理が完了します  \r\n\r\n## **env**\r\n- **HOSTNAME**: 自分のホスト名を定義 \r\n- **PORT**: 自分のポートを定義 \r\n- **NODE_RED_VERSION**:自分のNODE-REDのVERSIONを指定します   \r\n\r\n## **global**\r\nなし\r\n\r\n## **properties**\r\n- **actionType**: 処理の種別を指定します \r\n- **topicTicket_key**: msg直下のtopicTicketのkey名を指定します  \r\n- **endpointport**: 呼び出し先のポートを定義します \r\n\r\n## **data structure**\r\n- **topicTicket**: json形式の下記を含んだ構造体\r\n```\r\ntopicTicket = {\r\n    topic: topicName,\r\n    uuid: RED.util.procuuid //クライアントのUUID\r\n}\r\n\r\n```\r\n\r\n## **Send Request**\r\nGET  \r\n`http://localhost:${endpointport}/${actionType}/${topicTicket}`  \r\ntopicTicketはJSON.stringify()された文字列  \r\n\r\n## **Send Request header**\r\n- **x-callback**:  \r\n```\r\nhttp://localhost:${PORT}/callback/${topicTicket.topic}/${topicTicket.uuid}\r\n```\r\n\r\n## **Send Response**\r\nJSON形式として\r\n```\r\n{\r\n    \"HOSTNAME\": env.get(\"HOSTNAME\"),\r\n    \"NODE_RED_VERSION\": env.get(\"NODE_RED_VERSION\"),\r\n    \"topicTicket\": msg.topicTicket,\r\n    \"callbackhost\": msg.callbackhost\r\n}\r\n```\r\nといった内容を期待します。  \r\n受信データは\r\n```\r\nmsg.payload = JSON.parse(msg.payload)\r\n```\r\nを行います\r\n\r\n## **Receive Request**\r\nx-callbackで送信したURLで待機します。\r\nGET  \r\n`http://localhost:${port}/callback/${topic}/${uuid}`  \r\n結果の精査は特に行いません。\r\n\r\n## **Receive Request header**\r\nなし\r\n\r\n## **Receive Response**\r\nJSON形式で下記を返却します\r\n```\r\n{\r\n    \"HOSTNAME\": env.get(\"HOSTNAME\"),\r\n    \"NODE_RED_VERSION\": env.get(\"NODE_RED_VERSION\"),\r\n    \"topic\": msg.topic,\r\n    \"uuid\": msg.uuid\r\n}\r\n```\r\n",
+        "info": "WebAPIをコールバック式の非同期でコールします\r\n\r\n## **description**\r\ntask execなどローカル内での呼び出しに利用  \r\n\r\nこのWebAPIでは双方向のWebAPIコールによって実現します  \r\nしたがって双方でendpointが公開可能な環境向けとしてlocalhost内でのみ動作します  \r\n\r\nこの処理によってWebAPIをコールすると相手には、コールバック用のURLが通知されます  \r\n相手は受け取ったコールバックURLにアクセスすることによって処理が完了します  \r\n\r\n## **env**\r\n- **HOSTNAME**: 自分のホスト名を定義 \r\n- **PORT**: 自分のポートを定義 \r\n- **NODE_RED_VERSION**:自分のNODE-REDのVERSIONを指定します   \r\n\r\n## **global**\r\nなし\r\n\r\n## **properties**\r\n- **actionType**: 処理の種別を指定します \r\n- **topicTicket_key**: msg直下のtopicTicketのkey名を指定します  \r\n- **endpointport**: 呼び出し先のポートを定義します \r\n\r\n## **data structure**\r\n- **topicTicket**: json形式の下記を含んだ構造体\r\n```\r\ntopicTicket = {\r\n    topic: topicName,\r\n    uuid: RED.util.procuuid //クライアントのUUID\r\n}\r\n\r\n```\r\n\r\n## **Send Request**\r\nGET  \r\n`http://localhost:${endpointport}/${actionType}/${topicTicket}`  \r\ntopicTicketはJSON.stringify()された文字列  \r\n\r\n## **Send Request header**\r\n- **x-callback**:  \r\n```\r\nhttp://localhost:${PORT}/callback/${topicTicket.topic}/${topicTicket.uuid}\r\n```\r\n\r\n## **Send Response**\r\nJSON形式として\r\n```\r\n{\r\n    \"HOSTNAME\": env.get(\"HOSTNAME\"),\r\n    \"NODE_RED_VERSION\": env.get(\"NODE_RED_VERSION\"),\r\n    \"topicTicket\": msg.topicTicket,\r\n    \"callbackhost\": msg.callbackhost\r\n}\r\n```\r\nといった内容を期待します。  \r\n受信データは\r\n```\r\nmsg.payload = JSON.parse(msg.payload)\r\n```\r\nを行います\r\n\r\n## **Receive Request**\r\nx-callbackで送信したURLで待機します。  \r\nGET  \r\n`http://localhost:${port}/callback/${topic}/${uuid}`  \r\n結果の精査は特に行いません。\r\n\r\n## **Receive Request header**\r\nなし\r\n\r\n## **Receive Response**\r\nJSON形式で下記を返却します\r\n```\r\n{\r\n    \"HOSTNAME\": env.get(\"HOSTNAME\"),\r\n    \"NODE_RED_VERSION\": env.get(\"NODE_RED_VERSION\"),\r\n    \"topic\": msg.topic,\r\n    \"uuid\": msg.uuid\r\n}\r\n```\r\n",
         "category": "",
         "in": [
             {
@@ -257,7 +257,7 @@
         "id": "375ee1d6cf6e3891",
         "type": "subflow",
         "name": "rpc-sync",
-        "info": "---\r\nWebAPIを同期型でコールします\r\n\r\n\r\n## **description**\r\nJOBCTL_HOSTに対して、jsonデータ付きのURLでRequestします。  \r\nJOBCTL_HOSTは受信に成功するとjson形式のデータをResponseとして返却します\r\n\r\n接続に失敗するとJOBCTL_HOSTを削除します。  \r\n\r\n## **env**\r\nなし \r\n\r\n## **global**\r\n- **JOBCTL_HOST**: 検出されたジョブコントローラのホスト情報  \r\n\r\n## **properties**\r\n- **actionType**: 処理の種別を指定します \r\n- **topicTicketPath**: msg配下のtopicTicketの場所を指定します  \r\n \r\n## data structure\r\n- **topicTicket**: json形式の任意の構造体\r\n\r\n## **input msg**\r\nそのままoutputされます。\r\n\r\n## **output msg**\r\nFLOW_MAXより小さいの場合はoutput1  \r\nFLOW_MAX以上の場合はoutput2  \r\nに出力されます。\r\n\r\n## Send Request\r\nGET \r\n```\r\nhttp://${JOBCTL_SERVICE_IP}:${JOBCTL_SERVICE_HOST_HTTP_PORT}/${actionType}/${topicTicket}  \r\n```\r\ntopicTicketはencodeURIComponent(JSON.stringify())された文字列  \r\n\r\n## Send Request header\r\n- **x-topic**: topicTicketと同じ\r\n- **x-cluster_service_uid**: クライアントのUUID\r\n\r\n## Send Response\r\nJSON形式として\r\n```\r\nmsg.payload = JSON.parse(msg.payload)\r\n```\r\nを行います\r\n",
+        "info": "WebAPIを同期型でコールします\r\n\r\n\r\n## **description**\r\nJOBCTL_HOSTに対して、jsonデータ付きのURLでRequestします。  \r\nJOBCTL_HOSTは受信に成功するとjson形式のデータをResponseとして返却します\r\n\r\n接続に失敗するとJOBCTL_HOSTを削除します。  \r\n\r\n## **env**\r\nなし \r\n\r\n## **global**\r\n- **JOBCTL_HOST**: 検出されたジョブコントローラのホスト情報  \r\n\r\n## **properties**\r\n- **actionType**: 処理の種別を指定します \r\n- **topicTicketPath**: msg配下のtopicTicketの場所を指定します  \r\n \r\n## data structure\r\n- **topicTicket**: json形式の任意の構造体\r\n\r\naddtopicの場合の例\r\n```\r\ntopic: topicName\r\nparam: {\r\n    target: target\r\n    jobsession: \r\n}\r\n```\r\n\r\n## **input msg**\r\nそのままoutputされます。\r\n\r\n## **output msg**\r\nFLOW_MAXより小さいの場合はoutput1  \r\nFLOW_MAX以上の場合はoutput2  \r\nに出力されます。\r\n\r\n## Send Request\r\nGET \r\n```\r\nhttp://${JOBCTL_SERVICE_IP}:${JOBCTL_SERVICE_HOST_HTTP_PORT}/${actionType}/${topicTicket}  \r\n```\r\ntopicTicketはencodeURIComponent(JSON.stringify())された文字列  \r\n\r\n## Send Request header\r\n- **x-topic**: topicTicketと同じ\r\n- **x-cluster_service_uid**: クライアントのUUID\r\n\r\n## Send Response\r\nJSON形式として\r\n```\r\nmsg.payload = JSON.parse(msg.payload)\r\n```\r\nを行います\r\n",
         "category": "",
         "in": [
             {
@@ -673,7 +673,7 @@
         "id": "b1626fc28a971f31",
         "type": "subflow",
         "name": "split-array",
-        "info": "",
+        "info": "リストを分解して、後続に送ります\r\n\r\n## **description**\r\n\r\n\r\n## **env**\r\nなし \r\n\r\n## **global**\r\nなし  \r\n\r\n## **properties**\r\n- **inputArrayPath**: msg配下の対象のArrayの場所を指定します \r\n- **outputPath**: 分解した要素を格納するmsg配下の場所を指定します \r\n \r\n## data structure\r\nなし \r\n\r\n## **input msg**\r\nなし\r\n\r\n## **output msg**\r\noutputPathで指定した場所に要素が追加されます。\r\n",
         "category": "",
         "in": [
             {
@@ -772,7 +772,7 @@
         "id": "f6c57fcec804269c",
         "type": "subflow",
         "name": "flow-start",
-        "info": "",
+        "info": "topicの処理ステータスを実行状態にします。\r\n\r\n## **description**\r\nFLOW_STATUSを作成します\r\n\r\n## **env**\r\nなし \r\n\r\n## **global**\r\n- **FLOW_STATUS**: topicの処理ステータス管理\r\n\r\n## **properties**\r\nなし\r\n\r\n## data structure\r\n- **topicTicket**: topic情報は下記の構造を期待します\r\n```\r\n{\r\n    topic: topicName,\r\n    uuid: UUID\r\n}\r\n```\r\n\r\n## **input msg**\r\n- **msg.payload.topicTicket**: topic情報\r\n\r\n## **output msg**\r\n- **msg.topicTicket**: topic情報\r\n- **msg.topic**: topic名\r\n- **msg.uuid**: topicのUUID",
         "category": "Rate Control",
         "in": [
             {
@@ -821,7 +821,7 @@
         "id": "e9700f935181888e",
         "type": "subflow",
         "name": "flow-end",
-        "info": "",
+        "info": "topicの処理ステータスを削除にします。\r\n\r\n## **description**\r\n対象uuidのFLOW_STATUSを削除します。\r\n\r\n## **env**\r\nなし \r\n\r\n## **global**\r\n- **FLOW_STATUS**: topicの処理ステータス管理\r\n\r\n## **properties**\r\n- **uuidPath**: msg配下のuuidの格納されている場所を指定\r\n\r\n## data structure\r\nなし\r\n\r\n## **input msg**\r\nなし\r\n\r\n## **output msg**\r\n成功した場合はoutput1  \r\n失敗した場合はoutput2  \r\nに出力します",
         "category": "Rate Control",
         "in": [
             {
@@ -876,7 +876,7 @@
         "id": "131075747e8871f8",
         "type": "subflow",
         "name": "worker-start",
-        "info": "# worker-start\r\nJOBCTL_HOSTからtopicを取得して\r\nパラメータを返す\r\n\r\n## env\r\nCLUSTER_ROLE: ノードの役割設定、workerの場合のみ機能します。  \r\nTOPICS: 取得するtopicの設定、複数ある場合は`,`区切りで定義します。  \r\n\r\n## global\r\nJOBCTL_HOST: 検出されたジョブコントローラのホスト情報  \r\nFLOW_STATUS: \r\nFLOW_MAX: \r\nTARGET_TOPICS_NO: \r\n\r\n## properties\r\nなし  \r\n\r\n## input msg\r\ntopicTicketPath: msg配下のtopicTicketの場所を指定します  \r\nactionType: 処理の種別を指定します \r\n\r\n## data structure\r\ntopicTicketはjson形式になっている必要があります。 \r\n\r\n## Send Request\r\nGET  \r\n`http://${JOBCTL_SERVICE_IP}:${JOBCTL_SERVICE_HOST_HTTP_PORT}/assign/${topicTicket}`\r\n\r\ntopicTicketはencodeURIComponent(JSON.stringify())された文字列  \r\n\r\n## Send Request header\r\nx-topic: topicTicket\r\nx-cluster_service_uid: クライアントのUUID\r\n\r\n## Send Response\r\nJSON形式\r\n\r\n\r\n\r\n\r\n\r\n## Receive Request\r\nGET  \r\n`/${actionType}/:topic`  \r\n\r\n## Receive Request header\r\nx-topic:   \r\nx-cluster_service_uid: 呼び出し元のUUID\r\n\r\n## data\r\ntopic: encodeURIComponent(JSON.stringify({\r\n    \"topic\" : \"topic1\",\r\n    \"param\": {\r\n        \"hoge\": \"new\",\r\n        \"jobsession\": $millis()\r\n        }\r\n}))\r\n\r\n\r\n## Receive Response\r\nJSON形式\r\n{\r\n    \"HOSTNAME\": env.get(\"HOSTNAME\"),\r\n    \"NODE_RED_VERSION\": env.get(\"NODE_RED_VERSION\"),\r\n    \"topic\": msg.topic\r\n}\r\n\r\n## output\r\n msg.topic = JSON.parse(msg.topic)\r\n ```\r\n {\r\n    \"topic\" : \"topic1\",\r\n    \"param\": {\r\n        \"hoge\": \"new\",\r\n        \"jobsession\": $millis()\r\n        }\r\n}\r\n ```",
+        "info": "topicを取得して処理を開始します。\r\n\r\n## **description**\r\nJOBCTL_HOSTからtopicを取得して、後続処理にパラメータtopicTicketを返す。\r\n\r\n## **env**\r\n- **CLUSTER_ROLE**: ノードの役割設定、workerの場合のみ機能します。  \r\n- **TOPICS**: 取得するtopicの設定、複数ある場合は`,`区切りで定義します。  \r\n\r\n## **global**\r\n- **JOBCTL_HOST**: 検出されたジョブコントローラのホスト情報  \r\n- **FLOW_STATUS**: flow-limitの現在実行中のフローステータスを管理します\r\n- **FLOW_MAX**: flow-limitの同時実行の最大数を指定します\r\n- **TARGET_TOPICS_NO**: pickup-topicのround robinの添字管理に利用します\r\n\r\n\r\n## **properties**\r\nなし  \r\n\r\n## **data structure**\r\ntopicTicketは下記の構造を含むjson形式になっている必要があります。 \r\n```\r\n{\r\n    topic: topicName,\r\n    uuid: UUID\r\n}\r\n```\r\n## **input msg**\r\nなし\r\n\r\n## **output msg**\r\n- **msg.topic**: topicNameで上書きされます\r\n- **msg.payload**: get topic Responseで上書きされます\r\n- **msg.payload.topicTicket**: 下記の構造を含んだtopic情報\r\n```\r\n{\r\n    \"topic\" : \"topic1\",\r\n    \"param\": {\r\n        \"jobsession\": UUID\r\n        }\r\n}\r\n```\r\n\r\n## **get topic Request**\r\nGET  \r\n`http://${JOBCTL_SERVICE_IP}:${JOBCTL_SERVICE_HOST_HTTP_PORT}/assign/${msg.topic}`\r\n\r\ntopicTicketはencodeURIComponent(JSON.stringify())された文字列  \r\n\r\n## **get topic Request header**\r\n- **x-topic**: topicTicketと同じ\r\n- **x-cluster_service_uid**: クライアントのUUID\r\n\r\n## **get topic Response**\r\n下記のJSON形式データを期待します\r\n```\r\n{\r\n    \"HOSTNAME\": env.get(\"HOSTNAME\"),\r\n    \"NODE_RED_VERSION\": env.get(\"NODE_RED_VERSION\"),\r\n    \"topic\": msg.payload.topic,\r\n    \"topicTicket\": {\r\n        \"topic\" : \"topic1\",\r\n        \"param\": {\r\n            \"jobsession\": $millis()\r\n            }\r\n    }\r\n}\r\n```\r\n\r\n\r\n",
         "category": "",
         "in": [
             {
@@ -1100,7 +1100,7 @@
         "id": "2d6a615a0f89e919",
         "type": "subflow",
         "name": "set-jobsession",
-        "info": "",
+        "info": "jobsessionを生成します。\r\n\r\n## **description**\r\nyyyymmdd形式のIDを生成します。\r\n\r\n## **env**\r\nなし \r\n\r\n## **global**\r\nなし  \r\n\r\n## **properties**\r\nなし \r\n \r\n## data structure\r\nなし \r\n\r\n## **input msg**\r\nなし\r\n\r\n## **output msg**\r\n`msg.topicTicket.param.jobsession`にIDが追加されます。\r\n",
         "category": "Topic Control",
         "in": [
             {
@@ -3358,7 +3358,8 @@
         "y": 240,
         "wires": [
             [
-                "e61870e6384df480"
+                "e61870e6384df480",
+                "a119bdf0f5c1fc9c"
             ]
         ]
     },
@@ -3531,7 +3532,7 @@
         "chunk": false,
         "sendError": false,
         "encoding": "none",
-        "allProps": false,
+        "allProps": true,
         "x": 270,
         "y": 280,
         "wires": [
@@ -3584,7 +3585,7 @@
         "type": "function",
         "z": "f01882c08732b397",
         "name": "set-topic",
-        "func": "const target = msg.target\nconst topic = msg.topicName\nmsg.topicTicket.topic = topic\nmsg.topicTicket.param.target = target\nreturn msg\n\n",
+        "func": "const target = msg.payload\nconst topic = msg.topicName\nmsg.topicTicket.topic = topic\nmsg.topicTicket.param.target = target\nreturn msg\n\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -3594,9 +3595,27 @@
         "y": 280,
         "wires": [
             [
-                "e61870e6384df480"
+                "e61870e6384df480",
+                "a119bdf0f5c1fc9c"
             ]
         ]
+    },
+    {
+        "id": "a119bdf0f5c1fc9c",
+        "type": "debug",
+        "z": "f01882c08732b397",
+        "name": "debug 23",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 280,
+        "wires": []
     },
     {
         "id": "f95507e7d1cc63f1",
