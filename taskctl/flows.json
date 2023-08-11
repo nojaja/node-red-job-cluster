@@ -16,11 +16,33 @@
         "in": [],
         "out": [
             {
-                "x": 680,
+                "x": 960,
                 "y": 220,
                 "wires": [
                     {
                         "id": "cd1ed3ded782cc75",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 960,
+                "y": 280,
+                "wires": [
+                    {
+                        "id": "8b8aaab557a380be",
+                        "port": 0
+                    },
+                    {
+                        "id": "cd1ed3ded782cc75",
+                        "port": 0
+                    },
+                    {
+                        "id": "99ad089b91cf6c3b",
+                        "port": 0
+                    },
+                    {
+                        "id": "1f64b61d5f2b2af5",
                         "port": 0
                     }
                 ]
@@ -48,6 +70,10 @@
             "license": "MIT"
         },
         "color": "#A6BBCF",
+        "outputLabels": [
+            "payload",
+            "trace-log"
+        ],
         "icon": "node-red/inject.svg"
     },
     {
@@ -69,11 +95,25 @@
         ],
         "out": [
             {
-                "x": 740,
+                "x": 780,
                 "y": 40,
                 "wires": [
                     {
                         "id": "9cdc11e8a03bb722",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 780,
+                "y": 100,
+                "wires": [
+                    {
+                        "id": "9cdc11e8a03bb722",
+                        "port": 0
+                    },
+                    {
+                        "id": "c36d55d859478eea",
                         "port": 0
                     }
                 ]
@@ -98,6 +138,10 @@
             "license": "MIT"
         },
         "color": "#A6BBCF",
+        "outputLabels": [
+            "payload",
+            "trace-log"
+        ],
         "icon": "node-red/arrow-in.svg"
     },
     {
@@ -232,6 +276,28 @@
                         "port": 1
                     }
                 ]
+            },
+            {
+                "x": 860,
+                "y": 160,
+                "wires": [
+                    {
+                        "id": "ab5c9b3893934684",
+                        "port": 0
+                    },
+                    {
+                        "id": "ab5c9b3893934684",
+                        "port": 1
+                    },
+                    {
+                        "id": "fc01a190e21bcf85",
+                        "port": 0
+                    },
+                    {
+                        "id": "a72d2803344a446d",
+                        "port": 0
+                    }
+                ]
             }
         ],
         "env": [
@@ -258,7 +324,8 @@
         ],
         "outputLabels": [
             "Success",
-            "Failed"
+            "Failed",
+            "trace-log"
         ],
         "icon": "node-red/arrow-in.svg"
     },
@@ -445,6 +512,258 @@
         "icon": "font-awesome/fa-bolt"
     },
     {
+        "id": "7e1bc880aa606898",
+        "type": "subflow",
+        "name": "exists-file",
+        "info": "",
+        "category": "job",
+        "in": [
+            {
+                "x": 60,
+                "y": 40,
+                "wires": [
+                    {
+                        "id": "3988a6601981cb5c"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 550,
+                "y": 40,
+                "wires": [
+                    {
+                        "id": "3988a6601981cb5c",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 560,
+                "y": 100,
+                "wires": [
+                    {
+                        "id": "3988a6601981cb5c",
+                        "port": 1
+                    }
+                ]
+            },
+            {
+                "x": 560,
+                "y": 160,
+                "wires": [
+                    {
+                        "id": "3988a6601981cb5c",
+                        "port": 2
+                    }
+                ]
+            }
+        ],
+        "env": [
+            {
+                "name": "targetKeyPath",
+                "type": "str",
+                "value": "payload"
+            },
+            {
+                "name": "basePath",
+                "type": "str",
+                "value": "/workspace"
+            }
+        ],
+        "meta": {
+            "module": "node-red-contrib-exists-file",
+            "type": "exists-file",
+            "version": "0.0.1",
+            "license": "MIT"
+        },
+        "color": "#DDAA99",
+        "outputLabels": [
+            "found",
+            "not found",
+            "trace-log"
+        ],
+        "icon": "node-red/watch.svg"
+    },
+    {
+        "id": "fb38bea55c8dc62c",
+        "type": "subflow",
+        "name": "store-limit",
+        "info": "",
+        "category": "job",
+        "in": [
+            {
+                "x": 60,
+                "y": 40,
+                "wires": [
+                    {
+                        "id": "5f74ccae462df2fb"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 840,
+                "y": 40,
+                "wires": [
+                    {
+                        "id": "134a0b338a577af0",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 840,
+                "y": 100,
+                "wires": [
+                    {
+                        "id": "134a0b338a577af0",
+                        "port": 1
+                    }
+                ]
+            }
+        ],
+        "env": [
+            {
+                "name": "targetkeypath",
+                "type": "str",
+                "value": "payload"
+            },
+            {
+                "name": "limitSize",
+                "type": "num",
+                "value": "1000000"
+            },
+            {
+                "name": "wait",
+                "type": "bool",
+                "value": "true"
+            }
+        ],
+        "meta": {
+            "module": "node-red-contrib-store-limit",
+            "type": "store-limit",
+            "version": "0.0.1",
+            "license": "MIT"
+        },
+        "color": "#E6E0F8",
+        "icon": "node-red/trigger.svg"
+    },
+    {
+        "id": "974ea964a47943fe",
+        "type": "subflow",
+        "name": "remove-file",
+        "info": "",
+        "category": "job",
+        "in": [
+            {
+                "x": 60,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "f7c639a74fb85c05"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 900,
+                "y": 100,
+                "wires": [
+                    {
+                        "id": "1b9cccfd8c2489f1",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 900,
+                "y": 160,
+                "wires": [
+                    {
+                        "id": "f7c639a74fb85c05",
+                        "port": 1
+                    }
+                ]
+            },
+            {
+                "x": 890,
+                "y": 220,
+                "wires": [
+                    {
+                        "id": "1b9cccfd8c2489f1",
+                        "port": 1
+                    },
+                    {
+                        "id": "f7c639a74fb85c05",
+                        "port": 1
+                    }
+                ]
+            },
+            {
+                "x": 900,
+                "y": 280,
+                "wires": [
+                    {
+                        "id": "f7c639a74fb85c05",
+                        "port": 2
+                    },
+                    {
+                        "id": "8b14301da207b917",
+                        "port": 0
+                    },
+                    {
+                        "id": "8b14301da207b917",
+                        "port": 1
+                    },
+                    {
+                        "id": "9c960505583c108f",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [
+            {
+                "name": "targetKeyPath",
+                "type": "str",
+                "value": "payload.param.target"
+            },
+            {
+                "name": "basePath",
+                "type": "str",
+                "value": "/workspace"
+            }
+        ],
+        "meta": {
+            "module": "node-red-contrib-remove-file",
+            "type": "remove-file",
+            "version": "0.0.1",
+            "license": "MIT"
+        },
+        "color": "#DDAA99",
+        "outputLabels": [
+            "success",
+            "not found",
+            "error",
+            "trace-log"
+        ],
+        "icon": "font-awesome/fa-trash-o",
+        "status": {
+            "x": 860,
+            "y": 40,
+            "wires": [
+                {
+                    "id": "396a04d644c222e2",
+                    "port": 0
+                }
+            ]
+        }
+    },
+    {
         "id": "1f64b61d5f2b2af5",
         "type": "http in",
         "z": "56d4506243eb3bc8",
@@ -530,7 +849,7 @@
         "type": "function",
         "z": "56d4506243eb3bc8",
         "name": "JSON.parse",
-        "func": "if (msg.topicTicket) {\n    try {\n        msg.topicTicket = JSON.parse(msg.topicTicket)\n    } catch (error) {\n    }\n}\n\nreturn msg;",
+        "func": "if (msg.topicTicket) {\n    try {\n        msg.payload = JSON.parse(msg.topicTicket)\n        const status = { fill: \"green\", shape: \"dot\", text: \"OK\"}\n        node.status(status)\n        msg[`${node.name}-${node.id}`] = {\n            id: node.id,\n            name: node.name,\n            payload: msg.payload,\n            status: status\n        }\n    } catch (error) {\n        const status = { fill: \"yellow\", shape: \"dot\", text: \"not json data\" }\n        node.status(status)\n        msg[`${node.name}-${node.id}`] = {\n            id: node.id,\n            name: node.name,\n            payload: msg.payload,\n            status: status\n        }\n    }\n}\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -549,7 +868,7 @@
         "type": "function",
         "z": "a054d80f86a78547",
         "name": "generate_url",
-        "func": "\nconst callbackPath = env.get(\"callbackPath\")\n\nconst callbackhost = RED.util.getPropByPath(msg, callbackPath)\n\nmsg.callbackhost = callbackhost\n\nreturn msg;",
+        "func": "\nconst callbackPath = env.get(\"callbackPath\")\n\nconst callbackhost = RED.util.getPropByPath(msg, callbackPath)\n\nmsg.callbackhost = callbackhost\n\nconst status = { fill: \"green\", shape: \"dot\", text: `connect: ${callbackhost}` }\nnode.status(status)\nmsg[`${node.name}-${node.id}`] = {\n    id: node.id,\n    name: node.name,\n    payload: msg.payload,\n    status: status\n}\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -590,7 +909,7 @@
         "type": "function",
         "z": "cd185f8f533e0f2d",
         "name": "logger_proc",
-        "func": "//const uid_key = env.get(\"logUID_Key\")\n//const uid = msg[uid_key] || msg._msgid\nconst date = new Date()\nconst uid = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate() + 1)).slice(-2)\n\nconst logLevel = env.get(\"logLevel\")\nconst logName = env.get(\"logName\")\nconst logPath = env.get(\"logPath\")\nconst filename = `${logName}${logLevel}.log`\nmsg.logFilePath = path.join(logPath, uid, filename)\n\nconst outputMsgObject = env.get(\"outputMsgObject\")\nconst msg2 = RED.util.cloneMessage(msg)\nif (outputMsgObject) {\n    msg2.payload = JSON.stringify(msg);\n}\n//node.name = logName\n//if (logLevel == \"info\") node.warn(msg.consoleout)\n//if (logLevel == \"warn\") node.warn(msg.consoleout)\n//if (logLevel == \"error\") node.error(msg.consoleout)\nreturn [msg,msg2];",
+        "func": "//const uid_key = env.get(\"logUID_Key\")\n//const uid = msg[uid_key] || msg._msgid\nconst date = new Date()\nconst uid = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate())).slice(-2)\n\nconst logLevel = env.get(\"logLevel\")\nconst logName = env.get(\"logName\")\nconst logPath = env.get(\"logPath\")\nconst filename = `${logName}${logLevel}.log`\nmsg.logFilePath = path.join(logPath, uid, filename)\n\nconst outputMsgObject = env.get(\"outputMsgObject\")\nconst msg2 = RED.util.cloneMessage(msg)\nif (outputMsgObject) {\n    msg2.payload = JSON.stringify(msg);\n}\n//node.name = logName\n//if (logLevel == \"info\") node.warn(msg.consoleout)\n//if (logLevel == \"warn\") node.warn(msg.consoleout)\n//if (logLevel == \"error\") node.error(msg.consoleout)\nreturn [msg,msg2];",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -698,7 +1017,7 @@
         "type": "function",
         "z": "375ee1d6cf6e3891",
         "name": "generate_url",
-        "func": "const endpointport = env.get(\"endpointport\")\n\nconst topicTicketPath = env.get(\"topicTicketPath\")\nconst topicTicket = encodeURIComponent(JSON.stringify(RED.util.getPropByPath(msg, topicTicketPath)))\n\nmsg.joburl = `http://localhost:${endpointport}/addtopic/${topicTicket}`\nmsg.topic = topicTicket\nreturn msg",
+        "func": "const endpointport = env.get(\"endpointport\")\n\nconst topicTicketPath = env.get(\"topicTicketPath\")\nconst topicTicket = encodeURIComponent(JSON.stringify(RED.util.getPropByPath(msg, topicTicketPath)))\n\nmsg.joburl = `http://localhost:${endpointport}/addtopic/${topicTicket}`\nmsg.topic = topicTicket\n\nconst status = { fill: \"green\", shape: \"dot\", text: `connect: ${msg.joburl}` }\nnode.status(status)\nmsg[`${node.name}-${node.id}`] = {\n    id: node.id,\n    name: node.name,\n    payload: topicTicket,\n    status: status\n}\n\nreturn msg",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -748,7 +1067,7 @@
         "type": "function",
         "z": "375ee1d6cf6e3891",
         "name": "JSON.parse",
-        "func": "if (msg.statusCode == \"200\") {\n    if (msg.payload) {\n        try {\n            msg.payload = JSON.parse(msg.payload)\n        } catch (error) {\n        }\n    }\n    return [msg, null]\n}else{\n\n}\n\nreturn [null, msg];",
+        "func": "if (msg.statusCode == \"200\") {\n    if (msg.payload) {\n        try {\n            msg.payload = JSON.parse(msg.payload)\n            const status = { fill: \"green\", shape: \"dot\", text: \"OK\" }\n            node.status(status)\n            msg[`${node.name}-${node.id}`] = {\n                id: node.id,\n                name: node.name,\n                payload: msg.payload,\n                status: status\n            }\n        } catch (error) {\n            const status = { fill: \"yellow\", shape: \"dot\", text: \"not json data\" }\n            node.status(status)\n            msg[`${node.name}-${node.id}`] = {\n                id: node.id,\n                name: node.name,\n                payload: msg.payload,\n                status: status\n            }\n        }\n    }\n    return [msg, null]\n} else {\n    const status = { fill: \"red\", shape: \"dot\", text: `statusCode: ${msg.statusCode}` }\n    node.status(status)\n    msg[`${node.name}-${node.id}`] = {\n        id: node.id,\n        name: node.name,\n        payload: msg.payload,\n        status: status\n    }\n}\n\nreturn [null, msg];",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -965,39 +1284,282 @@
         ]
     },
     {
-        "id": "0d530480be6a63b9",
-        "type": "inject",
-        "z": "df2ab3479f1af30a",
-        "name": "",
-        "props": [
+        "id": "3988a6601981cb5c",
+        "type": "function",
+        "z": "7e1bc880aa606898",
+        "name": "ファイル存在チェック",
+        "func": "const targetKeyPath = env.get(\"targetKeyPath\")\nconst target = RED.util.getPropByPath(msg, targetKeyPath)\n\nconst basePath = env.get(\"basePath\")\nconst targetpath = path.join(basePath, target)\n\ntry {\n    if (fs.existsSync(targetpath)) {\n        const status = { fill: \"green\", shape: \"dot\", text: `exists: ${targetpath}` }\n        node.status(status)\n        msg[`${node.name}-${node.id}`] = {\n            id: node.id,\n            name: node.name,\n            payload: `${targetpath}が見つかった`,\n            status: status\n        } \n        node.log(`${targetpath}が見つかった`)\n        return [msg, null, null]\n    } else {\n        const status = { fill: \"yellow\", shape: \"dot\", text: `not exists: ${targetpath}` }\n        node.status(status)\n        msg[`${node.name}-${node.id}`] = {\n            id: node.id,\n            name: node.name,\n            payload: `${targetpath}が見つからない`,\n            status: status\n        }\n        node.log(`${targetpath}が見つからない`)\n        return [null, msg, null]\n    }\n} catch (error) {\n    const status = { fill: \"red\", shape: \"dot\", text: `error: ${targetpath}` }\n    node.status(status)\n    msg[`${node.name}-${node.id}`] = {\n        id: node.id,\n        name: node.name,\n        payload: `error ${targetpath}`,\n        error: error,\n        status: status\n    }\n    node.error(`${targetpath} error: ${error}`, error)\n    return [null, null, msg]\n};\n\n\n\n",
+        "outputs": 3,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
             {
-                "p": "payload"
+                "var": "fs",
+                "module": "fs"
             },
             {
-                "p": "topic",
-                "vt": "str"
+                "var": "path",
+                "module": "path"
             }
         ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 140,
-        "y": 180,
+        "x": 280,
+        "y": 40,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "5f74ccae462df2fb",
+        "type": "function",
+        "z": "fb38bea55c8dc62c",
+        "name": "generate_cmd",
+        "func": "const targetkeypath = env.get(\"targetkeypath\")\nconst targetpath = RED.util.getPropByPath(msg, targetkeypath)\n\nmsg.exec = `df ${targetpath}`\nmsg._payload = msg.payload\n\nconst status = { fill: \"green\", shape: \"dot\", text: `df: ${targetpath}` }\nnode.status(status)\nmsg[`${node.name}-${node.id}`] = {\n    id: node.id,\n    name: node.name,\n    exec: msg.exec,\n    status: status\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 220,
+        "y": 40,
         "wires": [
             [
-                "d46c41bb4e879473"
+                "aefe0952138e6e84"
             ]
+        ]
+    },
+    {
+        "id": "aefe0952138e6e84",
+        "type": "exec",
+        "z": "fb38bea55c8dc62c",
+        "command": "",
+        "addpay": "exec",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 390,
+        "y": 40,
+        "wires": [
+            [
+                "ba6b06c9df74954b"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "ba6b06c9df74954b",
+        "type": "function",
+        "z": "fb38bea55c8dc62c",
+        "name": "df-parse",
+        "func": "const regex = /.*\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)%.*/\nconst match = msg.payload.match(regex)\nif (match) {\n    msg.df = {\n        match: match,\n        size: Number(match[1]),\n        used: Number(match[2]),\n        available: Number(match[3]),\n        usePer: Number(match[4])\n    }\n}\n\nmsg.payload = msg._payload\nmsg._payload = null\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 40,
+        "wires": [
+            [
+                "134a0b338a577af0"
+            ]
+        ]
+    },
+    {
+        "id": "134a0b338a577af0",
+        "type": "switch",
+        "z": "fb38bea55c8dc62c",
+        "name": "limitSize",
+        "property": "df.available",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "limitSize",
+                "vt": "env"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 700,
+        "y": 40,
+        "wires": [
+            [],
+            [
+                "f14edd24dcdf7f17"
+            ]
+        ]
+    },
+    {
+        "id": "f14edd24dcdf7f17",
+        "type": "switch",
+        "z": "fb38bea55c8dc62c",
+        "name": "isWait",
+        "property": "wait",
+        "propertyType": "env",
+        "rules": [
+            {
+                "t": "true"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 550,
+        "y": 140,
+        "wires": [
+            [
+                "6d1591ede8985f3d"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "6d1591ede8985f3d",
+        "type": "delay",
+        "z": "fb38bea55c8dc62c",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "minutes",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 220,
+        "y": 80,
+        "wires": [
+            [
+                "aefe0952138e6e84"
+            ]
+        ]
+    },
+    {
+        "id": "f7c639a74fb85c05",
+        "type": "subflow:7e1bc880aa606898",
+        "z": "974ea964a47943fe",
+        "name": "",
+        "env": [
+            {
+                "name": "targetKeyPath",
+                "value": "targetKeyPath",
+                "type": "env"
+            },
+            {
+                "name": "basePath",
+                "value": "basePath",
+                "type": "env"
+            }
+        ],
+        "x": 160,
+        "y": 80,
+        "wires": [
+            [
+                "9c960505583c108f"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "9c960505583c108f",
+        "type": "function",
+        "z": "974ea964a47943fe",
+        "name": "generate_cmd",
+        "func": "const targetKeyPath = env.get(\"targetKeyPath\")\nconst target = RED.util.getPropByPath(msg, targetKeyPath)\n\nconst basePath = env.get(\"basePath\")\nconst targetpath = path.join(basePath, target)\nmsg.targetpath = targetpath\nmsg.exec = `rm -R ${targetpath }`\nmsg._payload = msg.payload\n\nconst status = { fill: \"green\", shape: \"dot\", text: `rm: ${targetpath}` }\nnode.status(status)\nmsg[`${node.name}-${node.id}`] = {\n    id: node.id,\n    name: node.name,\n    exec: msg.exec,\n    status: status\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "path",
+                "module": "path"
+            }
+        ],
+        "x": 340,
+        "y": 40,
+        "wires": [
+            [
+                "8b14301da207b917"
+            ]
+        ]
+    },
+    {
+        "id": "8b14301da207b917",
+        "type": "exec",
+        "z": "974ea964a47943fe",
+        "command": "",
+        "addpay": "exec",
+        "append": "",
+        "useSpawn": "true",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "rm",
+        "x": 550,
+        "y": 40,
+        "wires": [
+            [],
+            [],
+            [
+                "1b9cccfd8c2489f1"
+            ]
+        ]
+    },
+    {
+        "id": "1b9cccfd8c2489f1",
+        "type": "function",
+        "z": "974ea964a47943fe",
+        "name": "status更新",
+        "func": "if (msg.payload){\n    msg.payload = msg._payload\n    msg._payload = null\n    const status = { fill: \"green\", shape: \"dot\", text: `deleted: ${msg.targetpath}` }\n    node.status(status)\n    return [msg,null]\n} else {\n    msg.payload = msg._payload\n    msg._payload = null\n    const status = { fill: \"red\", shape: \"dot\", text: `error: ${msg.targetpath}` }\n    node.status(status)\n    return [null,msg]\n\n}\n\n",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 100,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "396a04d644c222e2",
+        "type": "status",
+        "z": "974ea964a47943fe",
+        "name": "",
+        "scope": null,
+        "x": 710,
+        "y": 40,
+        "wires": [
+            []
         ]
     },
     {
         "id": "d46c41bb4e879473",
         "type": "exec",
         "z": "df2ab3479f1af30a",
-        "command": "node /data/modules/sample/index.bundle.js",
+        "command": "ls",
         "addpay": "",
         "append": "",
         "useSpawn": "true",
@@ -1006,7 +1568,7 @@
         "oldrc": false,
         "name": "sample",
         "x": 360,
-        "y": 180,
+        "y": 220,
         "wires": [
             [
                 "b4b4337bfcc87233"
@@ -1023,11 +1585,13 @@
         "z": "df2ab3479f1af30a",
         "name": "",
         "x": 140,
-        "y": 260,
+        "y": 220,
         "wires": [
             [
-                "d46c41bb4e879473"
-            ]
+                "d46c41bb4e879473",
+                "6a3916660ae36eaa"
+            ],
+            []
         ]
     },
     {
@@ -1042,12 +1606,13 @@
                 "type": "str"
             }
         ],
-        "x": 580,
+        "x": 600,
         "y": 260,
         "wires": [
             [
                 "6776d12a2ebbf75c"
-            ]
+            ],
+            []
         ]
     },
     {
@@ -1067,11 +1632,11 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 180,
-        "y": 360,
+        "x": 140,
+        "y": 400,
         "wires": [
             [
-                "626247b18fb2289b"
+                "e1450f76bed686ad"
             ]
         ]
     },
@@ -1080,15 +1645,16 @@
         "type": "subflow:375ee1d6cf6e3891",
         "z": "df2ab3479f1af30a",
         "name": "",
-        "x": 520,
-        "y": 360,
+        "x": 560,
+        "y": 400,
         "wires": [
             [
                 "746d5d124bfb973e"
             ],
             [
                 "746d5d124bfb973e"
-            ]
+            ],
+            []
         ]
     },
     {
@@ -1096,8 +1662,8 @@
         "type": "subflow:cd185f8f533e0f2d",
         "z": "df2ab3479f1af30a",
         "name": "",
-        "x": 750,
-        "y": 180,
+        "x": 830,
+        "y": 220,
         "wires": [
             [
                 "3532a4502f4685c9"
@@ -1109,7 +1675,7 @@
         "type": "subflow:cd185f8f533e0f2d",
         "z": "df2ab3479f1af30a",
         "name": "",
-        "x": 750,
+        "x": 830,
         "y": 260,
         "wires": [
             [
@@ -1130,10 +1696,10 @@
             }
         ],
         "x": 750,
-        "y": 360,
+        "y": 400,
         "wires": [
             [
-                "3532a4502f4685c9"
+                "d0e39c04e1684a28"
             ]
         ]
     },
@@ -1150,8 +1716,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 980,
-        "y": 280,
+        "x": 1020,
+        "y": 220,
         "wires": []
     },
     {
@@ -1159,14 +1725,18 @@
         "type": "subflow:45018afdb676ae24",
         "z": "df2ab3479f1af30a",
         "name": "",
-        "x": 350,
-        "y": 80,
+        "x": 850,
+        "y": 120,
         "wires": [
             [
                 "2fc79c975fef23fe"
             ],
-            [],
-            []
+            [
+                "b0ca525d34e75e9a"
+            ],
+            [
+                "b0ca525d34e75e9a"
+            ]
         ]
     },
     {
@@ -1176,11 +1746,12 @@
         "name": "",
         "props": [
             {
-                "p": "payload"
+                "p": "topic",
+                "vt": "str"
             },
             {
-                "p": "topicTicket",
-                "v": "{     \"topic\": \"topic1\",     \"param\": {},     \"uuid\": \"1\",     \"status\": \"in-progress\",     \"workerName\": \"localhost\" }",
+                "p": "payload.list",
+                "v": "[\"A0000_0000\",\"B0000_0000\"]",
                 "vt": "json"
             }
         ],
@@ -1188,14 +1759,12 @@
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 140,
-        "y": 80,
+        "topic": "topic",
+        "x": 110,
+        "y": 120,
         "wires": [
             [
-                "81fdb8dcd847065f"
+                "a345e33e54e20d4f"
             ]
         ]
     },
@@ -1208,11 +1777,530 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1020,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "a345e33e54e20d4f",
+        "type": "subflow:2af088b891412a7f",
+        "z": "df2ab3479f1af30a",
+        "name": "",
+        "x": 240,
+        "y": 120,
+        "wires": [
+            [
+                "1c2685b3f1cef524"
+            ]
+        ]
+    },
+    {
+        "id": "1c2685b3f1cef524",
+        "type": "subflow:28b838dd0d60646d",
+        "z": "df2ab3479f1af30a",
+        "name": "",
+        "x": 420,
+        "y": 120,
+        "wires": [
+            [
+                "4d6cdac1dfe81471"
+            ]
+        ]
+    },
+    {
+        "id": "4d6cdac1dfe81471",
+        "type": "change",
+        "z": "df2ab3479f1af30a",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topicTicket.topic",
+                "pt": "msg",
+                "to": "topic",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 650,
+        "y": 120,
+        "wires": [
+            [
+                "81fdb8dcd847065f"
+            ]
+        ]
+    },
+    {
+        "id": "b0ca525d34e75e9a",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1020,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "4d65cd8951821aec",
+        "type": "comment",
+        "z": "df2ab3479f1af30a",
+        "name": "お試し実行用",
+        "info": "",
+        "x": 110,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "6a3916660ae36eaa",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "e1450f76bed686ad",
+        "type": "subflow:28b838dd0d60646d",
+        "z": "df2ab3479f1af30a",
+        "name": "",
+        "env": [
+            {
+                "name": "jobsessionPath",
+                "value": "payload.topic.param.jobsession",
+                "type": "str"
+            }
+        ],
+        "x": 360,
+        "y": 400,
+        "wires": [
+            [
+                "626247b18fb2289b"
+            ]
+        ]
+    },
+    {
+        "id": "2a0de9998d7598e4",
+        "type": "inject",
+        "z": "df2ab3479f1af30a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "package.json",
+        "payloadType": "str",
+        "x": 130,
+        "y": 500,
+        "wires": [
+            [
+                "e56b1e23024302f7"
+            ]
+        ]
+    },
+    {
+        "id": "a982b15583aae501",
+        "type": "comment",
+        "z": "df2ab3479f1af30a",
+        "name": "処理本体",
+        "info": "",
+        "x": 100,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "5b510c9ce657f7f5",
+        "type": "comment",
+        "z": "df2ab3479f1af30a",
+        "name": "JOBcontrollerにtopicの登録",
+        "info": "",
+        "x": 150,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "d0e39c04e1684a28",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "e56b1e23024302f7",
+        "type": "subflow:7e1bc880aa606898",
+        "z": "df2ab3479f1af30a",
+        "name": "",
+        "env": [
+            {
+                "name": "basePath",
+                "value": "/data",
+                "type": "str"
+            }
+        ],
+        "x": 340,
+        "y": 500,
+        "wires": [
+            [
+                "daebeebe1b9ddbb3"
+            ],
+            [
+                "ce0c705328fba68c"
+            ],
+            [
+                "930aba0af7454893"
+            ]
+        ]
+    },
+    {
+        "id": "daebeebe1b9ddbb3",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "found",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 550,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "ce0c705328fba68c",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "not found",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "930aba0af7454893",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "772b7f4a48a4a706",
+        "type": "inject",
+        "z": "df2ab3479f1af30a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "/data/",
+        "payloadType": "str",
+        "x": 110,
+        "y": 640,
+        "wires": [
+            [
+                "a73297dba7c1e057"
+            ]
+        ]
+    },
+    {
+        "id": "0410e76b58dd387e",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "debug 9",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "7b3fb522c1bb306b",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "debug 10",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "a73297dba7c1e057",
+        "type": "subflow:fb38bea55c8dc62c",
+        "z": "df2ab3479f1af30a",
+        "name": "",
+        "x": 340,
+        "y": 640,
+        "wires": [
+            [
+                "0410e76b58dd387e"
+            ],
+            [
+                "7b3fb522c1bb306b"
+            ]
+        ]
+    },
+    {
+        "id": "c1eff2029685b118",
+        "type": "inject",
+        "z": "df2ab3479f1af30a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "fuga.json",
+        "payloadType": "str",
+        "x": 120,
+        "y": 740,
+        "wires": [
+            [
+                "6691746e36245a78"
+            ]
+        ]
+    },
+    {
+        "id": "fbf8422bc8cc93d1",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "success",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "f0ae25dd6142cc53",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "not found",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "c2d1d999ccc77b68",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "error",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 550,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "6691746e36245a78",
+        "type": "subflow:974ea964a47943fe",
+        "z": "df2ab3479f1af30a",
+        "name": "",
+        "env": [
+            {
+                "name": "targetKeyPath",
+                "value": "payload",
+                "type": "str"
+            },
+            {
+                "name": "basePath",
+                "value": "/data",
+                "type": "str"
+            }
+        ],
+        "x": 340,
+        "y": 740,
+        "wires": [
+            [
+                "fbf8422bc8cc93d1"
+            ],
+            [
+                "f0ae25dd6142cc53"
+            ],
+            [
+                "c2d1d999ccc77b68"
+            ],
+            [
+                "2c8b969635fc13ac"
+            ]
+        ]
+    },
+    {
+        "id": "2c8b969635fc13ac",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "debug 14",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "8e928aca2d2c53c8",
+        "type": "file",
+        "z": "df2ab3479f1af30a",
+        "name": "",
+        "filename": "/data/fuga.json",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 360,
+        "y": 880,
+        "wires": [
+            [
+                "057f68a96810ac99"
+            ]
+        ]
+    },
+    {
+        "id": "e067482774b93215",
+        "type": "inject",
+        "z": "df2ab3479f1af30a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 880,
+        "wires": [
+            [
+                "8e928aca2d2c53c8"
+            ]
+        ]
+    },
+    {
+        "id": "057f68a96810ac99",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "debug 15",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 580,
-        "y": 60,
+        "x": 560,
+        "y": 880,
         "wires": []
     }
 ]
