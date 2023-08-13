@@ -11,7 +11,7 @@
         "id": "56d4506243eb3bc8",
         "type": "subflow",
         "name": "job-start-endpoint",
-        "info": "",
+        "info": "rpc-asyncを受信します\r\n\r\n## **description**\r\nrpc-asyncで呼び出されるコールバック式の非同期WebAPIのendpointです  \r\n\r\nこのWebAPIでは双方向のWebAPIコールによって実現します  \r\nしたがって双方でendpointが公開可能な環境向けとしてlocalhost内でのみ動作します  \r\n\r\nこの処理によってWebAPIをコールされた時に、コールバック用のURLが渡されます  \r\nコールバックURLにアクセスすることによって処理が完了します  \r\n\r\n## **env**\r\n- **HOSTNAME**: 自分のホスト名を定義 \r\n- **NODE_RED_VERSION**:自分のNODE-REDのVERSIONを指定します   \r\n\r\n## **global**\r\nなし\r\n\r\n## **properties**\r\n- **actionType**: 処理の種別を指定します \r\n\r\n\r\n## **data structure**\r\n- **topicTicket**: json形式の下記を含んだ構造体\r\n```\r\ntopicTicket = {\r\n    topic: topicName,\r\n    uuid: RED.util.procuuid //クライアントのUUID\r\n}\r\n\r\n```\r\n## **input msg**\r\nなし\r\n\r\n## **output msg**\r\n`msg.req.params.topicTicket`: topicTicketデータ  \r\n`msg.topicTicket`: topicTicketデータ、JSON.parse(msg.req.params.topicTicket)  \r\n`msg.callbackhost`: コールバック用のURL  \r\n`msg.req.headers.x-callback`: コールバック用のURL  \r\n\r\n\r\n## **Receive Request**\r\nx-callbackで送信したURLで待機します。  \r\nGET  \r\n`/${actionType}/:topicTicket`  \r\n\r\n\r\n## **Receive Request header**\r\nなし\r\n\r\n## **Receive Response**\r\nJSON形式で下記を返却します\r\n```\r\n{\r\n    \"HOSTNAME\": env.get(\"HOSTNAME\"),\r\n    \"NODE_RED_VERSION\": env.get(\"NODE_RED_VERSION\"),\r\n    \"topicTicket\": msg.topicTicket,\r\n    \"callbackhost\": msg.callbackhost\r\n}\r\n```\r\n\r\n",
         "category": "job",
         "in": [],
         "out": [
@@ -80,7 +80,7 @@
         "id": "a054d80f86a78547",
         "type": "subflow",
         "name": "job-end-callback",
-        "info": "",
+        "info": "rpc-asyncにコールバックを送信します\r\n\r\n## **description**\r\nrpc-asyncで呼び出されるコールバック式の非同期WebAPIのコールバック処理です  \r\n\r\nこのWebAPIでは双方向のWebAPIコールによって実現します  \r\nしたがって双方でendpointが公開可能な環境向けとしてlocalhost内でのみ動作します  \r\n\r\nrpc-asyncによってWebAPIをコールされた時に、job-start-endpointにコールバック用のURLが渡されます  \r\nコールバックURLにアクセスすることによって処理が完了します  \r\n\r\n## **env**\r\n- **HOSTNAME**: 自分のホスト名を定義 \r\n- **NODE_RED_VERSION**:自分のNODE-REDのVERSIONを指定します   \r\n\r\n## **global**\r\nなし\r\n\r\n## **properties**\r\n- **topicTicket_key**: 処理の種別を指定します \r\n- **callbackPath**: msg配下のcallbackURLが格納されている場所を指定します  \r\n\r\n## **data structure**\r\nなし\r\n\r\n## **input msg**\r\nなし\r\n\r\n## **output msg**\r\n`msg.callbackhost`: コールバック用のURL  \r\n\r\n## **Receive Request**\r\nx-callbackで送信したURLにアクセスします\r\n\r\n## **Receive Request header**\r\nなし\r\n\r\n## **Receive Response**\r\nJSON形式で下記を返却します\r\n```\r\n{\r\n    \"HOSTNAME\": env.get(\"HOSTNAME\"),\r\n    \"NODE_RED_VERSION\": env.get(\"NODE_RED_VERSION\"),\r\n    \"topic\": msg.topic,\r\n    \"uuid\": msg.uuid\r\n}\r\n```\r\n\r\n",
         "category": "job",
         "in": [
             {
@@ -420,7 +420,7 @@
         "id": "2af088b891412a7f",
         "type": "subflow",
         "name": "split-array",
-        "info": "",
+        "info": "リストを分解して、後続に送ります\r\n\r\n## **description**\r\n\r\n\r\n## **env**\r\nなし \r\n\r\n## **global**\r\nなし  \r\n\r\n## **properties**\r\n- **inputArrayPath**: msg配下の対象のArrayの場所を指定します \r\n- **outputPath**: 分解した要素を格納するmsg配下の場所を指定します \r\n \r\n## data structure\r\nなし \r\n\r\n## **input msg**\r\nなし\r\n\r\n## **output msg**\r\noutputPathで指定した場所に要素が追加されます。\r\n",
         "category": "sequence",
         "in": [
             {
@@ -470,7 +470,7 @@
         "id": "28b838dd0d60646d",
         "type": "subflow",
         "name": "set-jobsession",
-        "info": "",
+        "info": "jobsessionを生成します。\r\n\r\n## **description**\r\nyyyymmdd形式のIDを生成します。\r\n\r\n## **env**\r\nなし \r\n\r\n## **global**\r\nなし  \r\n\r\n## **properties**\r\nなし \r\n \r\n## data structure\r\nなし \r\n\r\n## **input msg**\r\nなし\r\n\r\n## **output msg**\r\n`msg.topicTicket.param.jobsession`にIDが追加されます。\r\n",
         "category": "job",
         "in": [
             {
@@ -1271,7 +1271,7 @@
         "type": "function",
         "z": "28b838dd0d60646d",
         "name": "set-jobsession",
-        "func": "const date = new Date()\nconst jobsession = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate() + 1)).slice(-2)\nconst jobsessionPath = env.get(\"jobsessionPath\") //ex.msg.payload.topic \nreturn RED.util.setPropByPath(msg, jobsessionPath, jobsession)\n",
+        "func": "const date = new Date()\nconst jobsession = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate())).slice(-2)\nconst jobsessionPath = env.get(\"jobsessionPath\") //ex.msg.payload.topic \nreturn RED.util.setPropByPath(msg, jobsessionPath, jobsession)\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",

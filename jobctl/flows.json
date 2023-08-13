@@ -1125,7 +1125,13 @@
                 ]
             }
         ],
-        "env": [],
+        "env": [
+            {
+                "name": "jobsessionPath",
+                "type": "str",
+                "value": "topicTicket.param.jobsession"
+            }
+        ],
         "meta": {},
         "color": "#DEB887",
         "icon": "font-awesome/fa-plus-circle"
@@ -1756,7 +1762,7 @@
         "type": "function",
         "z": "b1626fc28a971f31",
         "name": "split-array",
-        "func": "\nconst inputArrayPath = env.get(\"inputArrayPath\") //ex.msg.payload.topic \nconst list = RED.util.getPropByPath(msg, inputArrayPath)//{topic: \"\",param: { }}\nconst outputPath = env.get(\"outputPath\") //ex.msg.payload.topic \n\nfor (const key in list) {\n    const retmsg = RED.util.setPropByPath(msg, outputPath, list[key])\n    node.send(retmsg);\n}\n\n//node.done();\nreturn;",
+        "func": "const inputArrayPath = env.get(\"inputArrayPath\") //ex.msg.payload.topic \nconst list = RED.util.getPropByPath(msg, inputArrayPath)//{topic: \"\",param: { }}\nconst outputPath = env.get(\"outputPath\") //ex.msg.payload.topic \n\nfor (const key in list) {\n    const retmsg = RED.util.setPropByPath(msg, outputPath, list[key])\n    node.send(retmsg);\n}\n\n//node.done();\nreturn;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -3120,7 +3126,7 @@
         "type": "function",
         "z": "2d6a615a0f89e919",
         "name": "set-jobsession",
-        "func": "\nconst date = new Date()\nconst jobsession = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate())).slice(-2)\n\nconst retmsg = RED.util.setPropByPath(msg, \"topicTicket.param.jobsession\", jobsession)\nreturn retmsg",
+        "func": "const date = new Date()\nconst jobsession = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate())).slice(-2)\nconst jobsessionPath = env.get(\"jobsessionPath\") //ex.msg.payload.topic \nreturn RED.util.setPropByPath(msg, jobsessionPath, jobsession)\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
