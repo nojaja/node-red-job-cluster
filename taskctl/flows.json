@@ -57,7 +57,7 @@
             {
                 "name": "endpoint",
                 "type": "env",
-                "value": "/${actionType}/:topicTicket",
+                "value": "/${actionType}",
                 "ui": {
                     "type": "hide"
                 }
@@ -74,7 +74,17 @@
             "payload",
             "trace-log"
         ],
-        "icon": "node-red/inject.svg"
+        "icon": "node-red/inject.svg",
+        "status": {
+            "x": 920,
+            "y": 340,
+            "wires": [
+                {
+                    "id": "28d5262e05defa33",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "a054d80f86a78547",
@@ -142,7 +152,17 @@
             "payload",
             "trace-log"
         ],
-        "icon": "node-red/arrow-in.svg"
+        "icon": "node-red/arrow-in.svg",
+        "status": {
+            "x": 740,
+            "y": 160,
+            "wires": [
+                {
+                    "id": "e995ca91841e987f",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "cd185f8f533e0f2d",
@@ -327,13 +347,23 @@
             "Failed",
             "trace-log"
         ],
-        "icon": "node-red/arrow-in.svg"
+        "icon": "node-red/arrow-in.svg",
+        "status": {
+            "x": 820,
+            "y": 220,
+            "wires": [
+                {
+                    "id": "bbfe9b0496ec60b7",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "45018afdb676ae24",
         "type": "subflow",
-        "name": "job-execute",
-        "info": "",
+        "name": "rpc-async",
+        "info": "WebAPIをコールバック式の非同期でコールします\r\n\r\n## **description**\r\ntask execなどローカル内での呼び出しに利用  \r\n\r\nこのWebAPIでは双方向のWebAPIコールによって実現します  \r\nしたがって双方でendpointが公開可能な環境向けとしてlocalhost内でのみ動作します  \r\n\r\nこの処理によってWebAPIをコールすると相手には、コールバック用のURLが通知されます  \r\n相手は受け取ったコールバックURLにアクセスすることによって処理が完了します  \r\n\r\n## **env**\r\n- **HOSTNAME**: 自分のホスト名を定義 \r\n- **PORT**: 自分のポートを定義 \r\n- **NODE_RED_VERSION**:自分のNODE-REDのVERSIONを指定します   \r\n\r\n## **global**\r\nなし\r\n\r\n## **properties**\r\n- **actionType**: 処理の種別を指定します \r\n- **topicTicket_key**: msg直下のtopicTicketのkey名を指定します  \r\n- **endpointport**: 呼び出し先のポートを定義します \r\n\r\n## **data structure**\r\n- **topicTicket**: json形式の下記を含んだ構造体\r\n```\r\ntopicTicket = {\r\n    topic: topicName,\r\n    uuid: RED.util.procuuid //クライアントのUUID\r\n}\r\n\r\n```\r\n\r\n## **Send Request**\r\nGET  \r\n`http://localhost:${endpointport}/${actionType}/${topicTicket}`  \r\ntopicTicketはJSON.stringify()された文字列  \r\n\r\n## **Send Request header**\r\n- **x-callback**:  \r\n```\r\nhttp://localhost:${PORT}/callback/${topicTicket.topic}/${topicTicket.uuid}\r\n```\r\n\r\n## **Send Response**\r\nJSON形式として\r\n```\r\n{\r\n    \"HOSTNAME\": env.get(\"HOSTNAME\"),\r\n    \"NODE_RED_VERSION\": env.get(\"NODE_RED_VERSION\"),\r\n    \"topicTicket\": msg.topicTicket,\r\n    \"callbackhost\": msg.callbackhost\r\n}\r\n```\r\nといった内容を期待します。  \r\n受信データは\r\n```\r\nmsg.payload = JSON.parse(msg.payload)\r\n```\r\nを行います\r\n\r\n## **Receive Request**\r\nx-callbackで送信したURLで待機します。  \r\nGET  \r\n`http://localhost:${port}/callback/${topic}/${uuid}`  \r\n結果の精査は特に行いません。\r\n\r\n## **Receive Request header**\r\nなし\r\n\r\n## **Receive Response**\r\nJSON形式で下記を返却します\r\n```\r\n{\r\n    \"HOSTNAME\": env.get(\"HOSTNAME\"),\r\n    \"NODE_RED_VERSION\": env.get(\"NODE_RED_VERSION\"),\r\n    \"topic\": msg.topic,\r\n    \"uuid\": msg.uuid\r\n}\r\n```\r\n",
         "category": "job",
         "in": [
             {
@@ -412,9 +442,20 @@
         "color": "#A6BBCF",
         "outputLabels": [
             "OK",
-            "NG"
+            "NG",
+            ""
         ],
-        "icon": "node-red/link-out.svg"
+        "icon": "node-red/link-out.svg",
+        "status": {
+            "x": 800,
+            "y": 380,
+            "wires": [
+                {
+                    "id": "1e30dda2b9e0fcba",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "2af088b891412a7f",
@@ -464,13 +505,23 @@
             "license": "MIT"
         },
         "color": "#E2D96E",
-        "icon": "node-red/split.svg"
+        "icon": "node-red/split.svg",
+        "status": {
+            "x": 360,
+            "y": 120,
+            "wires": [
+                {
+                    "id": "ff7ea1439bf6d7d3",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "28b838dd0d60646d",
         "type": "subflow",
         "name": "set-jobsession",
-        "info": "jobsessionを生成します。\r\n\r\n## **description**\r\nyyyymmdd形式のIDを生成します。\r\n\r\n## **env**\r\nなし \r\n\r\n## **global**\r\nなし  \r\n\r\n## **properties**\r\nなし \r\n \r\n## data structure\r\nなし \r\n\r\n## **input msg**\r\nなし\r\n\r\n## **output msg**\r\n`msg.topicTicket.param.jobsession`にIDが追加されます。\r\n",
+        "info": "jobsessionを生成します。\r\n\r\n## **description**\r\nyyyymmddhh24形式のIDを生成します。\r\n\r\n## **env**\r\nなし \r\n\r\n## **global**\r\nなし  \r\n\r\n## **properties**\r\nなし \r\n \r\n## data structure\r\nなし \r\n\r\n## **input msg**\r\nなし\r\n\r\n## **output msg**\r\n`msg.topicTicket.param.jobsession`にIDが追加されます。\r\n",
         "category": "job",
         "in": [
             {
@@ -509,13 +560,23 @@
             "license": "MIT"
         },
         "color": "#DEB887",
-        "icon": "font-awesome/fa-plus-circle"
+        "icon": "font-awesome/fa-plus-circle",
+        "status": {
+            "x": 320,
+            "y": 120,
+            "wires": [
+                {
+                    "id": "d889d71acabee873",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "7e1bc880aa606898",
         "type": "subflow",
         "name": "exists-file",
-        "info": "",
+        "info": "ファイルもしくはフォルダの存在チェックをします  \r\n\r\n## **description**\r\nファイルもしくはフォルダの存在チェックをします \r\n\r\n## **env**\r\nなし \r\n\r\n## **global**\r\nなし  \r\n\r\n## **properties**\r\n- **targetKeyPath **: msg配下の、親フォルダ配下のpath、もしくはファイル名が格納されている 変数の場所を指定します  \r\n- **basePath **: 親フォルダを指定します  \r\n\r\n## data structure\r\nなし \r\n\r\n## **input msg**\r\nなし\r\n\r\n## **output msg**\r\n### output1\r\n対象が見つかった場合に出力されます  \r\n\r\n`msg[node.name-node.id}`にステータスが格納されます \r\n\r\n### output2\r\n対象が見つからない場合に出力されます  \r\n設定値はoutput1と同じです\r\n\r\n### output3\r\nトレースログを出力します  \r\n",
         "category": "job",
         "in": [
             {
@@ -584,13 +645,23 @@
             "not found",
             "trace-log"
         ],
-        "icon": "node-red/watch.svg"
+        "icon": "node-red/watch.svg",
+        "status": {
+            "x": 520,
+            "y": 220,
+            "wires": [
+                {
+                    "id": "b9c2875a59bb3c60",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "fb38bea55c8dc62c",
         "type": "subflow",
         "name": "store-limit",
-        "info": "",
+        "info": "空き容量で流量を制御します\r\n\r\n## **description**\r\n空き容量が指定したサイズ以下の場合にoutput1を返します  \r\n実行にはdfコマンドが必要です  \r\n## **env**\r\nなし \r\n\r\n## **global**\r\nなし  \r\n\r\n## **properties**\r\n- **targetkeypath **: msg配下のtargetのフォルダのpathが格納されている場所を指定  \r\n- **limitSize **: output1を返す容量を設定します、byte指定  \r\n- **wait **: 容量が足りない場合に待つかどうかを指定しますtrueの場合は5分間隔でチェックします  \r\n \r\n## data structure\r\nなし \r\n\r\n## **input msg**\r\nなし\r\n\r\n## **output msg**\r\n### output1\r\n容量が設定値以上あった場合に出力されます\r\n\r\n`msg.df`にdfの結果が格納されます  \r\n```\r\n{\r\n        size: Number(match[1]),\r\n        used: Number(match[2]),\r\n        available: Number(match[3]),\r\n        usePer: Number(match[4])\r\n    }\r\n```  \r\n`msg.exec`に実行したコマンドが格納されます  \r\n`msg[node.name-node.id}`にステータスが格納されます  \r\n`msg._payload`の内容は消去されます   \r\n\r\n### output2\r\n容量が設定値以下場合に出力されます\r\n設定値はoutput1と同じです\r\n\r\n\r\n",
         "category": "job",
         "in": [
             {
@@ -609,7 +680,7 @@
                 "y": 40,
                 "wires": [
                     {
-                        "id": "134a0b338a577af0",
+                        "id": "ba6b06c9df74954b",
                         "port": 0
                     }
                 ]
@@ -619,7 +690,7 @@
                 "y": 100,
                 "wires": [
                     {
-                        "id": "134a0b338a577af0",
+                        "id": "ba6b06c9df74954b",
                         "port": 1
                     }
                 ]
@@ -627,7 +698,7 @@
         ],
         "env": [
             {
-                "name": "targetkeypath",
+                "name": "targetKeyPath",
                 "type": "str",
                 "value": "payload"
             },
@@ -649,13 +720,23 @@
             "license": "MIT"
         },
         "color": "#E6E0F8",
-        "icon": "node-red/trigger.svg"
+        "icon": "node-red/trigger.svg",
+        "status": {
+            "x": 600,
+            "y": 200,
+            "wires": [
+                {
+                    "id": "161e3e352b026761",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "974ea964a47943fe",
         "type": "subflow",
         "name": "remove-file",
-        "info": "",
+        "info": "ファイルもしくはフォルダを削除します\r\n\r\n## **description**\r\n指定したファイル、フォルダを削除します  \r\n実行にはrmコマンドが必要です  \r\n\r\n## **env**\r\nなし \r\n\r\n## **global**\r\nなし  \r\n\r\n## **properties**\r\n- **targetKeyPath **: msg配下の、親フォルダ配下のpath、もしくはファイル名が格納されている 変数の場所を指定します  \r\n- **basePath **: 親フォルダを指定します  \r\n\r\n## data structure\r\nなし \r\n\r\n## **input msg**\r\nなし\r\n\r\n## **output msg**\r\n### output1\r\n削除に成功した場合に出力されます  \r\n\r\n`msg.targetpath`に削除対象のpathが格納されます\r\n`msg.exec`に実行したコマンドが格納されます  \r\n`msg[node.name-node.id}`にステータスが格納されます  \r\n`msg._payload`の内容は消去されます   \r\n\r\n### output2\r\n削除対象が見つからない場合に出力されます  \r\n設定値はoutput1と同じです\r\n\r\n### output3\r\n削除に失敗した場合に出力されます  \r\n設定値はoutput1と同じです\r\n\r\n### output4\r\nトレースログを出力します  \r\n",
         "category": "job",
         "in": [
             {
@@ -769,10 +850,10 @@
         "z": "56d4506243eb3bc8",
         "name": "",
         "url": "${endpoint}",
-        "method": "get",
+        "method": "post",
         "upload": false,
         "swaggerDoc": "",
-        "x": 120,
+        "x": 130,
         "y": 160,
         "wires": [
             [
@@ -790,7 +871,7 @@
                 "t": "set",
                 "p": "topicTicket",
                 "pt": "msg",
-                "to": "req.params.topicTicket",
+                "to": "req.body",
                 "tot": "msg"
             },
             {
@@ -849,7 +930,7 @@
         "type": "function",
         "z": "56d4506243eb3bc8",
         "name": "JSON.parse",
-        "func": "if (msg.topicTicket) {\n    try {\n        msg.payload = JSON.parse(msg.topicTicket)\n        const status = { fill: \"green\", shape: \"dot\", text: \"OK\"}\n        node.status(status)\n        msg[`${node.name}-${node.id}`] = {\n            id: node.id,\n            name: node.name,\n            payload: msg.payload,\n            status: status\n        }\n    } catch (error) {\n        const status = { fill: \"yellow\", shape: \"dot\", text: \"not json data\" }\n        node.status(status)\n        msg[`${node.name}-${node.id}`] = {\n            id: node.id,\n            name: node.name,\n            payload: msg.payload,\n            status: status\n        }\n    }\n}\n\nreturn msg;",
+        "func": "if (msg.topicTicket) {\n    try {\n        msg.payload = JSON.parse(msg.topicTicket)\n        const status = { fill: \"green\", shape: \"dot\", text: `target: ${msg.payload.param.target}`}\n        node.status(status)\n        msg[`${node.name}-${node.id}`] = {\n            id: node.id,\n            name: node.name,\n            payload: msg.payload,\n            status: status\n        }\n    } catch (error) {\n        const status = { fill: \"yellow\", shape: \"dot\", text: \"not json data\" }\n        node.status(status)\n        msg[`${node.name}-${node.id}`] = {\n            id: node.id,\n            name: node.name,\n            payload: msg.payload,\n            status: status\n        }\n    }\n}\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -861,6 +942,18 @@
             [
                 "8b8aaab557a380be"
             ]
+        ]
+    },
+    {
+        "id": "28d5262e05defa33",
+        "type": "status",
+        "z": "56d4506243eb3bc8",
+        "name": "",
+        "scope": null,
+        "x": 770,
+        "y": 340,
+        "wires": [
+            []
         ]
     },
     {
@@ -900,6 +993,20 @@
         "headers": [],
         "x": 440,
         "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e995ca91841e987f",
+        "type": "status",
+        "z": "a054d80f86a78547",
+        "name": "",
+        "scope": [
+            "c36d55d859478eea"
+        ],
+        "x": 600,
+        "y": 160,
         "wires": [
             []
         ]
@@ -1017,7 +1124,7 @@
         "type": "function",
         "z": "375ee1d6cf6e3891",
         "name": "generate_url",
-        "func": "const endpointport = env.get(\"endpointport\")\n\nconst topicTicketPath = env.get(\"topicTicketPath\")\nconst topicTicket = encodeURIComponent(JSON.stringify(RED.util.getPropByPath(msg, topicTicketPath)))\n\nmsg.joburl = `http://localhost:${endpointport}/addtopic/${topicTicket}`\nmsg.topic = topicTicket\n\nconst status = { fill: \"green\", shape: \"dot\", text: `connect: ${msg.joburl}` }\nnode.status(status)\nmsg[`${node.name}-${node.id}`] = {\n    id: node.id,\n    name: node.name,\n    payload: topicTicket,\n    status: status\n}\n\nreturn msg",
+        "func": "const endpointport = env.get(\"endpointport\")\n\nconst topicTicketPath = env.get(\"topicTicketPath\")\n//const topicTicket = encodeURIComponent(JSON.stringify(RED.util.getPropByPath(msg, topicTicketPath)))\nmsg.payload = JSON.stringify(RED.util.getPropByPath(msg, topicTicketPath))\n//msg.joburl = `http://localhost:${endpointport}/addtopic/${topicTicket}`\nmsg.joburl = `http://localhost:${endpointport}/addtopic`\n//msg.topic = topicTicket\n\nconst status = { fill: \"green\", shape: \"dot\", text: `connect: ${msg.joburl}` }\nnode.status(status)\nmsg[`${node.name}-${node.id}`] = {\n    id: node.id,\n    name: node.name,\n    payload: msg.payload,\n    status: status\n}\n\nreturn msg",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1036,7 +1143,7 @@
         "type": "http request",
         "z": "375ee1d6cf6e3891",
         "name": "",
-        "method": "GET",
+        "method": "POST",
         "ret": "txt",
         "paytoqs": "ignore",
         "url": "{{{joburl}}}",
@@ -1046,14 +1153,7 @@
         "insecureHTTPParser": false,
         "authType": "",
         "senderr": false,
-        "headers": [
-            {
-                "keyType": "other",
-                "keyValue": "x-topic",
-                "valueType": "msg",
-                "valueValue": "topic"
-            }
-        ],
+        "headers": [],
         "x": 370,
         "y": 80,
         "wires": [
@@ -1067,7 +1167,7 @@
         "type": "function",
         "z": "375ee1d6cf6e3891",
         "name": "JSON.parse",
-        "func": "if (msg.statusCode == \"200\") {\n    if (msg.payload) {\n        try {\n            msg.payload = JSON.parse(msg.payload)\n            const status = { fill: \"green\", shape: \"dot\", text: \"OK\" }\n            node.status(status)\n            msg[`${node.name}-${node.id}`] = {\n                id: node.id,\n                name: node.name,\n                payload: msg.payload,\n                status: status\n            }\n        } catch (error) {\n            const status = { fill: \"yellow\", shape: \"dot\", text: \"not json data\" }\n            node.status(status)\n            msg[`${node.name}-${node.id}`] = {\n                id: node.id,\n                name: node.name,\n                payload: msg.payload,\n                status: status\n            }\n        }\n    }\n    return [msg, null]\n} else {\n    const status = { fill: \"red\", shape: \"dot\", text: `statusCode: ${msg.statusCode}` }\n    node.status(status)\n    msg[`${node.name}-${node.id}`] = {\n        id: node.id,\n        name: node.name,\n        payload: msg.payload,\n        status: status\n    }\n}\n\nreturn [null, msg];",
+        "func": "if (msg.statusCode == \"200\") {\n    if (msg.payload && (typeof msg.payload === \"string\" || msg.payload instanceof String)) {\n        try {\n            msg.payload = JSON.parse(msg.payload)\n            const status = { fill: \"green\", shape: \"dot\", text: `${msg.payload.topic.topic}` }\n            node.status(status)\n            msg[`${node.name}-${node.id}`] = {\n                id: node.id,\n                name: node.name,\n                payload: msg.payload,\n                status: status\n            }\n        } catch (error) {\n            const status = { fill: \"yellow\", shape: \"dot\", text: \"not json data\" }\n            node.status(status)\n            msg[`${node.name}-${node.id}`] = {\n                id: node.id,\n                name: node.name,\n                payload: msg.payload,\n                status: status\n            }\n        }\n    } else {\n        const status = { fill: \"green\", shape: \"dot\", text: `${msg.payload.topic.topic}` }\n        node.status(status)\n\n    }\n    return [msg, null]\n} else {\n    const status = { fill: \"red\", shape: \"dot\", text: `statusCode: ${msg.statusCode}` }\n    node.status(status)\n    msg[`${node.name}-${node.id}`] = {\n        id: node.id,\n        name: node.name,\n        payload: msg.payload,\n        status: status\n    }\n}\n\nreturn [null, msg];",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -1077,6 +1177,18 @@
         "y": 80,
         "wires": [
             [],
+            []
+        ]
+    },
+    {
+        "id": "bbfe9b0496ec60b7",
+        "type": "status",
+        "z": "375ee1d6cf6e3891",
+        "name": "",
+        "scope": null,
+        "x": 710,
+        "y": 220,
+        "wires": [
             []
         ]
     },
@@ -1147,7 +1259,7 @@
         "type": "function",
         "z": "45018afdb676ae24",
         "name": "generate_url",
-        "func": "const port = env.get(\"PORT\")\nconst endpointport = env.get(\"endpointport\")\n\nconst action = env.get(\"actionType\")\n\n//RED.util.getPropByPath(msg, topicPath)\nconst topicTicket_key = env.get(\"topicTicket_key\")\nconst topicTicket = RED.util.getPropByPath(msg, topicTicket_key)//{topic: \"\",param: { }}\nconst data = encodeURIComponent(JSON.stringify(topicTicket))\nmsg.callbackurl = `http://localhost:${port}/callback/${topicTicket.topic}/${topicTicket.uuid}`\nmsg.joburl = `http://localhost:${endpointport}/${action}/${data}`\nreturn msg;\n",
+        "func": "const port = env.get(\"PORT\")\nconst endpointport = env.get(\"endpointport\")\n\nconst action = env.get(\"actionType\")\n\n//RED.util.getPropByPath(msg, topicPath)\nconst topicTicket_key = env.get(\"topicTicket_key\")\nconst topicTicket = RED.util.getPropByPath(msg, topicTicket_key)//{topic: \"\",param: { }}\n//const data = encodeURIComponent(JSON.stringify(topicTicket))\nmsg.payload = JSON.stringify(topicTicket)\nmsg.callbackurl = `http://localhost:${port}/callback/${topicTicket.topic}/${RED.util.procuuid}`\n//msg.joburl = `http://localhost:${endpointport}/${action}/${data}`\nmsg.joburl = `http://localhost:${endpointport}/${action}`\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1166,7 +1278,7 @@
         "type": "http request",
         "z": "45018afdb676ae24",
         "name": "",
-        "method": "GET",
+        "method": "POST",
         "ret": "txt",
         "paytoqs": "ignore",
         "url": "{{{joburl}}}",
@@ -1216,14 +1328,14 @@
         "id": "b861d902d0337a8d",
         "type": "function",
         "z": "45018afdb676ae24",
-        "name": "function 1",
+        "name": "JSON.parse",
         "func": "if (msg.statusCode == \"200\") {\n    if (msg.payload) {\n        try {\n            msg.payload = JSON.parse(msg.payload)\n        } catch (error) {\n        }\n    }\n    return [msg, null]\n} else {\n\n}\n\nreturn [null, msg];",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 660,
+        "x": 670,
         "y": 100,
         "wires": [
             [],
@@ -1250,6 +1362,18 @@
         ]
     },
     {
+        "id": "1e30dda2b9e0fcba",
+        "type": "status",
+        "z": "45018afdb676ae24",
+        "name": "",
+        "scope": null,
+        "x": 670,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "65773947d3956d31",
         "type": "function",
         "z": "2af088b891412a7f",
@@ -1267,11 +1391,23 @@
         ]
     },
     {
+        "id": "ff7ea1439bf6d7d3",
+        "type": "status",
+        "z": "2af088b891412a7f",
+        "name": "",
+        "scope": null,
+        "x": 230,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "7020fe11546b61c6",
         "type": "function",
         "z": "28b838dd0d60646d",
         "name": "set-jobsession",
-        "func": "const date = new Date()\nconst jobsession = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate())).slice(-2)\nconst jobsessionPath = env.get(\"jobsessionPath\") //ex.msg.payload.topic \nreturn RED.util.setPropByPath(msg, jobsessionPath, jobsession)\n",
+        "func": "const date = new Date()\nconst jobsession = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate())).slice(-2) + (\"0\" + (date.getHours())).slice(-2) \nconst jobsessionPath = env.get(\"jobsessionPath\") //ex.msg.payload.topic \nconst status = { fill: \"green\", shape: \"dot\", text: `${jobsession}` }\nnode.status(status)\nreturn RED.util.setPropByPath(msg, jobsessionPath, jobsession)\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1279,6 +1415,18 @@
         "libs": [],
         "x": 200,
         "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d889d71acabee873",
+        "type": "status",
+        "z": "28b838dd0d60646d",
+        "name": "",
+        "scope": null,
+        "x": 210,
+        "y": 120,
         "wires": [
             []
         ]
@@ -1312,11 +1460,23 @@
         ]
     },
     {
+        "id": "b9c2875a59bb3c60",
+        "type": "status",
+        "z": "7e1bc880aa606898",
+        "name": "",
+        "scope": null,
+        "x": 350,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "5f74ccae462df2fb",
         "type": "function",
         "z": "fb38bea55c8dc62c",
         "name": "generate_cmd",
-        "func": "const targetkeypath = env.get(\"targetkeypath\")\nconst targetpath = RED.util.getPropByPath(msg, targetkeypath)\n\nmsg.exec = `df ${targetpath}`\nmsg._payload = msg.payload\n\nconst status = { fill: \"green\", shape: \"dot\", text: `df: ${targetpath}` }\nnode.status(status)\nmsg[`${node.name}-${node.id}`] = {\n    id: node.id,\n    name: node.name,\n    exec: msg.exec,\n    status: status\n}\n\nreturn msg;",
+        "func": "const targetKeyPath = env.get(\"targetKeyPath\")\nconst targetpath = RED.util.getPropByPath(msg, targetKeyPath)\n\nmsg.exec = `df ${targetpath}`\nmsg._payload = msg.payload\n\nconst status = { fill: \"green\", shape: \"dot\", text: `df: ${targetpath}` }\nnode.status(status)\nmsg[`${node.name}-${node.id}`] = {\n    id: node.id,\n    name: node.name,\n    exec: msg.exec,\n    status: status\n}\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1357,41 +1517,13 @@
         "type": "function",
         "z": "fb38bea55c8dc62c",
         "name": "df-parse",
-        "func": "const regex = /.*\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)%.*/\nconst match = msg.payload.match(regex)\nif (match) {\n    msg.df = {\n        match: match,\n        size: Number(match[1]),\n        used: Number(match[2]),\n        available: Number(match[3]),\n        usePer: Number(match[4])\n    }\n}\n\nmsg.payload = msg._payload\nmsg._payload = null\nreturn msg;",
-        "outputs": 1,
+        "func": "const limitSize = env.get(\"limitSize\")\nconst regex = /.*\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)%.*/\nconst match = msg.payload.match(regex)\nif (match) {\n    msg.df = {\n        match: match,\n        size: Number(match[1]),\n        used: Number(match[2]),\n        available: Number(match[3]),\n        usePer: Number(match[4])\n    }\n    \n    if (msg.df.available > limitSize) {\n        const status = {\n            fill: \"green\", shape: \"dot\", text: `usePer: ${msg.df.usePer}% (${msg.df.available} > ${limitSize})` }\n        node.status(status)\n        return [msg, null];\n    } else {\n        const status = { \n            fill: \"red\", shape: \"dot\", text: `usePer: ${msg.df.usePer}% (${msg.df.available} > ${limitSize})` }\n        node.status(status)\n        return [null, msg];\n    }\n    \n}\n\nmsg.payload = msg._payload\nmsg._payload = null\n\n\nreturn [null,msg];",
+        "outputs": 2,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
         "x": 560,
-        "y": 40,
-        "wires": [
-            [
-                "134a0b338a577af0"
-            ]
-        ]
-    },
-    {
-        "id": "134a0b338a577af0",
-        "type": "switch",
-        "z": "fb38bea55c8dc62c",
-        "name": "limitSize",
-        "property": "df.available",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "gt",
-                "v": "limitSize",
-                "vt": "env"
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 700,
         "y": 40,
         "wires": [
             [],
@@ -1450,6 +1582,18 @@
             [
                 "aefe0952138e6e84"
             ]
+        ]
+    },
+    {
+        "id": "161e3e352b026761",
+        "type": "status",
+        "z": "fb38bea55c8dc62c",
+        "name": "",
+        "scope": null,
+        "x": 430,
+        "y": 200,
+        "wires": [
+            []
         ]
     },
     {
@@ -1724,8 +1868,8 @@
         "id": "81fdb8dcd847065f",
         "type": "subflow:45018afdb676ae24",
         "z": "df2ab3479f1af30a",
-        "name": "",
-        "x": 850,
+        "name": "task exec",
+        "x": 840,
         "y": 120,
         "wires": [
             [
@@ -1795,7 +1939,8 @@
         "y": 120,
         "wires": [
             [
-                "1c2685b3f1cef524"
+                "1c2685b3f1cef524",
+                "135259bd6e32db6a"
             ]
         ]
     },
@@ -1808,7 +1953,8 @@
         "y": 120,
         "wires": [
             [
-                "91d58df5e1eb6da2"
+                "91d58df5e1eb6da2",
+                "0cfbff976e5038a1"
             ]
         ]
     },
@@ -2292,8 +2438,119 @@
         "y": 120,
         "wires": [
             [
-                "81fdb8dcd847065f"
+                "81fdb8dcd847065f",
+                "f43a6e33e23e1ffa"
             ]
         ]
+    },
+    {
+        "id": "a88ab695f3fe68d7",
+        "type": "inject",
+        "z": "df2ab3479f1af30a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 940,
+        "wires": [
+            [
+                "ad66cbfef63810f6"
+            ]
+        ]
+    },
+    {
+        "id": "ad66cbfef63810f6",
+        "type": "subflow:28b838dd0d60646d",
+        "z": "df2ab3479f1af30a",
+        "name": "",
+        "x": 360,
+        "y": 940,
+        "wires": [
+            [
+                "eb2493e92030b3a0"
+            ]
+        ]
+    },
+    {
+        "id": "eb2493e92030b3a0",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "debug 16",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "135259bd6e32db6a",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "debug 17",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 400,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "0cfbff976e5038a1",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "debug 18",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "f43a6e33e23e1ffa",
+        "type": "debug",
+        "z": "df2ab3479f1af30a",
+        "name": "debug 19",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 780,
+        "y": 60,
+        "wires": []
     }
 ]
