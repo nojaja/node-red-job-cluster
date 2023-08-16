@@ -97,6 +97,24 @@
                         "port": 0
                     }
                 ]
+            },
+            {
+                "x": 780,
+                "y": 200,
+                "wires": [
+                    {
+                        "id": "ab279f5f2fd77d53",
+                        "port": 0
+                    },
+                    {
+                        "id": "87bd2ef55c481975",
+                        "port": 0
+                    },
+                    {
+                        "id": "2be49eb745fa791d",
+                        "port": 0
+                    }
+                ]
             }
         ],
         "env": [
@@ -108,7 +126,7 @@
             {
                 "name": "endpoint",
                 "type": "env",
-                "value": "/${actionType}/:topic",
+                "value": "/${actionType}",
                 "ui": {
                     "type": "hide"
                 }
@@ -158,6 +176,16 @@
                     {
                         "id": "b861d902d0337a8d",
                         "port": 1
+                    }
+                ]
+            },
+            {
+                "x": 800,
+                "y": 60,
+                "wires": [
+                    {
+                        "id": "b861d902d0337a8d",
+                        "port": 0
                     }
                 ]
             }
@@ -219,7 +247,7 @@
         ],
         "out": [
             {
-                "x": 370,
+                "x": 390,
                 "y": 40,
                 "wires": [
                     {
@@ -229,7 +257,7 @@
                 ]
             },
             {
-                "x": 380,
+                "x": 390,
                 "y": 120,
                 "wires": [
                     {
@@ -251,7 +279,17 @@
             "jobctl",
             "worker"
         ],
-        "icon": "node-red/switch.svg"
+        "icon": "node-red/switch.svg",
+        "status": {
+            "x": 360,
+            "y": 180,
+            "wires": [
+                {
+                    "id": "74ea6540df9136fc",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "375ee1d6cf6e3891",
@@ -379,7 +417,17 @@
             "license": "MIT"
         },
         "color": "#DEB887",
-        "icon": "node-red/db.svg"
+        "icon": "node-red/db.svg",
+        "status": {
+            "x": 380,
+            "y": 160,
+            "wires": [
+                {
+                    "id": "6dd5b56dfbfca342",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "b8cfb4b94405d94d",
@@ -418,7 +466,17 @@
             "license": "MIT"
         },
         "color": "#E2D96E",
-        "icon": "node-red/rbe.png"
+        "icon": "node-red/rbe.png",
+        "status": {
+            "x": 340,
+            "y": 140,
+            "wires": [
+                {
+                    "id": "02c12238fcf25699",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "d6f01b04a12d7282",
@@ -463,7 +521,17 @@
             "license": "MIT"
         },
         "color": "#DEB887",
-        "icon": "node-red/db.svg"
+        "icon": "node-red/db.svg",
+        "status": {
+            "x": 340,
+            "y": 140,
+            "wires": [
+                {
+                    "id": "bdac718bacf595d2",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "0eb6c089a1f171e9",
@@ -573,7 +641,17 @@
             "license": "MIT"
         },
         "color": "#DEB887",
-        "icon": "node-red/db.svg"
+        "icon": "node-red/db.svg",
+        "status": {
+            "x": 380,
+            "y": 160,
+            "wires": [
+                {
+                    "id": "a7660aaddb308f1c",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "1f63a3ba2a6337e6",
@@ -717,7 +795,17 @@
             "license": "MIT"
         },
         "color": "#E2D96E",
-        "icon": "node-red/split.svg"
+        "icon": "node-red/split.svg",
+        "status": {
+            "x": 340,
+            "y": 140,
+            "wires": [
+                {
+                    "id": "9e62e957da99af7c",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "7157de4597b60201",
@@ -766,7 +854,17 @@
             "license": "MIT"
         },
         "color": "#E6E0F8",
-        "icon": "node-red/trigger.svg"
+        "icon": "node-red/trigger.svg",
+        "status": {
+            "x": 340,
+            "y": 160,
+            "wires": [
+                {
+                    "id": "bad310cddca2aafd",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "f6c57fcec804269c",
@@ -837,7 +935,7 @@
         "out": [
             {
                 "x": 340,
-                "y": 80,
+                "y": 60,
                 "wires": [
                     {
                         "id": "f2b282801e277ec6",
@@ -870,7 +968,17 @@
             "license": "MIT"
         },
         "color": "#E6E0F8",
-        "icon": "node-red/link-out.svg"
+        "icon": "node-red/link-out.svg",
+        "status": {
+            "x": 340,
+            "y": 180,
+            "wires": [
+                {
+                    "id": "286858fb7bc4d172",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "131075747e8871f8",
@@ -927,7 +1035,17 @@
             "license": "MIT"
         },
         "color": "#DDAA99",
-        "icon": "font-awesome/fa-flash"
+        "icon": "font-awesome/fa-flash",
+        "status": {
+            "x": 1040,
+            "y": 260,
+            "wires": [
+                {
+                    "id": "8b86cba42bf4ef67",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "1ec11fe81fee736c",
@@ -958,7 +1076,7 @@
                 ]
             },
             {
-                "x": 820,
+                "x": 840,
                 "y": 160,
                 "wires": [
                     {
@@ -991,7 +1109,17 @@
             "license": "MIT"
         },
         "color": "#DDAA99",
-        "icon": "font-awesome/fa-bolt"
+        "icon": "font-awesome/fa-bolt",
+        "status": {
+            "x": 840,
+            "y": 220,
+            "wires": [
+                {
+                    "id": "02fe147c3383926b",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "6399b4d8775a079a",
@@ -1041,7 +1169,17 @@
             "license": "MIT"
         },
         "color": "#DDAA99",
-        "icon": "font-awesome/fa-flash"
+        "icon": "font-awesome/fa-flash",
+        "status": {
+            "x": 380,
+            "y": 40,
+            "wires": [
+                {
+                    "id": "997755bedd4200be",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "4d4915ce082a1010",
@@ -1094,13 +1232,23 @@
             "license": "MIT"
         },
         "color": "#DDAA99",
-        "icon": "font-awesome/fa-bolt"
+        "icon": "font-awesome/fa-bolt",
+        "status": {
+            "x": 1400,
+            "y": 380,
+            "wires": [
+                {
+                    "id": "22f60c524f4dc208",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "2d6a615a0f89e919",
         "type": "subflow",
         "name": "set-jobsession",
-        "info": "jobsessionを生成します。\r\n\r\n## **description**\r\nyyyymmdd形式のIDを生成します。\r\n\r\n## **env**\r\nなし \r\n\r\n## **global**\r\nなし  \r\n\r\n## **properties**\r\nなし \r\n \r\n## data structure\r\nなし \r\n\r\n## **input msg**\r\nなし\r\n\r\n## **output msg**\r\n`msg.topicTicket.param.jobsession`にIDが追加されます。\r\n",
+        "info": "jobsessionを生成します。\r\n\r\n## **description**\r\nyyyymmddhh24形式のIDを生成します。\r\n\r\n## **env**\r\nなし \r\n\r\n## **global**\r\nなし  \r\n\r\n## **properties**\r\nなし \r\n \r\n## data structure\r\nなし \r\n\r\n## **input msg**\r\nなし\r\n\r\n## **output msg**\r\n`msg.topicTicket.param.jobsession`にIDが追加されます。\r\n",
         "category": "Topic Control",
         "in": [
             {
@@ -1134,7 +1282,17 @@
         ],
         "meta": {},
         "color": "#DEB887",
-        "icon": "font-awesome/fa-plus-circle"
+        "icon": "font-awesome/fa-plus-circle",
+        "status": {
+            "x": 360,
+            "y": 160,
+            "wires": [
+                {
+                    "id": "e41435e982ba4863",
+                    "port": 0
+                }
+            ]
+        }
     },
     {
         "id": "8b05743651ac39ce",
@@ -1250,7 +1408,7 @@
         "z": "27227cef106a74f0",
         "name": "endpoint",
         "url": "${endpoint}",
-        "method": "get",
+        "method": "post",
         "upload": false,
         "swaggerDoc": "",
         "x": 100,
@@ -1320,7 +1478,7 @@
                 "t": "set",
                 "p": "topic",
                 "pt": "msg",
-                "to": "req.params.topic",
+                "to": "req.body",
                 "tot": "msg"
             }
         ],
@@ -1404,7 +1562,7 @@
         "type": "function",
         "z": "45018afdb676ae24",
         "name": "generate_url",
-        "func": "\nconst port = env.get(\"PORT\")\nconst endpointport = env.get(\"endpointport\")\n\nconst action = env.get(\"actionType\")\n\n//RED.util.getPropByPath(msg, topicPath)\nconst topicTicket_key = env.get(\"topicTicket_key\")\nconst topicTicket = msg[topicTicket_key]\n\nconst data = JSON.stringify(topicTicket)\nmsg.callbackurl = `http://localhost:${port}/callback/${topicTicket.topic}/${topicTicket.uuid}`\nmsg.joburl = `http://localhost:${endpointport}/${action}/${data}`\nreturn msg;\n",
+        "func": "const port = env.get(\"PORT\")\nconst endpointport = env.get(\"endpointport\")\n\nconst action = env.get(\"actionType\")\n\n//RED.util.getPropByPath(msg, topicPath)\nconst topicTicket_key = env.get(\"topicTicket_key\")\nconst topicTicket = RED.util.getPropByPath(msg, topicTicket_key)//{topic: \"\",param: { }}\n//const data = encodeURIComponent(JSON.stringify(topicTicket))\nmsg.payload = JSON.stringify(topicTicket)\nmsg.callbackurl = `http://localhost:${port}/callback/${topicTicket.topic}/${topicTicket.uuid}`\n//msg.joburl = `http://localhost:${endpointport}/${action}/${data}`\nmsg.joburl = `http://localhost:${endpointport}/${action}`\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1423,7 +1581,7 @@
         "type": "http request",
         "z": "45018afdb676ae24",
         "name": "",
-        "method": "GET",
+        "method": "POST",
         "ret": "txt",
         "paytoqs": "ignore",
         "url": "{{{joburl}}}",
@@ -1522,11 +1680,23 @@
         ]
     },
     {
+        "id": "74ea6540df9136fc",
+        "type": "status",
+        "z": "b3da594ab22fa515",
+        "name": "",
+        "scope": null,
+        "x": 230,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "a72d2803344a446d",
         "type": "function",
         "z": "375ee1d6cf6e3891",
         "name": "generate_url",
-        "func": "\nconst JOBCTL_HOST = global.get(\"JOBCTL_HOST\")\nif (!JOBCTL_HOST) return [null,msg] \nconst JOBCTL_SERVICE_IP = JOBCTL_HOST.IP\nconst JOBCTL_SERVICE_HOST_HTTP_PORT = JOBCTL_HOST.HTTP_PORT\nconst actionType = env.get(\"actionType\")\n\nconst topicTicketPath = env.get(\"topicTicketPath\")\nconst topicTicket = encodeURIComponent(JSON.stringify(RED.util.getPropByPath(msg, topicTicketPath)))\n\nmsg.joburl = `http://${JOBCTL_SERVICE_IP}:${JOBCTL_SERVICE_HOST_HTTP_PORT}/${actionType}/${topicTicket}`\nmsg.topic = topicTicket\nmsg.cluster_service_uid = RED.util.procuuid\nreturn [msg,null]",
+        "func": "const JOBCTL_HOST = global.get(\"JOBCTL_HOST\")\nif (!JOBCTL_HOST) return [null,msg] \nconst JOBCTL_SERVICE_IP = JOBCTL_HOST.IP\nconst JOBCTL_SERVICE_HOST_HTTP_PORT = JOBCTL_HOST.HTTP_PORT\nconst actionType = env.get(\"actionType\")\n\nconst topicTicketPath = env.get(\"topicTicketPath\")\n//const topicTicket = encodeURIComponent(JSON.stringify(RED.util.getPropByPath(msg, topicTicketPath)))\nmsg.payload = JSON.stringify(RED.util.getPropByPath(msg, topicTicketPath))\n//msg.joburl = `http://${JOBCTL_SERVICE_IP}:${JOBCTL_SERVICE_HOST_HTTP_PORT}/${actionType}/${topicTicket}`\nmsg.joburl = `http://${JOBCTL_SERVICE_IP}:${JOBCTL_SERVICE_HOST_HTTP_PORT}/${actionType}`\n//msg.topic = topicTicket\nmsg.cluster_service_uid = RED.util.procuuid\nreturn [msg,null]",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -1546,7 +1716,7 @@
         "type": "http request",
         "z": "375ee1d6cf6e3891",
         "name": "",
-        "method": "GET",
+        "method": "POST",
         "ret": "txt",
         "paytoqs": "ignore",
         "url": "{{{joburl}}}",
@@ -1557,12 +1727,6 @@
         "authType": "",
         "senderr": false,
         "headers": [
-            {
-                "keyType": "other",
-                "keyValue": "x-topic",
-                "valueType": "msg",
-                "valueValue": "topic"
-            },
             {
                 "keyType": "other",
                 "keyValue": "x-cluster_service_uid",
@@ -1635,7 +1799,7 @@
         "type": "function",
         "z": "c826488602403262",
         "name": "assign-topics",
-        "func": "const topicPath = env.get(\"topicPath\") //ex.msg.status\nconst selectTopic = RED.util.getPropByPath(msg, topicPath) // ex. topicPath: 'git'\n\nconst statusPath = env.get(\"statusPath\") //ex.msg.status\nconst selectStatus = RED.util.getPropByPath(msg, statusPath) || \"new\"\n\nconst statusFlow = {\n    \"new\": \"assigned\",\n    \"assigned\": \"in-progress\",\n    \"in-progress\": \"completed\"\n}\nconst nextStatus = statusFlow[selectStatus]\nconst topics = global.get(\"TOPICS\") || new Map()\n/*\n topics = {\n     ${selectTopic} :{ //selectTopic: 'git'\n        ${status}: {   //status: 'new'\n            ${uuid}: { //uuid: 'eac328ef-93f8-49d4-be5b-60b9e678e283'\n                param: {\n                    target: \"A0000_0000\",\n                    jobsession: \"20230604\"\n                },\n                topic: \"git\",\n                uuid: \"eac328ef-93f8-49d4-be5b-60b9e678e283\",\n                status: \"completed\" \n            }}}}\n*/\nconst topicStatus = topics.get(selectTopic) || new Map()     //topics.${selectTopic}\nconst topic_new = topicStatus.get(selectStatus) || new Map() //topics.${selectTopic}.${selectStatus}\nconst topic_proc = topicStatus.get(nextStatus) || new Map()  //topics.${selectTopic}.${nextStatus}\nconst topicTicket = RED.util.mappop(topic_new)               //pop(topics.${selectTopic}.${selectStatus})\n\nif (!topicTicket) return [null, msg]\ntopicTicket.status = nextStatus\n\nif (msg.workerName) {\n    topicTicket.workerName = msg.workerName\n}\n\ntopic_proc.set(topicTicket.uuid, topicTicket)\n\ntopicStatus.set(selectStatus, topic_new)\ntopicStatus.set(nextStatus, topic_proc)\ntopics.set(selectTopic, topicStatus)\nglobal.set(\"TOPICS\", topics)\n\nmsg = Object.assign(msg, { payload: { topic: topicTicket.topic, topicTicket: topicTicket } });\n\nreturn [msg, null]",
+        "func": "const topicPath = env.get(\"topicPath\") //ex.msg.status\nconst selectTopic = RED.util.getPropByPath(msg, topicPath) // ex. topicPath: 'git'\n\nconst statusPath = env.get(\"statusPath\") //ex.msg.status\nconst selectStatus = RED.util.getPropByPath(msg, statusPath) || \"new\"\n\nconst statusFlow = {\n    \"new\": \"assigned\",\n    \"assigned\": \"in-progress\",\n    \"in-progress\": \"completed\"\n}\nconst nextStatus = statusFlow[selectStatus]\nconst topics = global.get(\"TOPICS\") || new Map()\n/*\n topics = {\n     ${selectTopic} :{ //selectTopic: 'git'\n        ${status}: {   //status: 'new'\n            ${uuid}: { //uuid: 'eac328ef-93f8-49d4-be5b-60b9e678e283'\n                param: {\n                    target: \"A0000_0000\",\n                    jobsession: \"20230604\"\n                },\n                topic: \"git\",\n                uuid: \"eac328ef-93f8-49d4-be5b-60b9e678e283\",\n                status: \"completed\" \n            }}}}\n*/\nconst topicStatus = topics.get(selectTopic) || new Map()     //topics.${selectTopic}\nconst topic_new = topicStatus.get(selectStatus) || new Map() //topics.${selectTopic}.${selectStatus}\nconst topic_proc = topicStatus.get(nextStatus) || new Map()  //topics.${selectTopic}.${nextStatus}\nconst topicTicket = RED.util.mappop(topic_new)               //pop(topics.${selectTopic}.${selectStatus})\n\nif (!topicTicket) return [null, msg]\ntopicTicket.status = nextStatus\n\nif (msg.workerName) {\n    topicTicket.workerName = msg.workerName\n}\n\ntopic_proc.set(topicTicket.uuid, topicTicket)\n\ntopicStatus.set(selectStatus, topic_new)\ntopicStatus.set(nextStatus, topic_proc)\ntopics.set(selectTopic, topicStatus)\nglobal.set(\"TOPICS\", topics)\n\nmsg = Object.assign(msg, { payload: { topic: topicTicket.topic, topicTicket: topicTicket } });\n\nconst status = { fill: \"green\", shape: \"dot\", text: `assign-topics: ${topicTicket.topic}` }\nnode.status(status)\nreturn [msg, null]",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -1649,11 +1813,23 @@
         ]
     },
     {
+        "id": "6dd5b56dfbfca342",
+        "type": "status",
+        "z": "c826488602403262",
+        "name": "",
+        "scope": null,
+        "x": 190,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "9824a4787a5aa8d6",
         "type": "function",
         "z": "b8cfb4b94405d94d",
         "name": "fillter topic",
-        "func": "const TARGET_TOPICS = (env.get(\"TOPICS\") || \"topic0,topic1,topic2\").split(',')\nconst TARGET_TOPICS_NO = global.get(\"TARGET_TOPICS_NO\") || 0\nconst topicName = TARGET_TOPICS[TARGET_TOPICS_NO]\nglobal.set(\"TARGET_TOPICS_NO\", (TARGET_TOPICS.length - 1 > TARGET_TOPICS_NO) ? TARGET_TOPICS_NO + 1 : 0)\n//const topic = { name: topicName, status: \"new\" }\nmsg = Object.assign(msg, { topic: topicName });\nreturn msg",
+        "func": "const TARGET_TOPICS = (env.get(\"TOPICS\") || \"topic0,topic1,topic2\").split(',')\nconst TARGET_TOPICS_NO = global.get(\"TARGET_TOPICS_NO\") || 0\nconst topicName = TARGET_TOPICS[TARGET_TOPICS_NO]\nglobal.set(\"TARGET_TOPICS_NO\", (TARGET_TOPICS.length - 1 > TARGET_TOPICS_NO) ? TARGET_TOPICS_NO + 1 : 0)\n//const topic = { name: topicName, status: \"new\" }\nmsg = Object.assign(msg, { topic: topicName });\nconst status = { fill: \"green\", shape: \"dot\", text: `topic:${topicName}` }\nnode.status(status)\nreturn msg",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1666,11 +1842,23 @@
         ]
     },
     {
+        "id": "02c12238fcf25699",
+        "type": "status",
+        "z": "b8cfb4b94405d94d",
+        "name": "",
+        "scope": null,
+        "x": 190,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "a27285317db43ec7",
         "type": "function",
         "z": "d6f01b04a12d7282",
         "name": "topic_add",
-        "func": "\nconst topicPath = env.get(\"topicPath\") //ex.msg.payload.topic \nconst topicTicket = RED.util.getPropByPath(msg, topicPath)//{topic: \"\",param: { }}\ntopicTicket.uuid = crypto.randomUUID()\n\nif (!topicTicket) return msg\n//{topicname:[{topic:\"\",param: {}}}]}\nconst topicName = topicTicket.topic\nconst topics = global.get(\"TOPICS\") || new Map()\nconst topicStatus = topics.get(topicName) || new Map()\nconst topic = topicStatus.get(\"new\") || new Map()\ntopic.set(topicTicket.uuid,topicTicket)\ntopicStatus.set(\"new\", topic)\ntopics.set(topicName, topicStatus)\nglobal.set(\"TOPICS\", topics)\n\nreturn msg;",
+        "func": "\nconst topicPath = env.get(\"topicPath\") //ex.msg.payload.topic \nconst topicTicket = RED.util.getPropByPath(msg, topicPath)//{topic: \"\",param: { }}\ntopicTicket.uuid = crypto.randomUUID()\n\nif (!topicTicket) return msg\n//{topicname:[{topic:\"\",param: {}}}]}\nconst topicName = topicTicket.topic\nconst topics = global.get(\"TOPICS\") || new Map()\nconst topicStatus = topics.get(topicName) || new Map()\nconst topic = topicStatus.get(\"new\") || new Map()\ntopic.set(topicTicket.uuid,topicTicket)\ntopicStatus.set(\"new\", topic)\ntopics.set(topicName, topicStatus)\nglobal.set(\"TOPICS\", topics)\n\nconst status = { fill: \"green\", shape: \"dot\", text: `topic_add: ${topicName}` }\nnode.status(status)\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1683,6 +1871,18 @@
         ],
         "x": 200,
         "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bdac718bacf595d2",
+        "type": "status",
+        "z": "d6f01b04a12d7282",
+        "name": "",
+        "scope": null,
+        "x": 190,
+        "y": 140,
         "wires": [
             []
         ]
@@ -1709,7 +1909,7 @@
         "type": "function",
         "z": "f5ba2b0f4e9255e0",
         "name": "update-topics",
-        "func": "const topicPath = env.get(\"topicPath\") //ex.msg.status\nconst selectTopic = RED.util.getPropByPath(msg, topicPath) // ex. topicPath: 'git'\n\nconst statusPath = env.get(\"statusPath\") //ex.msg.status\nconst selectStatus = RED.util.getPropByPath(msg, statusPath) || \"new\"\n\nconst uuidPath = env.get(\"uuidPath\") //ex.msg.status\nconst uuid = RED.util.getPropByPath(msg, uuidPath) || \"uuid\"\n\nconst statusFlow = {\n    \"new\": \"assigned\",\n    \"assigned\": \"in-progress\",\n    \"in-progress\": \"completed\"\n}\nconst nextStatus = statusFlow[selectStatus]\nconst topics = global.get(\"TOPICS\") || new Map()\n/*\n topics = {\n     ${selectTopic} :{ //selectTopic: 'git'\n        ${status}: {   //status: 'new'\n            ${uuid}: { //uuid: 'eac328ef-93f8-49d4-be5b-60b9e678e283'\n                param: {\n                    target: \"A0000_0000\",\n                    jobsession: \"20230604\"\n                },\n                topic: \"git\",\n                uuid: \"eac328ef-93f8-49d4-be5b-60b9e678e283\",\n                status: \"completed\" \n            }}}}\n*/\nconst topicStatus = topics.get(selectTopic) || new Map()     //topics.${selectTopic}\nconst topic_new = topicStatus.get(selectStatus) || new Map() //topics.${selectTopic}.${selectStatus}\nconst topic_proc = topicStatus.get(nextStatus) || new Map()  //topics.${selectTopic}.${nextStatus}\nconst topicTicket = topic_new.get(uuid)                      //topics.${selectTopic}.${selectStatus}.${uuid}\n\nif (!topicTicket) return [null, msg]\nif (!topic_new.delete(uuid)) return [null, msg]\ntopicTicket.status = nextStatus\ntopic_proc.set(topicTicket.uuid, topicTicket)\n\ntopicStatus.set(selectStatus, topic_new)\ntopicStatus.set(nextStatus, topic_proc)\ntopics.set(selectTopic, topicStatus)\nglobal.set(\"TOPICS\", topics)\n\nmsg = Object.assign(msg, { payload: { topic: topicTicket.topic, topicTicket: JSON.stringify(topicTicket) } });\n\nreturn [msg, null]",
+        "func": "const topicPath = env.get(\"topicPath\") //ex.msg.status\nconst selectTopic = RED.util.getPropByPath(msg, topicPath) // ex. topicPath: 'git'\n\nconst statusPath = env.get(\"statusPath\") //ex.msg.status\nconst selectStatus = RED.util.getPropByPath(msg, statusPath) || \"new\"\n\nconst uuidPath = env.get(\"uuidPath\") //ex.msg.status\nconst uuid = RED.util.getPropByPath(msg, uuidPath) || \"uuid\"\n\nconst statusFlow = {\n    \"new\": \"assigned\",\n    \"assigned\": \"in-progress\",\n    \"in-progress\": \"completed\"\n}\nconst nextStatus = statusFlow[selectStatus]\nconst topics = global.get(\"TOPICS\") || new Map()\n/*\n topics = {\n     ${selectTopic} :{ //selectTopic: 'git'\n        ${status}: {   //status: 'new'\n            ${uuid}: { //uuid: 'eac328ef-93f8-49d4-be5b-60b9e678e283'\n                param: {\n                    target: \"A0000_0000\",\n                    jobsession: \"20230604\"\n                },\n                topic: \"git\",\n                uuid: \"eac328ef-93f8-49d4-be5b-60b9e678e283\",\n                status: \"completed\" \n            }}}}\n*/\nconst topicStatus = topics.get(selectTopic) || new Map()     //topics.${selectTopic}\nconst topic_new = topicStatus.get(selectStatus) || new Map() //topics.${selectTopic}.${selectStatus}\nconst topic_proc = topicStatus.get(nextStatus) || new Map()  //topics.${selectTopic}.${nextStatus}\nconst topicTicket = topic_new.get(uuid)                      //topics.${selectTopic}.${selectStatus}.${uuid}\n\nif (!topicTicket) return [null, msg]\nif (!topic_new.delete(uuid)) return [null, msg]\ntopicTicket.status = nextStatus\ntopic_proc.set(topicTicket.uuid, topicTicket)\n\ntopicStatus.set(selectStatus, topic_new)\ntopicStatus.set(nextStatus, topic_proc)\ntopics.set(selectTopic, topicStatus)\nglobal.set(\"TOPICS\", topics)\n\nmsg = Object.assign(msg, { payload: { topic: topicTicket.topic, topicTicket: JSON.stringify(topicTicket) } });\n\nconst status = { fill: \"green\", shape: \"dot\", text: `update-topics:${topicTicket.topic}` }\nnode.status(status)\n\nreturn [msg, null]",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -1719,6 +1919,18 @@
         "y": 80,
         "wires": [
             [],
+            []
+        ]
+    },
+    {
+        "id": "a7660aaddb308f1c",
+        "type": "status",
+        "z": "f5ba2b0f4e9255e0",
+        "name": "",
+        "scope": null,
+        "x": 210,
+        "y": 160,
+        "wires": [
             []
         ]
     },
@@ -1775,11 +1987,23 @@
         ]
     },
     {
+        "id": "9e62e957da99af7c",
+        "type": "status",
+        "z": "b1626fc28a971f31",
+        "name": "",
+        "scope": null,
+        "x": 190,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "b19fa56a77429a44",
         "type": "function",
         "z": "7157de4597b60201",
         "name": "flow-limit",
-        "func": "//{topicname:[{name:\"\",status: \"new\"}]}\nconst flowstatus = global.get(\"FLOW_STATUS\") || new Map()\nconst max = global.get(\"FLOW_MAX\") || 1\n\nif (flowstatus.size >= max) return [null, msg]\nreturn [msg, null]\n",
+        "func": "//{topicname:[{name:\"\",status: \"new\"}]}\nconst flowstatus = global.get(\"FLOW_STATUS\") || new Map()\nconst max = global.get(\"FLOW_MAX\") || 1\n\nif (flowstatus.size >= max) {\n    const status = {\n        fill: \"green\", shape: \"dot\", text: `${flowstatus.size} >= ${max}`\n    }\n    node.status(status)\n    return [null, msg]\n}\nconst status = {\n    fill: \"red\", shape: \"dot\", text: `limit: ${flowstatus.size} >= ${max}`\n}\nnode.status(status)\nreturn [msg, null]\n",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -1793,11 +2017,23 @@
         ]
     },
     {
+        "id": "bad310cddca2aafd",
+        "type": "status",
+        "z": "7157de4597b60201",
+        "name": "",
+        "scope": null,
+        "x": 190,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "e0410ad4c1884406",
         "type": "function",
         "z": "f6c57fcec804269c",
         "name": "flow-start",
-        "func": "//{topicname:[{name:\"\",status: \"new\"}]}\nconst flowstatus = global.get(\"FLOW_STATUS\") || new Map()\n\nconst topicTicket = msg.payload.topicTicket\nconst uuid = topicTicket.uuid\nif (flowstatus.has(uuid)) return [null, msg]\nflowstatus.set(uuid, topicTicket)\nglobal.set(\"FLOW_STATUS\", flowstatus)\nmsg.topicTicket = topicTicket\nmsg.topic = topicTicket.topic\nmsg.uuid = uuid\nreturn [msg, null]\n",
+        "func": "//{topicname:[{name:\"\",status: \"new\"}]}\nconst flowstatus = global.get(\"FLOW_STATUS\") || new Map()\n\nconst topicTicket = msg.payload.topicTicket\nconst uuid = topicTicket.uuid\nif (flowstatus.has(uuid)) return [null, msg]\nflowstatus.set(uuid, topicTicket)\nglobal.set(\"FLOW_STATUS\", flowstatus)\nmsg.topicTicket = topicTicket\nmsg.topic = topicTicket.topic\nmsg.uuid = uuid\nconst status = { fill: \"green\", shape: \"dot\", text: `topic: ${msg.topic}` }\nnode.status(status)\nreturn [msg, null]\n",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -1815,7 +2051,7 @@
         "type": "function",
         "z": "e9700f935181888e",
         "name": "flow-end",
-        "func": "//{topicname:[{name:\"\",status: \"new\"}]}\nconst flowstatus = global.get(\"FLOW_STATUS\") || new Map()\n\nconst uuidPath = env.get(\"uuidPath\")\nconst uuid = RED.util.getPropByPath(msg, uuidPath)\n\nif (!flowstatus.has(uuid)) return [null, msg]\n\nflowstatus.delete(uuid)\nglobal.set(\"FLOW_STATUS\", flowstatus)\nreturn [msg, null]\n",
+        "func": "//{topicname:[{name:\"\",status: \"new\"}]}\nconst flowstatus = global.get(\"FLOW_STATUS\") || new Map()\n\nconst uuidPath = env.get(\"uuidPath\")\nconst uuid = RED.util.getPropByPath(msg, uuidPath)\n\nif (!flowstatus.has(uuid)) return [null, msg]\n\nflowstatus.delete(uuid)\nglobal.set(\"FLOW_STATUS\", flowstatus)\nconst status = { fill: \"green\", shape: \"dot\", text: `target: ${uuid}` }\nnode.status(status)\nreturn [msg, null]\n",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -1825,6 +2061,18 @@
         "y": 80,
         "wires": [
             [],
+            []
+        ]
+    },
+    {
+        "id": "286858fb7bc4d172",
+        "type": "status",
+        "z": "e9700f935181888e",
+        "name": "",
+        "scope": null,
+        "x": 190,
+        "y": 180,
+        "wires": [
             []
         ]
     },
@@ -1908,6 +2156,18 @@
         ]
     },
     {
+        "id": "8b86cba42bf4ef67",
+        "type": "status",
+        "z": "131075747e8871f8",
+        "name": "",
+        "scope": null,
+        "x": 910,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "707bc717a0d8c626",
         "type": "subflow:375ee1d6cf6e3891",
         "z": "1ec11fe81fee736c",
@@ -1986,6 +2246,18 @@
         ]
     },
     {
+        "id": "02fe147c3383926b",
+        "type": "status",
+        "z": "1ec11fe81fee736c",
+        "name": "",
+        "scope": null,
+        "x": 710,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "33bb87efab5d968d",
         "type": "debug",
         "z": "6399b4d8775a079a",
@@ -2026,8 +2298,8 @@
         "type": "http in",
         "z": "6399b4d8775a079a",
         "name": "topic assign",
-        "url": "/assign/:topic",
-        "method": "get",
+        "url": "/assign",
+        "method": "post",
         "upload": false,
         "swaggerDoc": "",
         "x": 190,
@@ -2048,7 +2320,7 @@
                 "t": "set",
                 "p": "topic",
                 "pt": "msg",
-                "to": "req.params.topic",
+                "to": "req.body",
                 "tot": "msg"
             },
             {
@@ -2205,6 +2477,9 @@
         "wires": [
             [
                 "7c0b1bd77116fda0"
+            ],
+            [
+                "5326e84976b505de"
             ]
         ]
     },
@@ -2324,8 +2599,8 @@
         "type": "http in",
         "z": "6399b4d8775a079a",
         "name": "topic completed",
-        "url": "/completed/:topic",
-        "method": "get",
+        "url": "/completed",
+        "method": "post",
         "upload": false,
         "swaggerDoc": "",
         "x": 200,
@@ -2346,7 +2621,7 @@
                 "t": "set",
                 "p": "topic",
                 "pt": "msg",
-                "to": "req.params.topic",
+                "to": "req.body",
                 "tot": "msg"
             },
             {
@@ -2841,6 +3116,35 @@
         ]
     },
     {
+        "id": "5326e84976b505de",
+        "type": "debug",
+        "z": "6399b4d8775a079a",
+        "name": "debug 24",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "997755bedd4200be",
+        "type": "status",
+        "z": "6399b4d8775a079a",
+        "name": "",
+        "scope": null,
+        "x": 190,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "4c5385a7f2e8115c",
         "type": "inject",
         "z": "4d4915ce082a1010",
@@ -2939,7 +3243,7 @@
         "type": "function",
         "z": "4d4915ce082a1010",
         "name": "ADD JOBCTL_HOST",
-        "func": "if (!msg.payload) return [null, msg];\ntry {\n    msg.payload = JSON.parse(msg.payload);\n} catch (error) {\n    return [null, msg]\n}\n\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nif (msg.payload.CLUSTER_GROUP !== env.get('CLUSTER_GROUP')) return msg;\nconst JOBCTL_HOST = {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n    UDP_PORT: msg.payload.CLUSTER_SERVICE_UDP_PORT || \"2880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    CLUSTER_GROUP: msg.payload.CLUSTER_GROUP,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date(),\n    STATUS: 'live'\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nreturn [msg, null]\n",
+        "func": "if (!msg.payload) return [null, msg];\ntry {\n    msg.payload = JSON.parse(msg.payload);\n} catch (error) {\n    return [null, msg]\n}\n\nif (msg.payload.CLUSTER_ROLE !== \"jobctl\") return msg;\nif (msg.payload.CLUSTER_GROUP !== env.get('CLUSTER_GROUP')) return msg;\nconst JOBCTL_HOST = {\n    ID: msg.payload.CLUSTER_SERVICE_UID,\n    HOST: msg.payload.CLUSTER_SERVICE_HOST || msg.payload.CLUSTER_SERVICE_IP,\n    IP: msg.payload.CLUSTER_SERVICE_IP || msg.payload.CLUSTER_SERVICE_HOST,\n    HTTP_PORT: msg.payload.CLUSTER_SERVICE_HTTP_PORT || \"1880\",\n\n    NODE_RED_VERSION: msg.payload.NODE_RED_VERSION,\n    CLUSTER_GROUP: msg.payload.CLUSTER_GROUP,\n    ROLE: msg.payload.CLUSTER_ROLE,\n    STATUS_DATE: new Date(),\n    STATUS: 'live'\n}\nglobal.set(\"JOBCTL_HOST\", JOBCTL_HOST)\nconst status = { fill: \"green\", shape: \"dot\", text: `CONNECT: ${JOBCTL_HOST.HOST}` }\nnode.status(status)\nreturn [msg, null]\n",
         "outputs": 2,
         "noerr": 0,
         "initialize": "",
@@ -3122,11 +3426,23 @@
         ]
     },
     {
+        "id": "22f60c524f4dc208",
+        "type": "status",
+        "z": "4d4915ce082a1010",
+        "name": "",
+        "scope": null,
+        "x": 1250,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "771e91fbd62fd669",
         "type": "function",
         "z": "2d6a615a0f89e919",
         "name": "set-jobsession",
-        "func": "const date = new Date()\nconst jobsession = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate())).slice(-2)\nconst jobsessionPath = env.get(\"jobsessionPath\") //ex.msg.payload.topic \nreturn RED.util.setPropByPath(msg, jobsessionPath, jobsession)\n",
+        "func": "const date = new Date()\nconst jobsession = date.getFullYear() + (\"0\" + (date.getMonth() + 1)).slice(-2) + (\"0\" + (date.getDate())).slice(-2) + (\"0\" + (date.getHours())).slice(-2) \nconst jobsessionPath = env.get(\"jobsessionPath\") //ex.msg.payload.topic \nconst status = { fill: \"green\", shape: \"dot\", text: `${jobsession}` }\nnode.status(status)\nreturn RED.util.setPropByPath(msg, jobsessionPath, jobsession)\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -3134,6 +3450,18 @@
         "libs": [],
         "x": 200,
         "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e41435e982ba4863",
+        "type": "status",
+        "z": "2d6a615a0f89e919",
+        "name": "",
+        "scope": null,
+        "x": 210,
+        "y": 160,
         "wires": [
             []
         ]
@@ -3192,7 +3520,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "x": 140,
-        "y": 200,
+        "y": 180,
         "wires": [
             [
                 "0b735aab2b4ad0d9"
@@ -3217,7 +3545,7 @@
             }
         ],
         "x": 760,
-        "y": 200,
+        "y": 180,
         "wires": [
             [
                 "938bc7c1342ffed9"
@@ -3241,7 +3569,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 970,
-        "y": 200,
+        "y": 180,
         "wires": []
     },
     {
@@ -3251,7 +3579,7 @@
         "name": "新規topicの登録",
         "info": "",
         "x": 120,
-        "y": 160,
+        "y": 140,
         "wires": []
     },
     {
@@ -3426,7 +3754,8 @@
             ],
             [
                 "878a855ba718978e"
-            ]
+            ],
+            []
         ]
     },
     {
@@ -3520,7 +3849,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "x": 120,
-        "y": 280,
+        "y": 300,
         "wires": [
             [
                 "81529646389f940b"
@@ -3540,7 +3869,7 @@
         "encoding": "none",
         "allProps": true,
         "x": 270,
-        "y": 280,
+        "y": 300,
         "wires": [
             [
                 "eed827c2cffde494"
@@ -3566,7 +3895,7 @@
         "z": "f01882c08732b397",
         "name": "",
         "x": 440,
-        "y": 200,
+        "y": 180,
         "wires": [
             [
                 "e61870e6384df480"
@@ -3579,7 +3908,7 @@
         "z": "f01882c08732b397",
         "name": "",
         "x": 440,
-        "y": 280,
+        "y": 300,
         "wires": [
             [
                 "1dcaf26e648cddba"
@@ -3598,7 +3927,7 @@
         "finalize": "",
         "libs": [],
         "x": 600,
-        "y": 280,
+        "y": 300,
         "wires": [
             [
                 "e61870e6384df480",
@@ -3619,8 +3948,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 820,
-        "y": 280,
+        "x": 940,
+        "y": 300,
         "wires": []
     },
     {
